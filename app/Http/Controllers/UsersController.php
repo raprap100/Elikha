@@ -27,7 +27,7 @@ class UsersController extends Controller
 {
     $user = Auth::user();
     $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', true)
+                        ->where('status', 'approved')
                         ->orderBy('created_at', 'DESC')
                         ->get();
     return view('portfolio.profile', compact('user','artwork'));

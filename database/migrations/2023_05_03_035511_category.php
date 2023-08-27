@@ -15,6 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string("Category")->nullable();
         });
+        DB::table('category')->insert([
+            ['id' => 1, 'Category' => 'Pop Art'],
+            ['id' => 2, 'Category' => 'Realism'],
+            ['id' => 3, 'Category' => 'Portrait'],
+            ['id' => 4, 'Category' => 'Abstract'],
+            ['id' => 5, 'Category' => 'Expressionism'],
+            ['id' => 6, 'Category' => 'Expressionism'],
+            ['id' => 7, 'Category' => 'Photorealism'],
+        ]);
     }
 
     /**

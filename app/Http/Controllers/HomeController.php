@@ -60,9 +60,9 @@ class HomeController extends Controller
     
     public function posts()
     {
-        $pendingPost = Artworks::where('status','0')->count();
-        $approvedPost = Artworks::where('status','1')->count();
-        $pendingArtworks = Artworks::where('status', false)->paginate(5);
+        $pendingPost = Artworks::where('status','pending')->count();
+        $approvedPost = Artworks::where('status','approved')->count();
+        $pendingArtworks = Artworks::where('status', 'pending')->paginate(5);
         return view('admin.posts', compact('pendingPost', 'approvedPost','pendingArtworks'));
     }
     public function approve(Request $request, $id)

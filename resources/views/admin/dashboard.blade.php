@@ -90,7 +90,7 @@
                                     @foreach ($categories as $category)
                                     <tr>
                                         <td>{{ $rank++ }}</td>
-                                        <td>{{ $category->category }}</td>
+                                        <td>{{ $category->Category }}</td>
                                         <td>{{ $category->artworks_count }}</td>
                                     </tr>
                                     @endforeach
