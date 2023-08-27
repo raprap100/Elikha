@@ -74,12 +74,17 @@ class HomeController extends Controller
     }
     
     public function reject(Request $request)
-    {
-        $id = $request->input('id');
-        $artwork = Artworks::findOrFail($id);
-        $artwork->delete();
-        return back()->with('delete', 'Artwork rejected.');
-    }
+{
+    $id = $request->input('id');
+    $remarks = $request->input('remarks');
+
+    $artwork = Artworks::findOrFail($id);
+    $artwork->remarks = $remarks;
+    $artwork->status = 'rejected'; // Mark the status as 'rejected' instead of deleting
+    $artwork->save();
+
+    return back()->with('reject', 'Artwork rejected with remarks.');
+}
     public function approvePosts()
     {
         $pendingPost = Artworks::where('status','0')->count();

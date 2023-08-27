@@ -43,6 +43,7 @@ class ArtworkController extends Controller
         'users_id' => Auth::id(),
         'category_id' => $validatedData['category_id'],
         'status' => false,
+        'remarks' => '',   // Empty remarks initially
         
     ]);
 
@@ -80,7 +81,9 @@ class ArtworkController extends Controller
         'dimension' => $validatedData['dimension'],
         'price' => $validatedData['price'],
         'users_id' => Auth::id(),
-        'category_id' => $validatedData['category_id']
+        'category_id' => $validatedData['category_id'],
+        'status' => false, // Default status
+        'remarks' => '',   // Empty remarks initially
         
     ]);
 

@@ -183,20 +183,21 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $artwork->id }}">Confirm Delete</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $artwork->id }}">Confirm Reject</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     Are you sure you want to reject this artwork?
+                                                    <form action="{{ route('reject') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{ $artwork->id }}">
+                                                        <textarea name="remarks" rows="3" placeholder="Provide remarks for rejection"></textarea>
+                                                        <button type="submit" class="btn btn-outline-danger">Reject</button>
+                                                    </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form action="{{ route('reject') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $artwork->id }}">
-                                        <button type="submit" class="btn btn-outline-danger">Reject</button>
-                                    </form>
-                                </div>
+                                                </div>
                                     </td>
                                 </tr>
                                 @endforeach
