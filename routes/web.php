@@ -67,7 +67,8 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/home', [HomeController::class, 'home']);
     Route::get('/dashboard', [HomeController::class, 'index']);
     Route::get('/subscribers', [HomeController::class, 'subscribers']);
-    Route::get('/posts', [HomeController::class, 'posts']);
+    Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
+    Route::get('/posts/search', [HomeController::class, 'search'])->name('search');
     Route::post('//approve/{id}', [HomeController::class, 'approve'])->name('approve');
     Route::post('/reject', [HomeController::class, 'reject'])->name('reject');
     Route::get('/approvePosts', [HomeController::class, 'approvePosts'])->name('approvePosts');

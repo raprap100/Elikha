@@ -99,7 +99,7 @@
                                     <td>{{ $artwork->user->name }}</td>
                                     <td>{{ $artwork->title }}</td>
                                     <td>{{ $artwork->description }}</td>
-                                    <td>{{ $artwork->category->category }}</td>
+                                    <td>{{ $artwork->category->Category }}</td>
                                   <td>{{ $artwork->created_at->format('M d, Y') }}</td>
                                 </tr>
                                 @endforeach

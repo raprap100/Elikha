@@ -18,7 +18,9 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::count();
-        $categories = Category::withCount('artworks')
+        $categories = Category::withCount(['artworks' => function ($query) {
+            $query->where('status', 'approved');
+        }])
                     ->orderBy('artworks_count', 'desc')
                     ->get();
         return view('admin.dashboard', compact('users', 'categories'));
@@ -58,17 +60,39 @@ class HomeController extends Controller
     return view('admin.subscribers', compact('artistData', 'buyerData', 'artist', 'buyer', 'artistPercentage', 'buyerPercentage', 'total'));
     }
     
-    public function posts()
-    {
-        $pendingPost = Artworks::where('status','pending')->count();
-        $approvedPost = Artworks::where('status','approved')->count();
-        $pendingArtworks = Artworks::where('status', 'pending')->paginate(5);
-        return view('admin.posts', compact('pendingPost', 'approvedPost','pendingArtworks'));
+    public function posts(Request $request)
+{
+    $pendingPost = Artworks::where('status', 'pending')->count();
+    $approvedPost = Artworks::where('status', 'approved')->count();
+    
+    $query = Artworks::leftJoin('category', 'artworks.category_id', '=', 'category.id')
+    ->leftJoin('users', 'artworks.users_id', '=', 'users.id')
+    ->select('artworks.*', 'category.Category', 'users.name as artist_name');
+
+    if ($request->has('status_filter')) {
+        $statusFilter = $request->input('status_filter');
+        if ($statusFilter !== 'all') {
+            $query->where('artworks.status', $statusFilter);
+        }
     }
+    
+    if ($request->has('search')) {
+        $searchTerm = $request->input('search');
+        $query->where(function ($query) use ($searchTerm) {
+            $query->where('artworks.title', 'like', '%' . $searchTerm . '%')
+                ->orWhere('category.Category', 'like', '%' . $searchTerm . '%')
+                ->orWhere('users.name', 'like', '%' . $searchTerm . '%');
+        });
+    }
+    
+    $artworks = $query->paginate(5);
+    
+    return view('admin.posts', compact('pendingPost', 'approvedPost', 'artworks'));
+}
     public function approve(Request $request, $id)
     {
         $artwork = Artworks::findOrFail($id);
-        $artwork->status = true;
+        $artwork->status = 'approved';
         $artwork->save();
         return back()->with('success', 'Artwork approved successfully.');
     }

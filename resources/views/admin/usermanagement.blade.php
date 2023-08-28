@@ -48,20 +48,23 @@
                         </div>
                     @endif
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <a href="{{ url('create') }}" class="btn btn-dark" title="Add New Student">
+                        <a href="{{ url('create') }}" class="btn btn-outline-dark" title="Add New Student">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add User
                         </a>
-                        <form method="get" action="{{ route('usermanagement') }}">
-                            <select name="role_filter" style="padding: 0.5em; font-size: 1em; border-radius: 0.25em; border: 1px solid #ccc;">
-                                <option value="-1">All Roles</option>
-                                <option value="0">Admin</option>
-                                <option value="1">Assistant Admin</option>
-                                <option value="2">Artist</option>
-                                <option value="3">Buyer</option>
-                              </select>
-                              <button type="submit" style="background-color: #000000; color: #fff; border: none; padding: 0.5em 1em; border-radius: 0.25em; font-size: 1em; cursor: pointer;">
-                                Filter
-                              </button>
+                        <div class="d-flex align-items-center">
+                            <form method="get" action="{{ route('usermanagement') }}" class="d-flex">
+                                <select name="role_filter" style="padding: 0.5em; font-size: 1em; border-radius: 0.25em; border: 1px solid #ccc;">
+                                    <option value="-1">All Roles</option>
+                                    <option value="0">Admin</option>
+                                    <option value="1">Assistant Admin</option>
+                                    <option value="2">Artist</option>
+                                    <option value="3">Buyer</option>
+                                </select>
+                                <button type="submit" class="btn btn-outline-dark ml-2">
+                                    Filter
+                                </button>
+                            </form>
+                        </div>
                         </form>
                         <div class="input-group" style="max-width: 300px;">
                             <input type="text" class="form-control" placeholder="Search users" id="search-input">
