@@ -95,7 +95,7 @@ class UsersController extends Controller
     public function artistAuction()
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', true)
+                        ->where('status', 'approved')
                         ->orderBy('created_at', 'DESC')
                         ->get();
         return view('artist.myauctions', compact('artwork'));
