@@ -91,7 +91,7 @@
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
                                     {{$pendingPost}}
                                 </div>
-                                <div class="p font-weight-bold text-gray-800">Total Pending Arwtorks</div>
+                                <div class="p font-weight-bold text-gray-800">Total Pending Artworks</div>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
                                     {{$approvedPost}}
                                 </div>
-                                <div class="p font-weight-bold text-gray-800">Total Approved Arwtorks</div>
+                                <div class="p font-weight-bold text-gray-800">Total Approved Artworks</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
