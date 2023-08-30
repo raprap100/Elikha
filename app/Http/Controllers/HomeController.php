@@ -19,7 +19,7 @@ class HomeController extends Controller
     {
         $users = User::count();
         $categories = Category::withCount(['artworks' => function ($query) {
-            $query->where('status', 'approved');
+            $query->where('status', 'Approved');
         }])
                     ->orderBy('artworks_count', 'desc')
                     ->get();
@@ -62,8 +62,8 @@ class HomeController extends Controller
     
     public function posts(Request $request)
 {
-    $pendingPost = Artworks::where('status', 'pending')->count();
-    $approvedPost = Artworks::where('status', 'approved')->count();
+    $pendingPost = Artworks::where('status', 'Pending')->count();
+    $approvedPost = Artworks::where('status', 'Approved')->count();
     
     $query = Artworks::leftJoin('category', 'artworks.category_id', '=', 'category.id')
     ->leftJoin('users', 'artworks.users_id', '=', 'users.id')
@@ -92,7 +92,7 @@ class HomeController extends Controller
     public function approve(Request $request, $id)
     {
         $artwork = Artworks::findOrFail($id);
-        $artwork->status = 'approved';
+        $artwork->status = 'Approved';
         $artwork->save();
         return back()->with('success', 'Artwork approved successfully.');
     }
@@ -118,10 +118,10 @@ class HomeController extends Controller
     }
     public function support()
     {
-        $pendingTicket = Ticket::where('status','0')->count();
-        $closedTicket = Ticket::where('status','1')->count();
-        $pendingTickets = Ticket::where('status', false)->paginate(5);
-        return view('admin.support', compact('pendingTicket', 'closedTicket', 'pendingTickets'));
+        $pendingTicketCount = Ticket::where('status','0')->count();
+        $closedTicketCount = Ticket::where('status','1')->count();
+        $pendingTicket = Ticket::where('status', '0')->paginate(10);
+        return view('admin.support', compact('pendingTicket', 'pendingTicketCount', 'closedTicketCount'));
     }
     public function close(Request $request, $id)
     {
@@ -132,10 +132,10 @@ class HomeController extends Controller
     }
     public function supportClosed()
     {
-        $pendingTicket = Ticket::where('status','0')->count();
-        $closedTicket = Ticket::where('status','1')->count();
-        $closedTickets = Ticket::where('status', true)->paginate(5);
-        return view('admin.supportClosed', compact('pendingTicket', 'closedTicket', 'closedTickets'));
+        $pendingTicketCount = Ticket::where('status','0')->count();
+        $closedTicketCount = Ticket::where('status','1')->count();
+        $closedTicket = Ticket::where('status', '1')->paginate(10);
+        return view('admin.supportClosed', compact('closedTicket', 'pendingTicketCount', 'closedTicketCount'));
     }
     public function accountsetting()
     {

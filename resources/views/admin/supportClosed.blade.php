@@ -46,9 +46,9 @@
                         <div class="row align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
-                                    {{$pendingTicket}}
+                                    {{$pendingTicketCount}}
                                     </div>
-                                    <div class="p font-weight-bold text-gray-800">Total Support Tickets</div>
+                                    <div class="p font-weight-bold text-gray-800">Open Tickets</div>
                                 </div>
     
                             </div>
@@ -61,9 +61,9 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
-                                        {{$closedTicket}}
+                                        {{$closedTicketCount}}
                                     </div>
-                                    <div class="p font-weight-bold text-gray-800">Open Tickets</div>
+                                    <div class="p font-weight-bold text-gray-800">Closed Tickets</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -93,7 +93,7 @@
                                   <th>Description</th>
                                   <th>Date Created</th>
                                 </tr>
-                                @foreach($closedTickets as $ticket)
+                                @foreach($closedTicket as $ticket)
                                 <tr>
                                     <td>{{ $ticket->id }}</td>
                                     <td>{{ $ticket->name }}</td>
@@ -103,6 +103,7 @@
                                 </tr>
                                 @endforeach
                               </table>
+                              {{ $closedTicket->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>

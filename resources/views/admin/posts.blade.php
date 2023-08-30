@@ -51,7 +51,10 @@
     background-color: #007BFF;
     color: white;
 }
-
+.status-sold {
+    background-color: green;
+    color: white;
+}
 .status-rejected {
     background-color: #DC3545;
     color: white;
@@ -123,9 +126,10 @@
                             <form method="get" action="{{ route('posts') }}" class="d-flex">
                                 <select name="status_filter" id="status_filter" style="padding: 0.5em; font-size: 1em; border-radius: 0.25em; border: 1px solid #ccc;">
                                     <option value="all">All</option>
-                                    <option value="pending"{{ request('status_filter') === 'pending' ? ' selected' : '' }}>Pending</option>
-                                    <option value="approved"{{ request('status_filter') === 'approved' ? ' selected' : '' }}>Approved</option>
-                                    <option value="rejected"{{ request('status_filter') === 'rejected' ? ' selected' : '' }}>Rejected</option>
+                                    <option value="Pending"{{ request('status_filter') === 'Pending' ? ' selected' : '' }}>Pending</option>
+                                    <option value="Approved"{{ request('status_filter') === 'Approved' ? ' selected' : '' }}>Approved</option>
+                                    <option value="Sold"{{ request('status_filter') === 'Sold' ? ' selected' : '' }}>Sold</option>
+                                    <option value="Rejected"{{ request('status_filter') === 'Rejected' ? ' selected' : '' }}>Rejected</option>
                                 </select>
                                 <button type="submit" class="btn btn-outline-dark">Filter</button>
                             </form>
@@ -192,7 +196,7 @@
                                     <td>{{ $artwork->description }}</td>
                                     <td>{{ $artwork->category->Category }}</td>
                                     <td>
-                                        <div class="status-oval @if ($artwork->status === 'pending') status-pending @elseif ($artwork->status === 'approved') status-approved @elseif ($artwork->status === 'rejected') status-rejected @endif">
+                                        <div class="status-oval @if ($artwork->status === 'Pending') status-pending @elseif ($artwork->status === 'Approved') status-approved @elseif ($artwork->status === 'Sold') status-sold @elseif ($artwork->status === 'Rejected') status-rejected @endif">
                                             {{ $artwork->status }}
                                         </div>
                                     </td>

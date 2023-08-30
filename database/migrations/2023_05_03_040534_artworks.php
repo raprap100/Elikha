@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('elikhadb.category')->onDelete('cascade');
             $table->text('remarks')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Sold'])->default('Pending');
             $table->timestamps();
         });
     }
