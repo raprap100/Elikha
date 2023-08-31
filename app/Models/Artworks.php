@@ -20,6 +20,8 @@ class Artworks extends Model
         'end_date',
         'users_id',
         'category_id',
+        'remarks',
+        'status',
     ];
 
     public function user()

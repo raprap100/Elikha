@@ -26,7 +26,8 @@ return new class extends Migration
             $table->foreign('users_id')->references('id')->on('elikhadb.users')->onDelete('cascade');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('elikhadb.category')->onDelete('cascade');
-            $table->boolean('status')->default(false); // Add approved column with default value of false
+            $table->text('remarks')->nullable();
+            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Sold'])->default('Pending');
             $table->timestamps();
         });
     }

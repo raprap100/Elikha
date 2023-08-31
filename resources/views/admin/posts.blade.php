@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Posts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="style.css" rel="stylesheet">
     <style>
     body 
@@ -36,6 +33,32 @@
 					.image-description {
 					margin-top: 10px; /* Adjust the spacing between the image and description */
 					}
+                    .status-oval {
+    width: auto;
+    height: 30px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.status-pending {
+    background-color: gray;
+    color: white;
+}
+
+.status-approved {
+    background-color: #007BFF;
+    color: white;
+}
+.status-sold {
+    background-color: green;
+    color: white;
+}
+.status-rejected {
+    background-color: #DC3545;
+    color: white;
+}
     </style>
 
 </head>
@@ -71,7 +94,7 @@
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
                                     {{$pendingPost}}
                                 </div>
-                                <div class="p font-weight-bold text-gray-800">Total Pending Arwtorks</div>
+                                <div class="p font-weight-bold text-gray-800">Total Pending Artworks</div>
                             </div>
                         </div>
                     </div>
@@ -85,7 +108,7 @@
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
                                     {{$approvedPost}}
                                 </div>
-                                <div class="p font-weight-bold text-gray-800">Total Approved Arwtorks</div>
+                                <div class="p font-weight-bold text-gray-800">Total Approved Artworks</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -98,13 +121,48 @@
         <div class="row">
             <div class="col-mb-8">
                 <div class="card shadow mb-8 h-100 p-3 w-100">
-                    <div class="row no-gutters align-items-center">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class="mb-1" style="color: #535353; font-family:Helvetica Neue">Pending Artworks</h2>
-                        <div class="d-flex justify-content-end">
-                        <a href="posts" type="button" class="btn btn-primary" style="margin-right: 20px">Pending</a>
-                        <a href="approvePosts" type="button" class="btn btn-light">Approved</a>
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="col-md-6">
+                            <form method="get" action="{{ route('posts') }}" class="d-flex">
+                                <select name="status_filter" id="status_filter" style="padding: 0.5em; font-size: 1em; border-radius: 0.25em; border: 1px solid #ccc;">
+                                    <option value="all">All</option>
+                                    <option value="Pending"{{ request('status_filter') === 'Pending' ? ' selected' : '' }}>Pending</option>
+                                    <option value="Approved"{{ request('status_filter') === 'Approved' ? ' selected' : '' }}>Approved</option>
+                                    <option value="Sold"{{ request('status_filter') === 'Sold' ? ' selected' : '' }}>Sold</option>
+                                    <option value="Rejected"{{ request('status_filter') === 'Rejected' ? ' selected' : '' }}>Rejected</option>
+                                </select>
+                                <button type="submit" class="btn btn-outline-dark">Filter</button>
+                            </form>
                         </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <div class="input-group" style="max-width: 300px;">
+                                    <input type="text" class="form-control" placeholder="Search artworks" id="search-input" name="search">
+                                    <button class="btn btn-outline-dark" type="button" id="search-button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                            <script>
+                                const searchButton = document.querySelector('#search-button');
+                                const searchInput = document.querySelector('#search-input');
+                                const statusFilter = document.querySelector('#status_filter');
+                            
+                                searchButton.addEventListener('click', function() {
+                                    const searchTerm = searchInput.value;
+                                    const selectedStatus = statusFilter.value;
+                            
+                                    const url = new URL('{{ route('posts') }}');
+                                    url.searchParams.set('search', searchTerm);
+                                    
+                                    if (selectedStatus) {
+                                        url.searchParams.set('status_filter', selectedStatus);
+                                    } else {
+                                        url.searchParams.delete('status_filter');
+                                    }
+                            
+                                    window.location.href = url;
+                                });
+                            </script>
                         </div>
                         <div class="card-body">
                             @if(Session::has('success'))
@@ -125,89 +183,102 @@
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Category</th>
-                                  <th>Date Created</th>
-                                  <th>Action</th>
+                                    <th>Status</th>
+                                    <th>Date Created</th>
+                                    <th>Action</th>
                                   
                                 </tr>
-                                @foreach ($pendingArtworks as $artwork)
+                                @foreach ($artworks as $artwork)
                                 <tr>
                                     <td>{{ $artwork->id }}</td>
                                     <td>{{ $artwork->user->name }}</td>
                                     <td>{{ $artwork->title }}</td>
                                     <td>{{ $artwork->description }}</td>
-                                    <td>{{ $artwork->category->category }}</td>
-                                  <td>{{ $artwork->created_at->format('M d, Y') }}</td>
-                                  <td>
-                                  <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#ARTMODAL_{{ $artwork->id }}">
-                                    View
-                                    </button>
-                                  <div class="modal fade" id="ARTMODAL_{{ $artwork->id }}" tabindex="-1" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
-                                    <div class="modal-dialog fixed-modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
+                                    <td>{{ $artwork->category->Category }}</td>
+                                    <td>
+                                        <div class="status-oval @if ($artwork->status === 'Pending') status-pending @elseif ($artwork->status === 'Approved') status-approved @elseif ($artwork->status === 'Sold') status-sold @elseif ($artwork->status === 'Rejected') status-rejected @endif">
+                                            {{ $artwork->status }}
                                         </div>
-                                        <div class="modal-body">
-                                          <div class="row">
-                                            <div class="col-6">
-                                              <div class="image-container">
-                                                <img src="{{ asset('artworks/'.$artwork->image) }}" alt="" class="img-fluid">
-                                              </div>
-                                            </div>
-                                            <div class="col-6">
-                                              <H1>{{ $artwork->title }}</H1>
-                                              <h5>{{ $artwork->user->name }}</h5>
-                                              <br>
-                                              <p>Description:</p>
-                                              <p>{{ $artwork->description }}</p>
-                                            </div>
-                                          </div>
-                                          <p style="color: rgba(142, 146, 149, 0.491)">{{ $artwork->dimension }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                                  <form action="{{ route('approve', $artwork->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-outline-primary btn-sm">Approve</button>
-                                    </form>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $artwork->id }}">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Reject
-                                    </button>
-                                    <div class="modal fade" id="deleteModal{{ $artwork->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $artwork->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $artwork->id }}">Confirm Delete</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </td>
+                                    <td>{{ $artwork->created_at->format('M d, Y') }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#ARTMODAL_{{ $artwork->id }}">
+                                            View
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#rejectModal{{ $artwork->id }}" data-artwork-id="{{ $artwork->id }}">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Reject
+                                        </button>
+                                        <div class="modal fade" id="ARTMODAL_{{ $artwork->id }}" tabindex="-1" role="dialog" aria-labelledby="artmodal" aria-hidden="true">                                            <div class="modal-dialog fixed-modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="image-container">
+                                                                    <img src="{{ asset('artworks/'.$artwork->image) }}" alt="" class="img-fluid">
+                                                                    <p>Dimension: {{ $artwork->dimension }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <H1>{{ $artwork->title }}</H1>
+                                                                <h5>{{ $artwork->user->name }}</h5>
+                                                                <br>
+                                                                <p>Description:</p>
+                                                                <p>{{ $artwork->description }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                                        <form action="{{ route('approve', $artwork->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-outline-primary">Approve</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    Are you sure you want to reject this artwork?
+                                            </div>
+                                        </div>
+                                        <!-- Rejection Modal -->
+                                        <div class="modal fade" id="rejectModal{{ $artwork->id }}" tabindex="-1" aria-labelledby="rejectModalLabel{{ $artwork->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="rejectModalLabel{{ $artwork->id }}">Confirm Reject</h5>
+                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to reject this artwork?
+                                                        <form action="{{ route('reject', $artwork->id) }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{ $artwork->id }}">
+                                                            <textarea name="remarks" rows="3" placeholder="Provide remarks for rejection"></textarea>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-outline-danger">Reject</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form action="{{ route('reject') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $artwork->id }}">
-                                        <button type="submit" class="btn btn-outline-danger">Reject</button>
-                                    </form>
-                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
                               </table>
-                              {{ $pendingArtworks->links('pagination::bootstrap-5') }}
+                              {{ $artworks->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
 </html>

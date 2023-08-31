@@ -18,7 +18,9 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::count();
-        $categories = Category::withCount('artworks')
+        $categories = Category::withCount(['artworks' => function ($query) {
+            $query->where('status', 'Approved');
+        }])
                     ->orderBy('artworks_count', 'desc')
                     ->get();
         return view('admin.dashboard', compact('users', 'categories'));
@@ -58,28 +60,55 @@ class HomeController extends Controller
     return view('admin.subscribers', compact('artistData', 'buyerData', 'artist', 'buyer', 'artistPercentage', 'buyerPercentage', 'total'));
     }
     
-    public function posts()
-    {
-        $pendingPost = Artworks::where('status','0')->count();
-        $approvedPost = Artworks::where('status','1')->count();
-        $pendingArtworks = Artworks::where('status', false)->paginate(5);
-        return view('admin.posts', compact('pendingPost', 'approvedPost','pendingArtworks'));
+    public function posts(Request $request)
+{
+    $pendingPost = Artworks::where('status', 'Pending')->count();
+    $approvedPost = Artworks::where('status', 'Approved')->count();
+    
+    $query = Artworks::leftJoin('category', 'artworks.category_id', '=', 'category.id')
+    ->leftJoin('users', 'artworks.users_id', '=', 'users.id')
+    ->select('artworks.*', 'category.Category', 'users.name as artist_name');
+
+    if ($request->has('status_filter')) {
+        $statusFilter = $request->input('status_filter');
+        if ($statusFilter !== 'all') {
+            $query->where('artworks.status', $statusFilter);
+        }
     }
+    
+    if ($request->has('search')) {
+        $searchTerm = $request->input('search');
+        $query->where(function ($query) use ($searchTerm) {
+            $query->where('artworks.title', 'like', '%' . $searchTerm . '%')
+                ->orWhere('category.Category', 'like', '%' . $searchTerm . '%')
+                ->orWhere('users.name', 'like', '%' . $searchTerm . '%');
+        });
+    }
+    
+    $artworks = $query->paginate(5);
+    
+    return view('admin.posts', compact('pendingPost', 'approvedPost', 'artworks'));
+}
     public function approve(Request $request, $id)
     {
         $artwork = Artworks::findOrFail($id);
-        $artwork->status = true;
+        $artwork->status = 'Approved';
         $artwork->save();
         return back()->with('success', 'Artwork approved successfully.');
     }
     
     public function reject(Request $request)
-    {
-        $id = $request->input('id');
-        $artwork = Artworks::findOrFail($id);
-        $artwork->delete();
-        return back()->with('delete', 'Artwork rejected.');
-    }
+{
+    $id = $request->input('id');
+    $remarks = $request->input('remarks');
+
+    $artwork = Artworks::findOrFail($id);
+    $artwork->remarks = $remarks;
+    $artwork->status = 'rejected'; // Mark the status as 'rejected' instead of deleting
+    $artwork->save();
+
+    return back()->with('reject', 'Artwork rejected with remarks.');
+}
     public function approvePosts()
     {
         $pendingPost = Artworks::where('status','0')->count();
@@ -89,10 +118,10 @@ class HomeController extends Controller
     }
     public function support()
     {
-        $pendingTicket = Ticket::where('status','0')->count();
-        $closedTicket = Ticket::where('status','1')->count();
-        $pendingTickets = Ticket::where('status', false)->paginate(5);
-        return view('admin.support', compact('pendingTicket', 'closedTicket', 'pendingTickets'));
+        $pendingTicketCount = Ticket::where('status','0')->count();
+        $closedTicketCount = Ticket::where('status','1')->count();
+        $pendingTicket = Ticket::where('status', '0')->paginate(10);
+        return view('admin.support', compact('pendingTicket', 'pendingTicketCount', 'closedTicketCount'));
     }
     public function close(Request $request, $id)
     {
@@ -103,10 +132,10 @@ class HomeController extends Controller
     }
     public function supportClosed()
     {
-        $pendingTicket = Ticket::where('status','0')->count();
-        $closedTicket = Ticket::where('status','1')->count();
-        $closedTickets = Ticket::where('status', true)->paginate(5);
-        return view('admin.supportClosed', compact('pendingTicket', 'closedTicket', 'closedTickets'));
+        $pendingTicketCount = Ticket::where('status','0')->count();
+        $closedTicketCount = Ticket::where('status','1')->count();
+        $closedTicket = Ticket::where('status', '1')->paginate(10);
+        return view('admin.supportClosed', compact('closedTicket', 'pendingTicketCount', 'closedTicketCount'));
     }
     public function accountsetting()
     {
