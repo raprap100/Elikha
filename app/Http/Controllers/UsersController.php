@@ -27,7 +27,7 @@ class UsersController extends Controller
 {
     $user = Auth::user();
     $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', 'Approved')
+                        ->where('status', true)
                         ->orderBy('created_at', 'DESC')
                         ->get();
     return view('portfolio.profile', compact('user','artwork'));
@@ -95,7 +95,7 @@ class UsersController extends Controller
     public function artistAuction()
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', 'Approved')
+                        ->where('status', true)
                         ->orderBy('created_at', 'DESC')
                         ->get();
         return view('artist.myauctions', compact('artwork'));
@@ -133,12 +133,10 @@ class UsersController extends Controller
     public function store(Request $request)
 {
     $validatedData = $request->validate([
-        'name' => 'required',
         'title' => 'required',
         'description' => 'required',
     ]);
     $ticket = Ticket::create([
-        'name' => $validatedData['name'],
         'title' => $validatedData['title'],
         'description' => $validatedData['description'],
         'users_id' => Auth::id(),
