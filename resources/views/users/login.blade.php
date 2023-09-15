@@ -9,6 +9,11 @@
   <div class="container container-fluid text-center">
     <div class="row">
       <div class="col">
+        @if(Session::has('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{Session::get('success')}}
+                        </div>
+                        @endif
         <br><br><br>
         <td class="align-center">@include('users.loginForm')</td>
         <br><br><br>

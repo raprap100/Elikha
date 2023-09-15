@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserManagement;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ArtworkController;
+use App\Http\Controllers\ForgotPasswordController;
+
 
  
  
@@ -13,7 +15,8 @@ Route::get('/', function () {
     return view('admin.login');
 });
  
-Route::group(['middleware' => 'guest'], function () {
+Route::group(['middleware' => 'guest'], function () 
+{
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -23,8 +26,11 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/userslogin', [AuthController::class, 'usersloginPost'])->name('userslogin');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
     Route::post('/signup', [AuthController::class, 'signupPost'])->name('signup');
-    
-    
+    Route::get('/forgetpassword', [ForgotPasswordController::class, 'forgetpassword'])->name('forgetpassword');
+    Route::post('/forgetpassword', [ForgotPasswordController::class, 'forgetpasswordPost'])->name('forgetpasswordPost');
+    Route::get('/resetpassword/{token}', [ForgotPasswordController::class, 'resetpassword'])->name('resetpassword');
+    Route::post('/resetpassword', [ForgotPasswordController::class, 'resetpasswordPost'])->name('resetpasswordPost');
+
 });
  
 
