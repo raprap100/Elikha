@@ -91,7 +91,7 @@ border-radius: 50%;
     <h6>Email Address</h6>
     <input required type="email" class="form-control" name="email" id="email" value="{{$user->email}}"  ><br>
     <h6>Mobile Number</h6>
-    <input required type="text" class="form-control" name="mobile" id="mobile" value="{{$user->mobile}}" ><br>
+    <input  type="text" class="form-control" name="mobile" id="mobile" value="{{$user->mobile}}" ><br>
     <h6>Bio</h6>
     <textarea type="text" class="form-control" name="bio" id="bio" value="{{$user->bio}}"  rows="6"></textarea>
     <br>
@@ -99,11 +99,11 @@ border-radius: 50%;
  <div class="col">
    
     <h6>Facebook</h6>
-    <input required type="text" name="facebook" id="facebook" value="{{$user->facebook}}" class="form-control"  ><br>
+    <input  type="text" name="facebook" id="facebook" value="{{$user->facebook}}" class="form-control"  ><br>
     <h6>Instagram</h6>
-    <input required type="text" name="instagram" id="instagram" value="{{$user->instagram}}" class="form-control"  ><br>
+    <input  type="text" name="instagram" id="instagram" value="{{$user->instagram}}" class="form-control"  ><br>
     <h6>Twitter</h6>
-    <input required type="text" name="twitter" id="twitter" value="{{$user->twitter}}" class="form-control"  ><br>
+    <input  type="text" name="twitter" id="twitter" value="{{$user->twitter}}" class="form-control"  ><br>
     <br>
     
     <div class="d-grid gap-2 d-md-flex justify-content-center grid text-center">
