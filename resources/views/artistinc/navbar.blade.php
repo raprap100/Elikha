@@ -19,7 +19,7 @@
                 
               </div>
               
-              <div class="mx-auto text-center" style="width: 300px;">
+              <div class="mx-auto text-center" style="width: 800px;">
                 <h2>ARTIST CENTRE<h2>
               </div>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,7 +28,7 @@
                         <a class="nav-link active" href="{{route('artistHome')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" href="{{route('chatify')}}">Messages</a>
+                        <a class="nav-link active" href="{{route('chatify')}}">Messages</a>
                     </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown">{{ Auth::user()->name }}</a>
@@ -54,8 +54,3 @@
       </nav>
 </body>
 </html>
-
-
-
-  
-    

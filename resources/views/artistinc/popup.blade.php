@@ -6,60 +6,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        @import url("https://fonts.googleapis.com/css?family=Roboto");
-        
-       
-        
-        .item-container {
-          width: 20%;
-          display: flex;
-          justify-content: flex-end; /* Align container to the right */
-          align-items: flex-end; /* Align container to the bottom */
-
-          position: relative;
+      @import url("https://fonts.googleapis.com/css?family=Roboto");
+      
+      .item-container {
+        width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        position: relative;
+      }
+      
+      .button {
+        position: fixed;
+        z-index: 999;
+        width: 43px;
+        height: 43px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: auto; 
+        bottom: 20px; 
+        right: 20px; 
+        outline: none;
+        background: none; /* Remove background color */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+      }
+      
+      .button img {
+        max-width: 100%; /* Ensure the image doesn't exceed the button's size */
+      }
+      
+      @media (max-width: 640px) {
+        .container {
+          width: 100%;
         }
-        
-        .button {
-          position: fixed;
-          z-index: 999;
-          width: 43px;
-          height: 43px;
-          background: #909090;
-          border-radius: 100%;
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          top: auto; 
-          bottom: 20px; 
-          right: 20px; 
-          outline: none; 
-        }
-        
-        .button:before,
-        .button:after {
-          position: absolute;
-          content: "";
-          width: 20px;
-          height: 2px;
-          background: #fff;
-          transition: all 0.4s ease;
-        }
-        
-        .button:before {
-          transform: rotate(90deg);
-        }
-        
-        @media (max-width: 640px) {
-          .container {
-            width: 100%;
-          }
-        }
-    </style>
+      }
+  </style>
 </head>
 <body class="item-body">
     <button data-toggle="modal" data-target="#ticketModal" class="button">
-      <i class="fa fa-plus"></i>
+   <img src="{{ asset('images\technical-support-icon-png-27_1_1_10.png') }}" alt="Logo">
     </button>
     
 <!--ticekmodal-->
@@ -76,11 +64,7 @@
             <form action="{{ route('popup') }}" method="POST" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body">
-              
-                    <div class="form-group">
-                        <label for="ticketName">Name</label>
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Name">
-                    </div>
+
                     <div class="form-group">
                         <label for="ticketName">Subject</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Title">

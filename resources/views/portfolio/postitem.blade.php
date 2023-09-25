@@ -98,8 +98,7 @@
       <option value="3">Portrait</option>
       <option value="4">Abstract</option>
       <option value="5">Expressionism</option>
-      <option value="6">Expressionism</option>
-      <option value="7">Photorealism</option>
+      <option value="6">Photorealism</option>
       </select>
 
       <style>
