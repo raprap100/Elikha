@@ -42,11 +42,11 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'mobile' => 'required',
-            'bio' => 'required',
-            'facebook' => 'required|url',
-            'instagram' => 'required|url',
-            'twitter' => 'required|url'
+            'mobile' => 'nullable',
+            'bio' => 'nullable',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'twitter' => 'nullable|url'
         ]);
     
         $user = Auth::user();
