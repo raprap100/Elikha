@@ -49,7 +49,7 @@ class AuthController extends Controller
         {
             if (auth()->user()->role == 'Buyer') 
             {
-                return redirect()->intended('/buyer');
+                return redirect()->intended('/buyerhome');
             }
             else if (auth()->user()->role == 'Artist') 
             {
