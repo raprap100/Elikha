@@ -146,9 +146,16 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
-    public function buyer()
+    public function buyerhome()
     {
-        return view('users.buyer');
+        return view('buyer.buyerhome');
     }
-    
+    public function shopbuyer()
+    {
+        return view('buyer.shopbuyer');
+    }
+    public function cart()
+    {
+        return view('buyer.cart');
+    }
 }

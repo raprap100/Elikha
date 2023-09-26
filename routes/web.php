@@ -96,5 +96,8 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
 Route::middleware(['auth', 'role:Buyer'])->group(function()
 {
     Route::get('/buyer', [UsersController::class, 'buyer']);
+    Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
+    Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
+    Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
     Route::delete('/logouts', [AuthController::class, 'logouts'])->name('logouts');
 });

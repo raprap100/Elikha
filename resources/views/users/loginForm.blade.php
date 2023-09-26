@@ -138,7 +138,7 @@
     </label>
     <button class="submit">Log In</button>
     <div>
-      <a href="{{route('forgetpassword')}}">Forgot Paswword</a>
+      <a href="{{route('forgetpassword')}}">Forgot Password</a>
     </div>
     <p class="signin">Don't Have an Account? <a href="/signup">Sign Up</a> </p>
 </form>
