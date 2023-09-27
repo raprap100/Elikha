@@ -158,4 +158,8 @@ class UsersController extends Controller
     {
         return view('buyer.cart');
     }
+    public function buyerVerify()
+    {
+        return view('buyer.verify');
+    }
 }
