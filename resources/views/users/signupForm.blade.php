@@ -133,8 +133,19 @@
             {{Session::get('success')}}
         </div>
     @endif
+
    <h1>E-Likha</h1>
     <p class="message">Signup now and get full access to the website. </p>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
       <label>Are you a Buyer or Artist?</label>
       <select type="type" name="role" id="role" class="form-control" required>
           <option value="2">Artist</option>

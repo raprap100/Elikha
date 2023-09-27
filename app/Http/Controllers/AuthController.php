@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
- 
+use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     function signup(){
@@ -18,17 +18,30 @@ class AuthController extends Controller
     }
 
     public function signupPost(Request $request)
-    {
+    { $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'email' => 'required|email|unique:users', // Ensure email is unique
+        'password' => 'required|min:6|confirmed',
+        'role' => 'required|in:2,3', // Assuming 2 is for Artist and 3 is for Buyer
+    ]);
+
+    if ($validator->fails()) {
+        return back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
         $user = new User();
- 
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
- 
+
         $user->save();
- 
+
         return back()->with('success', 'Register successfully');
+        
     }
 
     function userslogin()
