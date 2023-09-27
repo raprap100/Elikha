@@ -65,6 +65,9 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/profile', [UsersController::class, 'profile']);
     Route::post('popup', [UsersController::class,'store'])->name('popup');
     Route::delete('/artistLogout', [AuthController::class, 'logouts'])->name('artistLogout');
+    Route::get('/artistVerify', [ArtworkController::class, 'artistVerify']);
+    Route::post('/artistVerify', [ArtworkController::class, 'document'])->name('artistVerify');
+
 
     
 });

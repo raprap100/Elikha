@@ -146,6 +146,7 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
+//buyer
     public function buyerhome()
     {
         return view('buyer.buyerhome');
@@ -161,5 +162,61 @@ class UsersController extends Controller
     public function buyerVerify()
     {
         return view('buyer.verify');
+    }
+    //verify
+    public function artistVerify()
+    {
+        return view('artist.verify');
+    }
+    
+    public function verifyupload(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'mobile' => 'nullable',
+            'bio' => 'nullable',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'twitter' => 'nullable|url'
+        ]);
+    
+        $user = Auth::user();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Validate image file type
+            $allowedFileTypes = ['jpg', 'jpeg', 'png'];
+            $extension = $image->getClientOriginalExtension();
+            if (!in_array($extension, $allowedFileTypes)) {
+                return redirect()->back()->withErrors(['image' => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+            }
+    
+            // Validate image file size
+            $maxFileSize = 1024 * 1024; // 1MB
+            $fileSize = $image->getSize();
+            if ($fileSize > $maxFileSize) {
+                return redirect()->back()->withErrors(['image' => 'The image file size must be less than 1MB.']);
+            }
+    
+            // Upload and save image
+            $filename = time() . '.' . $extension;
+            $image->move(public_path('images'), $filename);
+            $user->image = $filename;
+        }
+    
+        // Update user details
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->mobile = $request->input('mobile');
+        $user->bio = $request->input('bio');
+        $user->facebook = $request->input('facebook');
+        $user->instagram = $request->input('instagram');
+        $user->twitter = $request->input('twitter');
+        $user->save();
+
+    return redirect()->to('profile')->with('success', 'Profile updated successfully!');
     }
 }
