@@ -86,7 +86,15 @@
       <div class="d-grid gap-2 col-6 mx-auto">
         <button class="btn btn-hover" type="button">Setting</button>
         <button class="btn btn-hover" type="button">My Cart</button>
-        <button class="btn btn-hover" type="button">Log out</button>
+        <a class="dropdown-item" href="{{ route('buyerLogout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                </a>
+                <form id="logout-form" action="{{ route('buyerLogout') }}" method="POST" class="d-none">
+                    @csrf
+                    @method('delete')
+                </form>
       </div>
       
     </div>
