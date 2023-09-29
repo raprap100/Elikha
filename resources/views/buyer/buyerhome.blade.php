@@ -35,18 +35,28 @@
                         <img src="images/art3.png" class="d-block w-75 mx-auto carousel-image shadow p-3 mb-5 bg-body-tertiary rounded" alt="...">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
-            
-            
         </div>
+        <script>
+          $(document).ready(function () {
+            var interval = 5000; 
+        
+            function autoAdvanceCarousel() {
+              $('.carousel').carousel('next'); 
+            }
+        
+            var carouselInterval = setInterval(autoAdvanceCarousel, interval);
+        
+            $('.carousel').hover(
+              function () {
+                clearInterval(carouselInterval);
+              },
+              function () {
+                carouselInterval = setInterval(autoAdvanceCarousel, interval);
+              }
+            );
+          });
+        </script>
     </div>
 
     

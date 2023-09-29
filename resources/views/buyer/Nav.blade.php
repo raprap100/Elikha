@@ -22,10 +22,7 @@
             <a class="nav-link {{ Request::is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
         <li class="nav-item ">
           <button class="btn button-notif" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <style>

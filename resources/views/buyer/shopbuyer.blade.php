@@ -9,9 +9,8 @@
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
           <h5 style="font-size: 40px; font-family: 'Arial', sans-serif;">Get the Latest Art Trends</h5> <br>
-          <button type="button" class="btn btn-outline-success" href="#shop-section">SHop Now!</button>          
         </div>
-                
+        
       <style>
         .row0{
           padding-top: 75px;
@@ -49,16 +48,28 @@
               <img src="images/pic3.png" class="carousel-image " alt="...">
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
         </div>
       </div>
+      <script>
+        $(document).ready(function () {
+          var interval = 5000; 
+      
+          function autoAdvanceCarousel() {
+            $('.carousel').carousel('next'); 
+          }
+      
+          var carouselInterval = setInterval(autoAdvanceCarousel, interval);
+      
+          $('.carousel').hover(
+            function () {
+              clearInterval(carouselInterval);
+            },
+            function () {
+              carouselInterval = setInterval(autoAdvanceCarousel, interval);
+            }
+          );
+        });
+      </script>      
     </div >
 
     <div class="row mt-2 row-container2 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
@@ -161,7 +172,7 @@
             }
 
             .btn:hover {
-              background-color: #007bff; 
+              background-color: #000000; 
               color: #fff; 
             }
 
@@ -177,183 +188,171 @@
         </style>
 
     </div>
+    @php
+    $sortType = request()->input('sort_type', 'for_sale');
+@endphp
     <div class="col">
       <h2>Home</h2>
-        <div class="row d-flex">
-          <div class="col">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Sort
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">For Sale</a></li>
-              <li><a class="dropdown-item" href="#">Auctioned</a></li>
-             
-            </ul>
-          </div>
-          <div class="col">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Prize Range
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Price : Low to High</a></li>
-              <li><a class="dropdown-item" href="#">Price : High to Low</a></li>
-              
-            </ul>
-          </div>
-          <div class="col">
-            
-          </div>
-          <div class="col">
-            
+      <div class="row d-flex">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <div class="col-md-6">
+          <form class="d-flex" role="search" action="{{ route('shopbuyer') }}" method="GET">
+              <input id="searchInput" class="form-control me-2" type="search" name="search" placeholder="Search artwork" aria-label="Search" value="{{ request('search') }}">
+              <button id="searchButton" class="btn btn-outline-dark" type="submit">Search</button>
+          </form>
+      </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-end">
+          <div class="dropdown">
+              <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sort
+              </button>
+              <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
+                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
+              </ul>
           </div>
         </div>
-
+      </div>
+    </div>
     <div class="row-md-8 scrollable-row" style="padding-left: 20px">
         <!-- Content for the scrollable right column/ arts goes here -->
-        
-
         <div class="row mt-4">
-          
-          <div class="card  " style="width: 16rem; margin-block: 10px;
-          margin-right: 20px;">
-            <img src="images/pic2.png" class="card-img-top art-image" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title </h5>
-              <h6 class="price">$19.99</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <button type="button" class="btn btn-hover" data-toggle="modal" data-target="#Modalartwork">
-                View 
-              </button>
-            </div>
-          </div>
+          @foreach($artwork as $artworks)
+    @php
+        $currentDateTime = now(); // Get the current date and time
+    @endphp
 
-          <div class="card " style="width: 16rem;  margin-block: 10px;
-          margin-right: 20px;">
-            <img src="images/pic1.png" class="card-img-top  art-image " alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <button type="button" class="btn btn-hover" data-toggle="modal" data-target="#Modalauction">
-                View 
-              </button>
-            </div>
-          </div>
-
-          <div class="card" style="width: 16rem;  margin-block: 10px;
-          margin-right: 20px;">
-            <img src="images/bg.jpg" class="card-img-top  art-image" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-
-          
-
-          
-          <!-- Modal-->
-
-          <div class="modal fade" id="Modalartwork" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
-            <div class="modal-dialog fixed-modal-dialog " role="document">
-              <div class="modal-content modalart">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                <div class="col-6">
-                  <div class="row image-container">
-                  <img src="images/pic3.png" alt="" class="img-fluid">
-                  </div>
-
-                  <div class="row">
-                    <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
-                    <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
-                    <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
-                  </div>
-                  
+    {{-- Check if the artwork is for auction and the start_date has passed --}}
+    @if($artworks->start_price && $currentDateTime >= $artworks->start_date && $currentDateTime <= $artworks->end_date)
+        <div class="col-md-4">
+            <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
+                 data-toggle="modal" data-target="#Modal{{ $artworks->start_price ? 'Auction' : 'Sale' }}_{{ $artworks->id }}">
+                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $artworks->title }}</h5>
+                    <h6>{{ $artworks->user->name }}</h6>
+                    <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
+                    <h6 class="type">{{ $artworks->start_price ? 'Auctioned' : 'For Sale' }}</h6>
+                    <p class="card-text">{{ \Illuminate\Support\Str::limit($artworks->description, 20) }}</p>
                 </div>
-                <div class="col-6">
-                  <H1>Title</H1>
-                  <h5>Username</h5>
-                  <h6 class="price">$19.99</h6>
-                  <br>
-                  <p>Description:</p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi nihil illum numquam dolores magnam pariatur delectus! Molestiae sunt, laudantium odit alias pariatur, maiores natus consectetur eius tempore numquam at ex.</p>
-                  <div class="row">
-                    <div class="d-inline">
-                      <button type="button buttonaddtocart" class="btn btn-outline-primary">Add to Cart</button>
-                      <button class="btn btn-primary buttonbuy" type="submit">Buy</button>
-                  </div>
-                  </div>
-                </div>
-                </div>
-                <p style="color: rgba(142, 146, 149, 0.491)">dimension</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-              </div>
-              </div>
             </div>
-          </div>		   
         </div>
-
-        <!-- Modal for auction card-->
-        <div class="modal fade" id="Modalauction" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
-          <div class="modal-dialog fixed-modal-dialog " role="document">
-            <div class="modal-content modalart">
+    @endif
+    
+    {{-- Display artworks that are "For Sale" --}}
+    @if(!$artworks->start_price)
+        <div class="col-md-4">
+            <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
+                 data-toggle="modal" data-target="#ModalSale_{{ $artworks->id }}">
+                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $artworks->title }}</h5>
+                    <h6>{{ $artworks->user->name }}</h6>
+                    <h6 class="price">₱{{ $artworks->price }}</h6>
+                    <h6 class="type">For Sale</h6>
+                    <p class="card-text">{{ \Illuminate\Support\Str::limit($artworks->description, 20) }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+<!-- Modal for Auction Artwork -->
+@if ($artworks->start_price)
+<div class="modal fade" id="ModalAuction_{{ $artworks->id }}" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
+    <div class="modal-dialog fixed-modal-dialog " role="document">
+        <div class="modal-content modalart">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
               <div class="row">
-              <div class="col-6">
-                <div class="row image-container">
-                <img src="images/pic3.png" alt="" class="img-fluid">
-                </div>
+                  <div class="col-6">
+                      <div class="row image-container">
+                          <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                      </div>
+                  </div>
+                  <div class="col-6">
+                      <h1>Title: {{ $artworks->title }}</h1>
+                      <h5>{{ $artworks->user->name}}</h5>
+                      <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
+                      <br>
+                      @php
+                    
+                    $endDate = \Carbon\Carbon::parse($artworks->end_date);
+                    $currentDate = \Carbon\Carbon::now();
+                    $daysLeft = $currentDate->diffInDays($endDate);
+                @endphp
+                <p class="list-group-item">Duration: {{ $daysLeft }} days left</p>
+                      <p>Description:</p>
+                      <p>{{ $artworks->description }}</p>
+                      <div class="row">
+                          <div class="d-inline">
+                              <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
+                              <button class="btn btn-dark buttonbuy" type="submit">Bid</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <p style="color: rgba(142, 146, 149, 0.491)">{{ $artworks->dimension }}cm</p>
+          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+<!-- Modal for Sale Artwork -->
+<div class="modal fade" id="ModalSale_{{ $artworks->id }}" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modalart">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
                 <div class="row">
-                  <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
-                  <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
-                  <div class="col"><img src="images/pic3.png" alt="" class="img-fluid"></div>
+                    <div class="col-6">
+                        <div class="row image-container">
+                            <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h1>Title: {{ $artworks->title }}</h1>
+                        <p>{{ $artworks->user->name}}</p>
+                        <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
+                        <br>
+                        <p>Description:</p>
+                        <p>{{ $artworks->description }}</p>
+                        <div class="row">
+                            <div class="d-inline">
+                                <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
+                                <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-6">
-                <H1>Title</H1>
-                <h5>Username</h5>
-                <h6 class="price">$19.99</h6>
-                <br>
-                <p>Description:</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi nihil illum numquam dolores magnam pariatur delectus! Molestiae sunt, laudantium odit alias pariatur, maiores natus consectetur eius tempore numquam at ex.</p>
-                <div class="row">
-                  <div class="d-inline">
-                    <button type="button buttonaddtocart" class="btn btn-outline-primary">Add to Cart</button>
-                    <button class="btn btn-primary buttonbuy" type="submit">Buy</button>
-                </div>
-                </div>
-              </div>
-              </div>
-              <p style="color: rgba(142, 146, 149, 0.491)">dimension</p>
+                <p style="color: rgba(142, 146, 149, 0.491)">{{ $artworks->dimension }}cm</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
-            </div>
-          </div>
-        </div>		   
+        </div>
+    </div>
+</div>
+@endforeach
+	   
+        </div>
       </div>
-
-      
       </div>
     </div>
 
     <style>
         .art-image{
-          width: 230px;
+          width: 255px;
           height:290px;
           object-fit: cover;
 
@@ -383,10 +382,21 @@
         .price{
           color: #007bff;
         }
+        .type{
+          color: red;
+        }
         .modalart{
           width: 800px;
           align-self: center;
+          justify-content: center;
         }
+        .close {
+    font-size: 24px;
+    color: #000000; 
+    background-color: transparent; 
+    border: none; 
+    padding: 0; 
+}
         
 
     </style>

@@ -106,7 +106,7 @@
                                 @foreach($pendingTicket as $ticket)
                                 <tr>
                                     <td>{{ $ticket->id }}</td>
-                                    <td>{{ $ticket->name }}</td>
+                                    <td>{{ $ticket->user->name }}</td>
                                     <td>{{ $ticket->title }}</td>
                                     <td>{{ $ticket->description }}</td>
                                     <td>{{ $ticket->created_at->format('M d, Y') }}</td>
