@@ -42,7 +42,7 @@ class ArtworkController extends Controller
         'end_date' => $validatedData['end_date'],
         'users_id' => Auth::id(),
         'category_id' => $validatedData['category_id'],
-        'status' => 'pending',
+        'status' => 'Pending',
         'remarks' => '',   // Empty remarks initially
         
     ]);
@@ -82,7 +82,7 @@ class ArtworkController extends Controller
         'price' => $validatedData['price'],
         'users_id' => Auth::id(),
         'category_id' => $validatedData['category_id'],
-        'status' => 'pending', // Default status
+        'status' => 'Pending', // Default status
         'remarks' => '',   // Empty remarks initially
         
     ]);

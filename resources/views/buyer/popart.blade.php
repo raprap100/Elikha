@@ -196,7 +196,7 @@
       <div class="row d-flex">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div class="col-md-6">
-          <form class="d-flex" role="search" action="{{ route('shopbuyer') }}" method="GET">
+          <form class="d-flex" role="search" action="{{ route('popart') }}" method="GET">
               <input id="searchInput" class="form-control me-2" type="search" name="search" placeholder="Search artwork" aria-label="Search" value="{{ request('search') }}">
               <button id="searchButton" class="btn btn-outline-dark" type="submit">Search</button>
           </form>
@@ -208,8 +208,8 @@
                   Sort
               </button>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
-                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
+                  <li><a class="dropdown-item" href="{{ route('popart', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
+                  <li><a class="dropdown-item" href="{{ route('popart', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
               </ul>
           </div>
         </div>
