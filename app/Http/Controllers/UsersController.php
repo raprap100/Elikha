@@ -12,6 +12,8 @@ use App\Http\Controllers\HomeController;
 use App\Models\Artworks;
 use App\Models\User;
 use App\Models\Ticket;
+use Carbon\Carbon; 
+
 
 class UsersController extends Controller
 {
@@ -24,14 +26,14 @@ class UsersController extends Controller
         return view('users.artist');
     }
     public function profile()
-{
-    $user = Auth::user();
-    $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', true)
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-    return view('portfolio.profile', compact('user','artwork'));
-}
+    {
+        $user = Auth::user();
+        $artwork = Artworks::where('users_id', Auth::id())
+                            ->where('status', 'Approved')
+                            ->orderBy('created_at', 'DESC')
+                            ->get();
+        return view('portfolio.profile', compact('user','artwork'));
+    }
     public function editprofile()
     {
         $user = Auth::user();
@@ -95,7 +97,8 @@ class UsersController extends Controller
     public function artistAuction()
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                        ->where('status', true)
+                       ->where('status', 'Approved')
+                        ->whereNotNull('start_price') 
                         ->orderBy('created_at', 'DESC')
                         ->get();
         return view('artist.myauctions', compact('artwork'));
@@ -150,10 +153,302 @@ class UsersController extends Controller
     {
         return view('buyer.buyerhome');
     }
-    public function shopbuyer()
-    {
-        return view('buyer.shopbuyer');
+
+    public function shopbuyer(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved');
+
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
     }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.shopbuyer', compact('user', 'artwork'));
+}
+public function popart(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 1);
+
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.popart', compact('user', 'artwork'));
+}
+public function realism(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 2);
+
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.realism', compact('user', 'artwork'));
+}
+public function portrait(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 3);
+
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.portrait', compact('user', 'artwork'));
+}
+public function abstract(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 4);
+
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.abstract', compact('user', 'artwork'));
+}
+public function expressionism(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 5);
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.expressionism', compact('user', 'artwork'));
+}
+
+public function impressionism(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 6);
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.impressionism', compact('user', 'artwork'));
+}
+
+public function photorealism(Request $request)
+{
+    $user = Auth::user();
+    $query = Artworks::where('status', 'Approved')
+                    ->where('category_id', 7);
+    // Handle sorting by "For Sale" and "For Auction"
+    if ($request->has('sort_type')) {
+        $sortTypeOption = $request->sort_type;
+        if ($sortTypeOption === 'for_sale') {
+            $query->whereNull('start_date')->orderBy('id', 'ASC');
+        } elseif ($sortTypeOption === 'for_auction') {
+            // Prioritize "For Auction" sorting by 'start_price'
+            $query->whereNotNull('start_date')->orderBy('id', 'ASC');
+        }
+    }
+
+    // Handle search query
+    if ($request->has('search')) {
+        $searchQuery = $request->input('search');
+        $query->where(function ($q) use ($searchQuery) {
+            $q->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhereHas('user', function ($u) use ($searchQuery) {
+                    $u->where('name', 'like', '%' . $searchQuery . '%');
+                });
+        });
+    }
+
+    // Default sorting if no sorting options are provided
+    if (!$request->has('sort_type') && !$request->has('search')) {
+        $query->orderBy('created_at', 'DESC');
+    }
+
+    $artwork = $query->get();
+
+    return view('buyer.photorealism', compact('user', 'artwork'));
+}
+
     public function cart()
     {
         return view('buyer.cart');

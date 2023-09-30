@@ -193,7 +193,7 @@
                                     <td>{{ $artwork->id }}</td>
                                     <td>{{ $artwork->user->name }}</td>
                                     <td>{{ $artwork->title }}</td>
-                                    <td>{{ $artwork->description }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($artwork->description, 20) }}</td>
                                     <td>{{ $artwork->category->Category }}</td>
                                     <td>
                                         <div class="status-oval @if ($artwork->status === 'Pending') status-pending @elseif ($artwork->status === 'Approved') status-approved @elseif ($artwork->status === 'Sold') status-sold @elseif ($artwork->status === 'Rejected') status-rejected @endif">

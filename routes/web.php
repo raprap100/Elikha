@@ -99,5 +99,12 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
     Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
+    Route::get('/popart', [UsersController::class, 'popart'])->name('popart');
+    Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
+    Route::get('/portrait', [UsersController::class, 'portrait'])->name('portrait');
+    Route::get('/abstract', [UsersController::class, 'abstract'])->name('abstract');
+    Route::get('/expressionism', [UsersController::class, 'expressionism'])->name('expressionism');
+    Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
+    Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
 });
