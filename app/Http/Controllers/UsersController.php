@@ -463,7 +463,9 @@ public function photorealism(Request $request)
 
     public function cart()
     {
-        return view('buyer.cart');
+        $user = Auth::user();
+
+        return view('buyer.cart', compact('user'));
     }
     public function nav()
     {

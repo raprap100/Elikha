@@ -1,8 +1,7 @@
-
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #ffffff" class="shadow-sm p-3 mb-5 bg-white rounded">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="artistimg/image 3.png" alt="Logo" width="100" height="30" class="d-inline-block align-text-top"> 
+        <a class="navbar-brand">
+            <img src="images/logo.png" alt="Logo" width="100" height="30" class="d-inline-block align-text-top"> 
         </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -24,18 +23,6 @@
         </ul>
         
         <li class="nav-item ">
-          <button class="btn button-notif" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            <style>
-              .button-notif {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background-image: url('images/notif.png'); 
-                background-size: cover;
-                background-position: center;
-                
-              }</style>
-          </button>
           <button class="btn button-profile" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <div class="profile-image-button">
                 @if($user->image)
@@ -45,7 +32,6 @@
                 @endif
             </div>
         </button>
-
         </li>
       </div>
     </div>
@@ -72,6 +58,12 @@
       object-fit: cover;
       border-radius: 50%;
   }
+
+li::marker {
+  color: rgb(255, 255, 255);
+
+}
+
   
 
 </style>

@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Artworks;
 use App\Models\Category;
 use App\Models\Ticket;
- 
+use App\Notifications\ArtworkRejected;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ArtworkRejectedMail;
+
+
 class HomeController extends Controller
 {
     public function __construct()
@@ -89,6 +93,12 @@ class HomeController extends Controller
     
     return view('admin.posts', compact('pendingPost', 'approvedPost', 'artworks'));
 }
+
+public function artist()
+{
+    return $this->belongsTo(User::class, 'users_id');
+}
+
     public function approve(Request $request, $id)
     {
         $artwork = Artworks::findOrFail($id);
@@ -100,22 +110,22 @@ class HomeController extends Controller
     public function reject(Request $request)
 {
     $id = $request->input('id');
-    $remarks = $request->input('remarks');
-
     $artwork = Artworks::findOrFail($id);
-    $artwork->remarks = $remarks;
-    $artwork->status = 'rejected'; // Mark the status as 'rejected' instead of deleting
-    $artwork->save();
+$remarks = $request->input('remarks');
 
-    return back()->with('reject', 'Artwork rejected with remarks.');
+$artistUserId = $artwork->users_id;
+
+    $artistEmail = User::findOrFail($artistUserId)->email;
+
+    Mail::to($artistEmail)->send(new ArtworkRejectedMail($remarks, $artwork));
+
+    $artist = $artwork->artist;
+$artwork->status = 'rejected';
+$artwork->remarks = $remarks;
+$artwork->save();
+
+return back()->with('reject', 'Artwork rejected with remarks.');
 }
-    public function approvePosts()
-    {
-        $pendingPost = Artworks::where('status','0')->count();
-        $approvedPost = Artworks::where('status','1')->count();
-        $approved_artwork = Artworks::where('status', true)->get();
-        return view('admin.approvePosts', compact('pendingPost', 'approvedPost','approved_artwork'));
-    }
     public function support()
     {
         $pendingTicketCount = Ticket::where('status','0')->count();

@@ -58,7 +58,15 @@
 .status-rejected {
     background-color: #DC3545;
     color: white;
+    overflow-y: auto;
 }
+.price{
+          color: #007bff;
+        }
+        .type{
+          color: red;
+        }
+
     </style>
 
 </head>
@@ -171,9 +179,9 @@
                         </div>
                     @endif
                     
-                    @if(Session::has('delete'))
+                    @if(Session::has('reject'))
                         <div class="alert alert-danger" role="alert">
-                            {{Session::get('delete')}}
+                            {{Session::get('reject')}}
                         </div>
                     @endif
                             <table>
@@ -226,6 +234,8 @@
                                                             <div class="col-6">
                                                                 <H1>{{ $artwork->title }}</H1>
                                                                 <h5>{{ $artwork->user->name }}</h5>
+                                                                <h6 class="type">{{ $artwork->start_price ? 'For Auction' : 'For Sale' }}</h6>
+                                                                <h6 class="price">₱{{ $artwork->price }}{{ $artwork->start_price }}</h6>
                                                                 <br>
                                                                 <p>Description:</p>
                                                                 <p>{{ $artwork->description }}</p>

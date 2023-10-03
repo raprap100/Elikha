@@ -11,17 +11,14 @@ use App\Http\Controllers\ForgotPasswordController;
 
  
  
-Route::get('/', function () {
-    return view('admin.login');
-});
- 
+
 Route::group(['middleware' => 'guest'], function () 
 {
+    Route::get('/', [AuthController::class, 'home'])->name('home');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/userslogin', [AuthController::class, 'userslogin'])->name('userslogin');
     Route::post('/userslogin', [AuthController::class, 'usersloginPost'])->name('userslogin');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
@@ -70,7 +67,6 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
 
 Route::middleware(['auth', 'role:Admin'])->group(function()
 {
-    Route::get('/home', [HomeController::class, 'home']);
     Route::get('/dashboard', [HomeController::class, 'index']);
     Route::get('/subscribers', [HomeController::class, 'subscribers']);
     Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
