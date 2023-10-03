@@ -7,6 +7,7 @@ use App\Http\Controllers\UserManagement;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\VerifyController;
 
 
  
@@ -65,8 +66,8 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/profile', [UsersController::class, 'profile']);
     Route::post('popup', [UsersController::class,'store'])->name('popup');
     Route::delete('/artistLogout', [AuthController::class, 'logouts'])->name('artistLogout');
-    Route::get('/artistVerify', [ArtworkController::class, 'artistVerify']);
-    Route::post('/artistVerify', [ArtworkController::class, 'document'])->name('artistVerify');
+    Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
+    Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
 
 
     

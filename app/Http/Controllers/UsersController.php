@@ -172,50 +172,59 @@ class UsersController extends Controller
     public function verifyupload(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'mobile' => 'nullable',
-            'bio' => 'nullable',
-            'facebook' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'twitter' => 'nullable|url'
+            'identification'=> 'required',
+            'selfie'=> 'required',
+            'gcash'=> 'required',
+            'firstname'=> 'required',
+            'middlename'=> 'required',
+            'lastname'=> 'required',
+            'nationality'=> 'required',
+            'birthday'=> 'required',
+            'address'=> 'required',
+            'users_id'=> 'required',
+            'IDType'=> 'required',
+            'status'=> 'required',
+            'remarks' => 'required', 
+            
         ]);
     
         $user = Auth::user();
         
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        $allowedFileTypes = ['jpg', 'jpeg', 'png'];
+        $maxFileSize = 1024 * 1024; // 1MB
     
-            // Validate image file type
-            $allowedFileTypes = ['jpg', 'jpeg', 'png'];
-            $extension = $image->getClientOriginalExtension();
-            if (!in_array($extension, $allowedFileTypes)) {
-                return redirect()->back()->withErrors(['image' => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+        // Initialize an array to store file paths (if needed).
+        $uploadedFilePaths = [];
+    
+        foreach (['image1', 'image2', 'image3'] as $inputName) {
+            if ($request->hasFile($inputName)) {
+                $image = $request->file($inputName);
+    
+                $extension = $image->getClientOriginalExtension();
+    
+                if (!in_array($extension, $allowedFileTypes)) {
+                    return redirect()->back()->withErrors([$inputName => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+                }
+    
+                $fileSize = $image->getSize();
+    
+                if ($fileSize > $maxFileSize) {
+                    return redirect()->back()->withErrors([$inputName => 'The image file size must be less than 1MB.']);
+                }
+    
+                $filename = time() . '_' . $inputName . '.' . $extension;
+                $image->move(public_path('images'), $filename);
+    
+                // Optionally, you can store the file paths in an array.
+                $uploadedFilePaths[] = 'images/' . $filename;
             }
-    
-            // Validate image file size
-            $maxFileSize = 1024 * 1024; // 1MB
-            $fileSize = $image->getSize();
-            if ($fileSize > $maxFileSize) {
-                return redirect()->back()->withErrors(['image' => 'The image file size must be less than 1MB.']);
-            }
-    
-            // Upload and save image
-            $filename = time() . '.' . $extension;
-            $image->move(public_path('images'), $filename);
-            $user->image = $filename;
         }
     
-        // Update user details
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->mobile = $request->input('mobile');
-        $user->bio = $request->input('bio');
-        $user->facebook = $request->input('facebook');
-        $user->instagram = $request->input('instagram');
-        $user->twitter = $request->input('twitter');
-        $user->save();
+        // Optionally, you can save the file paths to a database or perform other actions.
+    
+         // Redirect or return a response as needed.
+
+    
 
     return redirect()->to('profile')->with('success', 'Profile updated successfully!');
     }
