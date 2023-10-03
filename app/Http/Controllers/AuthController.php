@@ -22,7 +22,7 @@ class AuthController extends Controller
         'name' => 'required',
         'email' => 'required|email|unique:users', // Ensure email is unique
         'password' => 'required|min:6|confirmed',
-        'role' => 'required|in:2,3', // Assuming 2 is for Artist and 3 is for Buyer
+        'role' => 'required|in:2,3', // 2 is for Artist ,3 is for Buyer
     ]);
 
     if ($validator->fails()) {

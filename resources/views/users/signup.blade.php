@@ -9,15 +9,7 @@
       <td class="align-center">@include('users.signupForm')</td>
       <br><br><br>
     </div>
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+     
     <div class="col-md-6 my-col "style="background-color: #f2f2f2;">
               <div class="my-content">
               <p class="align-baseline fs-1 " style="font-family:Helvetica Neue">E-Likha</p>

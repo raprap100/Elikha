@@ -259,11 +259,11 @@
 <!-- Modal for Auction Artwork -->
 @if ($artworks->start_price)
 <div class="modal fade" id="ModalAuction_{{ $artworks->id }}" role="dialog" aria-labelledby="artmodal" aria-hidden="true">
-    <div class="modal-dialog fixed-modal-dialog " role="document">
+  <div class="modal-dialog fixed-modal-dialog " role="document">
         <div class="modal-content modalart">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>   
                 </button>
             </div>
             <div class="modal-body">
@@ -280,17 +280,47 @@
                       <br>
                       @php
                     
+                    $leadBidAmount = $artworks->bids->max('amount');
+
                     $endDate = \Carbon\Carbon::parse($artworks->end_date);
                     $currentDate = \Carbon\Carbon::now();
                     $daysLeft = $currentDate->diffInDays($endDate);
                 @endphp
-                <p class="list-group-item">Duration: {{ $daysLeft }} days left</p>
-                      <p>Description:</p>
+                <p class="list-group-item"><strong>Duration: </strong>{{ $daysLeft }} days left</p>
+                <p><strong>Lead Bid: </strong> ₱{{ $artworks->bids->max('amount') }}</p>
+                      <p><strong>Description:</strong></p>
                       <p>{{ $artworks->description }}</p>
                       <div class="row">
                           <div class="d-inline">
-                              <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
-                              <button class="btn btn-dark buttonbuy" type="submit">Bid</button>
+                              <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
+                                @csrf 
+                                <!-- Display the error message here -->
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+                                      
+                                <div class="form-group">
+                                  <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
+                                  <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
+                              </div><br>
+                              <button type="submit" class="btn btn-dark">Place Bid</button>
+                                                          <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
+
+                          </form>
+                                
+                              
+                            
+                          <!-- Modal for Bidding -->
+
+<div class="modal fade" id="ModalBid" role="dialog" aria-labelledby="bidModal" aria-hidden="true">
+  <div class="modal-dialog right-modal-dialog" role="document">
+    <div class="modal-content right-modal-content">
+             
+      </div>
+  </div>
+</div>
                           </div>
                       </div>
                   </div>
@@ -302,6 +332,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 @endif
 <!-- Modal for Sale Artwork -->
