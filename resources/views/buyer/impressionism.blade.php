@@ -8,7 +8,7 @@
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
-          <h5 style="font-size: 40px; font-family: 'Arial', sans-serif;">Get the Latest Art Trends</h5> <br>
+          <h5 style="font-size: 40px; font-family:Helvetica Neue">Get the Latest Art Trends</h5> <br>
         </div>
         
       <style>
@@ -196,7 +196,7 @@
       <div class="row d-flex">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div class="col-md-6">
-          <form class="d-flex" role="search" action="{{ route('shopbuyer') }}" method="GET">
+          <form class="d-flex" role="search" action="{{ route('impressionism') }}" method="GET">
               <input id="searchInput" class="form-control me-2" type="search" name="search" placeholder="Search artwork" aria-label="Search" value="{{ request('search') }}">
               <button id="searchButton" class="btn btn-outline-dark" type="submit">Search</button>
           </form>
@@ -208,8 +208,8 @@
                   Sort
               </button>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
-                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
+                  <li><a class="dropdown-item" href="{{ route('impressionism', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
+                  <li><a class="dropdown-item" href="{{ route('impressionism', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
               </ul>
           </div>
         </div>

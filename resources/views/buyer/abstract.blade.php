@@ -8,7 +8,7 @@
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
-          <h5 style="font-size: 40px; font-family: 'Arial', sans-serif;">Get the Latest Art Trends</h5> <br>
+          <h5 style="font-size: 40px; font-family:Helvetica Neue">Get the Latest Art Trends</h5> <br>
         </div>
         
       <style>

@@ -149,10 +149,22 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
-    public function buyerhome()
-    {
-        return view('buyer.buyerhome');
-    }
+public function buyerhome()
+{
+    $user = Auth::user();
+
+    // Get the current date and time
+    $currentDateTime = Carbon::now();
+
+    $artwork = Artworks::where('status', 'Approved')
+        ->where('start_date', '>', $currentDateTime) 
+        ->where('end_date', '>', $currentDateTime)   
+        ->orderBy('start_date', 'ASC')
+        ->get();
+
+    return view('buyer.buyerhome', compact('user', 'artwork'));
+}
+
 
     public function shopbuyer(Request $request)
 {
@@ -452,5 +464,11 @@ public function photorealism(Request $request)
     public function cart()
     {
         return view('buyer.cart');
+    }
+    public function nav()
+    {
+        $user = Auth::user();
+
+        return view('buyer.Nav', compact('user'));
     }
 }
