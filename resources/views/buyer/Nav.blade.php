@@ -1,7 +1,6 @@
-
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #ffffff" class="shadow-sm p-3 mb-5 bg-white rounded">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand">
             <img src="images/logo.png" alt="Logo" width="100" height="30" class="d-inline-block align-text-top"> 
         </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,41 +21,52 @@
             <a class="nav-link {{ Request::is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
         <li class="nav-item ">
-          <button class="btn button-notif" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            <style>
-              .button-notif {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background-image: url('images/notif.png'); 
-                background-size: cover;
-                background-position: center;
-                
-              }</style>
-          </button>
           <button class="btn button-profile" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            <style>
-            .button-profile {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              background-image: url('images/pic1.png'); 
-              background-size: cover;
-              background-position: center;
-              
-            }</style>
-  
-          </button>
-
+            <div class="profile-image-button">
+                @if($user->image)
+                    <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+                @else
+                    <div class="text-center">{{ $user->name[0] }}</div>
+                @endif
+            </div>
+        </button>
         </li>
       </div>
     </div>
 </nav>
+<style>
+  .profile-image-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #3a3a3a;
+      text-align: center; /* Center text horizontally */
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+
+  }
+
+  .profile-image-buyer {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+  }
+
+li::marker {
+  color: rgb(255, 255, 255);
+
+}
+
+  
+
+</style>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
@@ -64,24 +74,44 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body text-center">
-    <div class="row">
-      <div class="profile-image"> 
-        <img src="images/pic1.png" class="profile-image-buyer rounded-circle">
-        <style>
-          .profile-image-buyer{
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            
-          }
-         
-          /* profile picture in navbar */
-         
-        </style>
+    <div class="row justify-content-center">
+      <div class="profile-image">
+          @if($user->image)
+              <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+          @else
+              <div class="profile-image-buyer rounded-circle">
+                  <div class="text-center">{{ $user->name[0] }}</div>
+              </div>
+          @endif
       </div>
-      <h3 class="m-b-0">Brad Macullam</h3>
-    </div>
+      <h3 class="m-b-0">{{ Auth::user()->name }}</h3>
+  </div>
+  <style>
+      .profile-image {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background-color: #3a3a3a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center; /* Center text horizontally */
+          color: #ffffff;
+          font-weight: bold;
+          font-size: 50px;
+
+      }
+  
+      .profile-image-buyer {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+      }
+  
+
+  </style>
+  
     <div class="row">
       <div class="d-grid gap-2 col-6 mx-auto">
         <button class="btn btn-hover" type="button">Setting</button>

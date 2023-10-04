@@ -21,7 +21,7 @@ return new class extends Migration
             ['id' => 3, 'Category' => 'Portrait'],
             ['id' => 4, 'Category' => 'Abstract'],
             ['id' => 5, 'Category' => 'Expressionism'],
-            ['id' => 6, 'Category' => 'Expressionism'],
+            ['id' => 6, 'Category' => 'Impressionism'],
             ['id' => 7, 'Category' => 'Photorealism'],
         ]);
     }

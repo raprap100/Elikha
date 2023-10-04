@@ -9,10 +9,28 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
+<<<<<<< HEAD
 use Illuminate\Auth\Events\Registered;
+=======
+use Carbon\Carbon; 
+use App\Models\Artworks;
+
+>>>>>>> b6ed5bee742a1961e6c51cba62e3e7483501e0fa
  
 class AuthController extends Controller
 {
+    public function home()
+{
+    $currentDateTime = Carbon::now();
+
+    $artwork = Artworks::where('status', 'Approved')
+        ->where('start_date', '>', $currentDateTime) 
+        ->where('end_date', '>', $currentDateTime)   
+        ->orderBy('start_date', 'ASC')
+        ->get();
+
+    return view('home', compact('artwork'));
+}
     function signup(){
         $title = "Sign Up";
         return view('users.signup', compact('title'));

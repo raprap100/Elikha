@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title');
-            $table->text('description');
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('elikhadb.users')->onDelete('cascade');
+            $table->string('title');
+            $table->text('description');
             $table->boolean('status')->default(false); // Add approved column with default value of false
             $table->timestamps();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('tickets');
     }
 };
