@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
-<<<<<<< HEAD
 use Illuminate\Auth\Events\Registered;
-=======
 use Carbon\Carbon; 
 use App\Models\Artworks;
 
->>>>>>> b6ed5bee742a1961e6c51cba62e3e7483501e0fa
  
 class AuthController extends Controller
 {
