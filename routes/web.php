@@ -8,6 +8,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\VerifyController;
+use App\Http\Controllers\EmailVerificationController;
 
 
  
@@ -28,6 +29,13 @@ Route::group(['middleware' => 'guest'], function ()
     Route::post('/forgetpassword', [ForgotPasswordController::class, 'forgetpasswordPost'])->name('forgetpasswordPost');
     Route::get('/resetpassword/{token}', [ForgotPasswordController::class, 'resetpassword'])->name('resetpassword');
     Route::post('/resetpassword', [ForgotPasswordController::class, 'resetpasswordPost'])->name('resetpasswordPost');
+    Route::get('/custom/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->name('verification.verify');
+    Route::post('/resend-verification-email', [EmailVerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.resend');
+    Route::view('/emails/success', 'emails.success')->name('emails.success');
+
 
 });
  
