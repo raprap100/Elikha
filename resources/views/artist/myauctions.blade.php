@@ -33,21 +33,28 @@
                               <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="art">
                               <div class="card-body">
                                   <h5 class="card-title">{{ $artworks->title }}</h5>
-                                  <p class="card-text">{{ $artworks->description }}</p>
+                                  <p class="card-text">{{ \Illuminate\Support\Str::limit($artworks->description, 30) }}</p>
                               </div>
                               <ul class="list-group list-group-flush">
                                   <li class="list-group-item">Total Bids: {{ $artworks->total_bids }}</li>
                                   <li class="list-group-item">Highest Bid: ₱{{ $artworks->highest_bid }}</li>
-                                  <li class="list-group-item">Duration: {{ $artworks->duration }} days</li>
-                              </ul>
-                              <div class="card-body">
-                                  <div class="d-grid gap-2 col-6 mx-auto">
-                                      <button class="btn btn-outline-info" type="button">View</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      @if($loop->iteration % 3 == 0)
+                                  <li class="list-group-item">Start Date: {{ \Carbon\Carbon::parse($artworks->start_date)->format('Y-m-d') }}</li>
+                                  @php
+                    
+                    $endDate = \Carbon\Carbon::parse($artworks->end_date);
+                    $currentDate = \Carbon\Carbon::now();
+                    $daysLeft = $currentDate->diffInDays($endDate);
+                @endphp
+                <li class="list-group-item">Duration: {{ $daysLeft }} days left</li>
+            </ul>
+            <div class="card-body">
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-outline-info" type="button">View</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if($loop->iteration % 3 == 0)
                       </div>
                       <div class="row">
                       @endif

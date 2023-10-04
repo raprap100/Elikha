@@ -1,38 +1,12 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Elikha</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #ffffff" class="shadow-sm p-3 mb-5 bg-white rounded">
-    <div class="container-fluid">
-        <a class="navbar-brand">
-            <img src="images/logo.png" alt="Logo" width="100" height="30" class="d-inline-block align-text-top"> 
-        </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Your other navigation items here -->
-        </ul>
-        <ul class="navbar-nav justify-content-end"> <!-- Use justify-content-end to push these links to the right -->
-          <li class="nav-item">
-            <a class="nav-link" href="/userslogin">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="signup">Sign-up</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
+@extends('buyer.master')
 
-  <div class="container">
+@section('Header')
+@include('buyer.Nav')
+@endsection
+<br>
+@section('Body')
+
+<div class="container">
     <div class="row">  
         <div class="col min-vh-100 d-flex justify-content-center align-items-center ">
             <div class="content text-md-center">
@@ -40,7 +14,7 @@
                 <p class="narrow-paragraph">
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium ullam atque, quidem perferendis saepe deleniti ea sapiente modi quisquam praesentium? Illum autem porro adipisci eaque aut error iure doloremque eveniet.
                 </p>
-                <a href="/signup" class="link-btn">Be an Artist or Collector</a>
+                <a href="#signin" class="link-btn">Be an Artist or Collector</a>
             </div>
         </div>
         <div class="col" style="padding-top: 90px">
@@ -374,8 +348,10 @@
 </div>
 </div> 
 
-@include('buyer.footer')
 
 </div>
-</body>
-</html>
+@endsection
+
+@section('Footer')
+@include('buyer.footer')
+@endsection

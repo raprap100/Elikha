@@ -9,9 +9,24 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
+use Carbon\Carbon; 
+use App\Models\Artworks;
+
  
 class AuthController extends Controller
 {
+    public function home()
+{
+    $currentDateTime = Carbon::now();
+
+    $artwork = Artworks::where('status', 'Approved')
+        ->where('start_date', '>', $currentDateTime) 
+        ->where('end_date', '>', $currentDateTime)   
+        ->orderBy('start_date', 'ASC')
+        ->get();
+
+    return view('home', compact('artwork'));
+}
     function signup(){
         $title = "Sign Up";
         return view('users.signup', compact('title'));
@@ -49,7 +64,7 @@ class AuthController extends Controller
         {
             if (auth()->user()->role == 'Buyer') 
             {
-                return redirect()->intended('/buyer');
+                return redirect()->intended('/buyerhome');
             }
             else if (auth()->user()->role == 'Artist') 
             {
