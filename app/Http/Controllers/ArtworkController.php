@@ -114,19 +114,19 @@ class ArtworkController extends Controller
         return view('buyer.shopbuyer', compact('artworks'));
     }
 
-    public function getBiddingInfo($artworkId) {
-        $artwork = Artworks::findOrFail($artworkId);
-        $highestBid = Bid::where('artwork_id', $artworkId)->max('amount');
-        $endDate = $artwork->end_date;
-        $currentDate = now();
-        $timeLeft = $endDate->diffInHours($currentDate);
+    public function getBiddingInfo($artworkId)
+{
+    $artwork = Artworks::find($artworkId);
+    $highestBid = $artwork->bids->max('amount');
+    $totalBids = $artwork->bids->count();
+
+    return response()->json([
+        'highestBid' => $highestBid,
+        'totalBids' => $totalBids,
+    ]);
+}
     
-        return response()->json([
-            'artwork' => $artwork,
-            'highestBid' => $highestBid,
-            'timeLeft' => $timeLeft,
-        ]);
-    }
+    
 
     
 }
