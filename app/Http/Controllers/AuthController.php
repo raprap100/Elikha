@@ -31,7 +31,7 @@ class AuthController extends Controller
 
     return view('home', compact('artwork'));
 }
-    function signup(){
+        function signup(){
         $title = "Sign Up";
         return view('users.signup', compact('title'));
     }
