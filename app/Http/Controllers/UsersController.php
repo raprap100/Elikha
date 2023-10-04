@@ -29,9 +29,13 @@ class UsersController extends Controller
     {
         $user = Auth::user();
         $artwork = Artworks::where('users_id', Auth::id())
-                            ->where('status', 'Approved')
-                            ->orderBy('created_at', 'DESC')
-                            ->get();
+    ->where(function ($query) {
+        $query->where('status', 'Approved')
+              ->orWhere('status', 'Sold');
+    })
+    ->orderBy('created_at', 'DESC')
+    ->get();
+
         return view('portfolio.profile', compact('user','artwork'));
     }
     public function editprofile()
@@ -473,4 +477,18 @@ public function photorealism(Request $request)
 
         return view('buyer.Nav', compact('user'));
     }
+    public function portfolio($id)
+{
+    $user = Auth::user();
+    $artist = User::findOrFail($id); // Fetch the artist based on the provided $id
+    $artwork = Artworks::where('users_id', $id)
+        ->where(function ($query) {
+            $query->where('status', 'Approved')
+                ->orWhere('status', 'Sold');
+        })
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+    return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
+}
 }

@@ -2,6 +2,7 @@
 
 @section('Header')
 @include('buyer.Nav')
+@include('artistinc.popup')
 @endsection
 <br>
 @section('Body')

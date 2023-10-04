@@ -297,7 +297,7 @@
                   </div>
                   <div class="col-6">
                       <h1>Title: {{ $artworks->title }}</h1>
-                      <h5>{{ $artworks->user->name}}</h5>
+                      <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                       <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                       <br>
                       @php
@@ -369,7 +369,7 @@
                     </div>
                     <div class="col-6">
                         <h1>Title: {{ $artworks->title }}</h1>
-                        <p>{{ $artworks->user->name}}</p>
+                        <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                         <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                         <br>
                         <p>Description:</p>

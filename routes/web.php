@@ -109,7 +109,6 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/api/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
     Route::get('/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
     Route::get('/artwork/{artworkId}/bidding-info', 'BidController@getBiddingInfo');
-
-
-
+    Route::post('popup', [UsersController::class,'store'])->name('popup');
+    Route::get('/portfolio/{id}', [UsersController::class, 'portfolio'])->name('portfolio');
 });
