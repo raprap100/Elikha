@@ -26,7 +26,8 @@
     </button>
 </div>
 @endif
-                    <button class="btn btn-outline-primary"><a href="{{route('artistVerify')}}">Verify</a></button>
+                    <button class="btn btn-outline-primary"><a href="{{route('artistVerify')}}">Verify Account</a></button>
+                    <button class="btn btn-outline-primary"><a href="{{route('artistEmail')}}">Verify Email</a></button>
                     <br>
                     <br>
                     

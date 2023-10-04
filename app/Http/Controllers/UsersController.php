@@ -13,6 +13,7 @@ use App\Models\Artworks;
 use App\Models\User;
 use App\Models\Ticket;
 
+
 class UsersController extends Controller
 {
     public function __construct()

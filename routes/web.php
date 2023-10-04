@@ -68,6 +68,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::delete('/artistLogout', [AuthController::class, 'logouts'])->name('artistLogout');
     Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
     Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
+    Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
 
 
     

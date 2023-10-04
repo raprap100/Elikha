@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
+use Illuminate\Auth\Events\Registered;
  
 class AuthController extends Controller
 {
@@ -28,7 +29,11 @@ class AuthController extends Controller
  
         $user->save();
  
-        return back()->with('success', 'Register successfully');
+         // Dispatch the Registered event after successful registration
+    event(new Registered($user));
+
+    // Redirect the user after registration
+    return back()->with('success', 'Register successfully. Please check your email for verification.');
     }
 
     function userslogin()
