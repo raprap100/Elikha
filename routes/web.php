@@ -7,6 +7,8 @@ use App\Http\Controllers\UserManagement;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\BidController;
+
 
 
  
@@ -103,4 +105,11 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
     Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
+    Route::post('/artwork/{artworkId}/bid', [BidController::class, 'placeBid'])->name('place.bid');
+    Route::get('/api/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
+    Route::get('/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
+    Route::get('/artwork/{artworkId}/bidding-info', 'BidController@getBiddingInfo');
+
+
+
 });

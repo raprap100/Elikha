@@ -19,25 +19,37 @@ class ForgotPasswordController extends Controller
         return view('users.forgetpassword');
     }
     public function forgetpasswordPost(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+    ]);
 
-        $token = Str::random(64);
+    $email = $request->email;
 
-        DB::table(table: 'password_reset_tokens')->insert([
-            'email'=> $request->email, 
-            'token' => $token,
-            'created_at' => Carbon::now()
-        ]);
+    $existingToken = DB::table('password_reset_tokens')
+        ->where('email', $email)
+        ->first();
 
-        Mail::send('emails.forgetpassword', ['token' => $token], function ($message) use ($request) {
-            $message->to($request->email);
-            $message->subject("Reset Password");
-        });
-        return back()->with("success", "We have sent an email to reset password.");
+    if ($existingToken) {
+        return back()->with("error", "We have already sent you a forget password link.");
     }
+
+    $token = Str::random(64);
+
+    DB::table('password_reset_tokens')->insert([
+        'email' => $email,
+        'token' => $token,
+        'created_at' => Carbon::now(),
+    ]);
+
+    Mail::send('emails.forgetpassword', ['token' => $token], function ($message) use ($email) {
+        $message->to($email);
+        $message->subject("Reset Password");
+    });
+
+    return back()->with("success", "We have sent an email to reset your password.");
+}
+
     public function resetpassword($token)
     {
         return view('users.resetpassword', compact('token'));

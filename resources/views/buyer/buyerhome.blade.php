@@ -14,7 +14,6 @@
                 <p class="narrow-paragraph">
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium ullam atque, quidem perferendis saepe deleniti ea sapiente modi quisquam praesentium? Illum autem porro adipisci eaque aut error iure doloremque eveniet.
                 </p>
-                <a href="#signin" class="link-btn">Be an Artist or Collector</a>
             </div>
         </div>
         <div class="col" style="padding-top: 90px">
