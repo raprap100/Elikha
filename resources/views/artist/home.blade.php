@@ -16,9 +16,12 @@
             <div class="col-8 col-lg-9">
                 <span class="border">
                 <div class="p-3 pb-5 bg-white rounded">
+                    
                     <h3>IMPORTANT</h3>
                     <br>
+                    
                     <br>
+                    
                     <div class="row grid text-center">
                         <div class="col-sm-4 p-2 text-align: center">
                             <h2>---</h2>

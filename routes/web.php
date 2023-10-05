@@ -7,6 +7,8 @@ use App\Http\Controllers\UserManagement;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\VerifyController;
+use App\Http\Controllers\EmailVerificationController;
 
 
  
@@ -27,6 +29,13 @@ Route::group(['middleware' => 'guest'], function ()
     Route::post('/forgetpassword', [ForgotPasswordController::class, 'forgetpasswordPost'])->name('forgetpasswordPost');
     Route::get('/resetpassword/{token}', [ForgotPasswordController::class, 'resetpassword'])->name('resetpassword');
     Route::post('/resetpassword', [ForgotPasswordController::class, 'resetpasswordPost'])->name('resetpasswordPost');
+    Route::get('/custom/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->name('verification.verify');
+    Route::post('/resend-verification-email', [EmailVerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.resend');
+    Route::view('/emails/success', 'emails.success')->name('emails.success');
+
 
 });
  
@@ -62,6 +71,11 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/profile', [UsersController::class, 'profile']);
     Route::post('popup', [UsersController::class,'store'])->name('popup');
     Route::delete('/artistLogout', [AuthController::class, 'logouts'])->name('artistLogout');
+    Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
+    Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
+    Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
+
+
     
 });
 
@@ -91,7 +105,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
 
 Route::middleware(['auth', 'role:Buyer'])->group(function()
 {
-    Route::get('/buyer', [UsersController::class, 'buyer']);
+    
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
     Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
@@ -103,4 +117,5 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
     Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
+    Route::get('/buyerVerify', [UsersController::class, 'buyerVerify'])->name('buyerVerify');
 });

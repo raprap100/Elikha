@@ -4,7 +4,11 @@
 @endsection
 
 @section('Body')
-
+@if(session('info'))
+    <div class="alert alert-info">
+        {{ session('info') }}
+    </div>
+@endif
 
   <div class="container container-fluid text-center">
     <div class="row">

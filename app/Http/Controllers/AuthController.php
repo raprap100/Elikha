@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
+use Illuminate\Auth\Events\Registered;
 use Carbon\Carbon; 
 use App\Models\Artworks;
 
@@ -27,7 +28,7 @@ class AuthController extends Controller
 
     return view('home', compact('artwork'));
 }
-    function signup(){
+        function signup(){
         $title = "Sign Up";
         return view('users.signup', compact('title'));
     }
@@ -43,7 +44,11 @@ class AuthController extends Controller
  
         $user->save();
  
-        return back()->with('success', 'Register successfully');
+         // Dispatch the Registered event after successful registration
+    event(new Registered($user));
+
+    // Redirect the user after registration
+    return back()->with('success', 'Register successfully. Please check your email for verification.');
     }
 
     function userslogin()
