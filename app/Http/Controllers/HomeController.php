@@ -11,6 +11,7 @@ use App\Models\Ticket;
 use App\Notifications\ArtworkRejected;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArtworkRejectedMail;
+use App\Mail\ArtworkApprovedMail;
 
 
 class HomeController extends Controller
@@ -101,7 +102,16 @@ public function artist()
 
     public function approve(Request $request, $id)
     {
+
         $artwork = Artworks::findOrFail($id);
+
+$artistUserId = $artwork->users_id;
+
+    $artistEmail = User::findOrFail($artistUserId)->email;
+
+    Mail::to($artistEmail)->send(new ArtworkApprovedMail($artwork));
+
+
         $artwork->status = 'Approved';
         $artwork->save();
         return back()->with('success', 'Artwork approved successfully.');
@@ -119,7 +129,7 @@ $artistUserId = $artwork->users_id;
 
     Mail::to($artistEmail)->send(new ArtworkRejectedMail($remarks, $artwork));
 
-    $artist = $artwork->artist;
+
 $artwork->status = 'rejected';
 $artwork->remarks = $remarks;
 $artwork->save();

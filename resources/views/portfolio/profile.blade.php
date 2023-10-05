@@ -228,8 +228,8 @@
 					  </button>
 					</div>
 					<div class="modal-body" style="text-align: center;">
-						<button class="btn btn-outline-primary" type="button" onclick="window.location.href='postitem'">Auction</button>
-						<button class="btn btn-outline-primary" type="button" onclick="window.location.href='forsale'">For Sale</button>
+						<button class="btn btn-outline-dark" type="button" onclick="window.location.href='postitem'">Auction</button>
+						<button class="btn btn-outline-dark" type="button" onclick="window.location.href='forsale'">For Sale</button>
 						
 					</div>
 					<div class="modal-footer">

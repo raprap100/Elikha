@@ -33,4 +33,10 @@ class Artworks extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+   
+    public function bids()
+    {
+        return $this->hasMany(Bid::class, 'artwork_id'); // Specify the correct foreign key column name
+    }
 }

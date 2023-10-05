@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Artworks;
+use App\Models\Bid; // Add this import statement at the beginning of your controller file
 use Illuminate\Support\Facades\Auth;
+
 
 class ArtworkController extends Controller
 {
+    
     public function postitem()
     {
         return view('portfolio.postitem');
@@ -91,5 +94,39 @@ class ArtworkController extends Controller
     return redirect()->to('profile')->with('success', 'Your artwork will be reviewed by our team before it is uploaded. Thank you for your patience!');
     }
     
+   
+    public function shopBuyer(Request $request)
+    {
+        $artworks = Artworks::all(); // This fetches all artworks from the database
+    
+        // Loop through the artworks and get the highest bid for each artwork
+        foreach ($artworks as $artwork) {
+            if ($artwork->start_price) {
+                $highestBid = Bid::where('artwork_id', $artwork->id)->max('bid_amount');
+                // Debugging output
+                dd($highestBid); // Check the output in the browser's console or logs
+                $artwork->highestBid = $highestBid;
+            }
+        }
+        
+    
+        // Pass the artworks with highest bids to the view
+        return view('buyer.shopbuyer', compact('artworks'));
+    }
 
+    public function getBiddingInfo($artworkId)
+{
+    $artwork = Artworks::find($artworkId);
+    $highestBid = $artwork->bids->max('amount');
+    $totalBids = $artwork->bids->count();
+
+    return response()->json([
+        'highestBid' => $highestBid,
+        'totalBids' => $totalBids,
+    ]);
+}
+    
+    
+
+    
 }

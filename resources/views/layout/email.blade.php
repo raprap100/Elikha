@@ -47,7 +47,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            &copy; {{ date('Y') }} Your Company. All rights reserved.
+            &copy; {{ date('Y') }} E-Likha. All rights reserved.
         </div>
     </div>
 </body>

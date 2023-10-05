@@ -12,8 +12,8 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Auth\Events\Registered;
 use Carbon\Carbon; 
 use App\Models\Artworks;
+use Illuminate\Support\Facades\Validator;
 
- 
 class AuthController extends Controller
 {
     public function home()

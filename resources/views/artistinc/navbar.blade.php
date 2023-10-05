@@ -11,7 +11,7 @@
     <nav class="navbar sticky-top bg-white navbar navbar-expand-sm py-0" data-bs-theme="light">
         <div class="container-fluid">
             
-            <a class="navbar-brand"><img class="logo" src="artistimg/image 3.png" alt="..." height="81" width="81"></a>
+            <a class="navbar-brand"><img class="logo" src="images/logo.png" alt="..." height="30" width="100"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
