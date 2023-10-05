@@ -133,19 +133,8 @@
             {{Session::get('success')}}
         </div>
     @endif
-
    <h1>E-Likha</h1>
     <p class="message">Signup now and get full access to the website. </p>
-
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
       <label>Are you a Buyer or Artist?</label>
       <select type="type" name="role" id="role" class="form-control" required>
           <option value="2">Artist</option>
@@ -167,6 +156,32 @@
         <input required type="password" class="input" id="name" name="password_confirmation">
         <span>Confirm password</span>
       </label>
-      <button class="submit">Submit</button>
-      <p class="signin">Already have an account? <a href="/userslogin">Log In</a></p>
-    </form>
+      <button class="submit" id="submit-button">Submit</button>
+
+      @if(Session::has('success') && Session::get('success') === 'Register successfully. Please check your email for verification.')
+      <!-- Display the success message -->
+      
+  
+      <!-- Display the Resend Verification Email button -->
+      <form method="POST" action="{{ route('verification.resend') }}">
+        @csrf
+        <button type="button" id="resend-verification-button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#verificationModal">Resend Verification Email</button>
+ @endif
+      </form>
+    <!-- Bootstrap Modal -->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="verificationModalLabel">Resend Verification Email</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              An Email Verification has been resent. Please check your email.
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

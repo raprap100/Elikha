@@ -15,6 +15,7 @@ use App\Models\Ticket;
 use Carbon\Carbon; 
 
 
+
 class UsersController extends Controller
 {
     public function __construct()
@@ -153,6 +154,7 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
+//buyer
 public function buyerhome()
 {
     $user = Auth::user();
@@ -491,4 +493,73 @@ public function photorealism(Request $request)
 
     return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
 }
+    public function buyerVerify()
+    {
+        return view('buyer.verify');
+    }
+    //verify
+    public function artistVerify()
+    {
+        return view('artist.verify');
+    }
+    
+    public function verifyupload(Request $request)
+    {
+        $request->validate([
+            'identification'=> 'required',
+            'selfie'=> 'required',
+            'gcash'=> 'required',
+            'firstname'=> 'required',
+            'middlename'=> 'required',
+            'lastname'=> 'required',
+            'nationality'=> 'required',
+            'birthday'=> 'required',
+            'address'=> 'required',
+            'users_id'=> 'required',
+            'IDType'=> 'required',
+            'status'=> 'required',
+            'remarks' => 'required', 
+            
+        ]);
+    
+        $user = Auth::user();
+        
+        $allowedFileTypes = ['jpg', 'jpeg', 'png'];
+        $maxFileSize = 1024 * 1024; // 1MB
+    
+        // Initialize an array to store file paths (if needed).
+        $uploadedFilePaths = [];
+    
+        foreach (['image1', 'image2', 'image3'] as $inputName) {
+            if ($request->hasFile($inputName)) {
+                $image = $request->file($inputName);
+    
+                $extension = $image->getClientOriginalExtension();
+    
+                if (!in_array($extension, $allowedFileTypes)) {
+                    return redirect()->back()->withErrors([$inputName => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+                }
+    
+                $fileSize = $image->getSize();
+    
+                if ($fileSize > $maxFileSize) {
+                    return redirect()->back()->withErrors([$inputName => 'The image file size must be less than 1MB.']);
+                }
+    
+                $filename = time() . '_' . $inputName . '.' . $extension;
+                $image->move(public_path('images'), $filename);
+    
+                // Optionally, you can store the file paths in an array.
+                $uploadedFilePaths[] = 'images/' . $filename;
+            }
+        }
+    
+        // Optionally, you can save the file paths to a database or perform other actions.
+    
+         // Redirect or return a response as needed.
+
+    
+
+    return redirect()->to('profile')->with('success', 'Profile updated successfully!');
+    }
 }

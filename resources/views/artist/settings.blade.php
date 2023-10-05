@@ -16,7 +16,18 @@
                 <span class="border">
                 <div class="p-4  pb-5 bg-white rounded">
                     <h2>Settings</h2>
-                    
+                    <br>
+                    <h4>Verification Status</h4>
+                    @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+         {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+                    <button class="btn btn-outline-primary"><a href="{{route('artistVerify')}}">Verify Account</a></button>
+                    <br>
                     <br>
                     
                     <div class="container-fluid">

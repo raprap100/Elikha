@@ -1,6 +1,18 @@
 @extends('layout/master')
 @section ('Body')
 <div class="body">
+@section('Head')
+
+@endsection
+
+@section('Body')
+@if(session('info'))
+    <div class="alert alert-info">
+        {{ session('info') }}
+    </div>
+@endif
+
+  <div class="container container-fluid text-center">
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-center align-items-center vh-100">

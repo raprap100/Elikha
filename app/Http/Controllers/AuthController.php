@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\HomeController;
+use Illuminate\Auth\Events\Registered;
 use Carbon\Carbon; 
 use App\Models\Artworks;
 use Illuminate\Support\Facades\Validator;
@@ -27,36 +28,27 @@ class AuthController extends Controller
 
     return view('home', compact('artwork'));
 }
-    function signup(){
+        function signup(){
         $title = "Sign Up";
         return view('users.signup', compact('title'));
     }
 
     public function signupPost(Request $request)
-    { $validator = Validator::make($request->all(), [
-        'name' => 'required',
-        'email' => 'required|email|unique:users', // Ensure email is unique
-        'password' => 'required|min:6|confirmed',
-        'role' => 'required|in:2,3', // 2 is for Artist ,3 is for Buyer
-    ]);
-
-    if ($validator->fails()) {
-        return back()
-            ->withErrors($validator)
-            ->withInput();
-    }
-
+    {
         $user = new User();
-
+ 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
-
+ 
         $user->save();
+ 
+         // Dispatch the Registered event after successful registration
+    event(new Registered($user));
 
-        return back()->with('success', 'Register successfully');
-        
+    // Redirect the user after registration
+    return back()->with('success', 'Register successfully. Please check your email for verification.');
     }
 
     function userslogin()
