@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ArtworkRejectedMail;
 use App\Mail\ArtworkApprovedMail;
 use App\Mail\ArtistApproved;
+use App\Mail\ArtistRejected;
 use App\Models\Verify;
 
 class HomeController extends Controller
@@ -87,23 +88,18 @@ class HomeController extends Controller
     }
     public function approveartists(Request $request, $id)
 {
-    // Find the artist verification record by ID
     $artist = Verify::findOrFail($id);
 
-    // Get the user ID associated with the artist verification
     $artistUserId = $artist->users_id;
 
-    // Find the user record based on the user ID
     $artistUser = User::findOrFail($artistUserId);
 
-    // Get the artist's email address from the user record
     $artistEmail = $artistUser->email;
 
-    // Send the ArtistApproved mail to the artist's email
     Mail::to($artistEmail)->send(new ArtistApproved($artist));
 
-    // Update the artist verification status to 'Approved'
     $artist->status = 'Approved';
+    
     $artist->save();
 
     return back()->with('success', 'Artist verified successfully.');
@@ -112,21 +108,22 @@ class HomeController extends Controller
     public function rejectartists(Request $request)
 {
     $id = $request->input('id');
-    $artwork = Artworks::findOrFail($id);
-$remarks = $request->input('remarks');
+    $artist = Verify::findOrFail($id);
+    $remarks = $request->input('remarks');
 
-$artistUserId = $artwork->users_id;
+    $artistUserId = $artist->users_id;
 
-    $artistEmail = User::findOrFail($artistUserId)->email;
+    $artistUser = User::findOrFail($artistUserId);
 
-    Mail::to($artistEmail)->send(new ArtworkRejectedMail($remarks, $artwork));
+    $artistEmail = $artistUser->email;
 
+    Mail::to($artistEmail)->send(new ArtistRejected($remarks, $artist));
 
-$artwork->status = 'rejected';
-$artwork->remarks = $remarks;
-$artwork->save();
+    $artist->status = 'Rejected';
+    $artist->remarks = $remarks;
+    $artist->save();
 
-return back()->with('reject', 'Artwork rejected with remarks.');
+    return back()->with('reject', 'Artist verification rejected.');
 }
     public function posts(Request $request)
 {

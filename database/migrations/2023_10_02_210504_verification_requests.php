@@ -30,7 +30,7 @@ return new class extends Migration
             $table->unsignedBigInteger('age');
             $table->string('phonenumber');
             $table->text('remarks')->nullable();
-            $table->enum('status', ['Pending', 'Approved',])->default('Pending');
+            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->timestamps();
         });
     }

@@ -100,6 +100,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/verifyartists', [HomeController::class, 'verifyartists'])->name('verifyartists');
     Route::post('/approveartists/{id}', [HomeController::class, 'approveartists'])->name('approveartists');
+    Route::post('/rejectartists', [HomeController::class, 'rejectartists'])->name('rejectartists');
 
 });
 

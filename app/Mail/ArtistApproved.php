@@ -31,7 +31,7 @@ class ArtistApproved extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verified'
+            subject: 'Account Verification'
         );
     }
     public function build()

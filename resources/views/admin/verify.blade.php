@@ -102,6 +102,7 @@
                                 <option value="all">All</option>
                                 <option value="Pending"{{ request('status_filter') === 'Pending' ? ' selected' : '' }}>Pending</option>
                                 <option value="Approved"{{ request('status_filter') === 'Approved' ? ' selected' : '' }}>Approved</option>
+                                <option value="Rejected"{{ request('status_filter') === 'Rejected' ? ' selected' : '' }}>Rejected</option>
                             </select>
                             <button type="submit" class="btn btn-outline-dark">Filter</button>
                         </form>                        
@@ -202,7 +203,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         Are you sure you want to reject this artist verification?
-                                                        <form action="{{ route('reject', $verifies->id) }}" method="POST">
+                                                        <form action="{{ route('rejectartists', $verifies->id) }}" method="POST">
                                                             @csrf
                                                             <input type="hidden" name="id" value="{{ $verifies->id }}">
                                                             <textarea name="remarks" rows="3" placeholder="Provide remarks for rejection"></textarea>
