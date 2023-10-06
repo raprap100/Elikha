@@ -12,7 +12,8 @@ use App\Notifications\ArtworkRejected;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArtworkRejectedMail;
 use App\Mail\ArtworkApprovedMail;
-
+use App\Mail\ArtistApproved;
+use App\Models\Verify;
 
 class HomeController extends Controller
 {
@@ -22,13 +23,14 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $users = User::count();
+        $sold = Artworks::where('status', 'Sold')->count();
+        $arts = Artworks::where('status', 'Approved')->count();
         $categories = Category::withCount(['artworks' => function ($query) {
             $query->where('status', 'Approved');
         }])
                     ->orderBy('artworks_count', 'desc')
                     ->get();
-        return view('admin.dashboard', compact('users', 'categories'));
+        return view('admin.dashboard', compact('arts', 'categories', 'sold'));
     }
     public function subscribers()
     {
@@ -64,7 +66,68 @@ class HomeController extends Controller
     // Pass the data to the view
     return view('admin.subscribers', compact('artistData', 'buyerData', 'artist', 'buyer', 'artistPercentage', 'buyerPercentage', 'total'));
     }
-    
+    public function verifyartists(Request $request)
+    {
+
+        $verified = Verify::where('status', 'Approved')->count();
+        $pending = Verify::where('status', 'Pending')->count();
+        $query = DB::table('verification_requests')
+        ->select('verification_requests.*', 'idtypes.IDType as IDType')
+        ->leftJoin('idtypes', 'verification_requests.idtype_id', '=', 'idtypes.id');
+        
+        if ($request->has('status_filter')) {
+            $statusFilter = $request->input('status_filter');
+            if ($statusFilter !== 'all') {
+                $query->where('verification_requests.status', $statusFilter);
+            }
+        }
+        $verify = $query->paginate(5);
+        
+        return view('admin.verify', compact('verified', 'verify', 'pending'));
+    }
+    public function approveartists(Request $request, $id)
+{
+    // Find the artist verification record by ID
+    $artist = Verify::findOrFail($id);
+
+    // Get the user ID associated with the artist verification
+    $artistUserId = $artist->users_id;
+
+    // Find the user record based on the user ID
+    $artistUser = User::findOrFail($artistUserId);
+
+    // Get the artist's email address from the user record
+    $artistEmail = $artistUser->email;
+
+    // Send the ArtistApproved mail to the artist's email
+    Mail::to($artistEmail)->send(new ArtistApproved($artist));
+
+    // Update the artist verification status to 'Approved'
+    $artist->status = 'Approved';
+    $artist->save();
+
+    return back()->with('success', 'Artist verified successfully.');
+}
+
+    public function rejectartists(Request $request)
+{
+    $id = $request->input('id');
+    $artwork = Artworks::findOrFail($id);
+$remarks = $request->input('remarks');
+
+$artistUserId = $artwork->users_id;
+
+    $artistEmail = User::findOrFail($artistUserId)->email;
+
+    Mail::to($artistEmail)->send(new ArtworkRejectedMail($remarks, $artwork));
+
+
+$artwork->status = 'rejected';
+$artwork->remarks = $remarks;
+$artwork->save();
+
+return back()->with('reject', 'Artwork rejected with remarks.');
+}
     public function posts(Request $request)
 {
     $pendingPost = Artworks::where('status', 'Pending')->count();
@@ -93,11 +156,6 @@ class HomeController extends Controller
     $artworks = $query->paginate(5);
     
     return view('admin.posts', compact('pendingPost', 'approvedPost', 'artworks'));
-}
-
-public function artist()
-{
-    return $this->belongsTo(User::class, 'users_id');
 }
 
     public function approve(Request $request, $id)
@@ -270,4 +328,5 @@ public function assistposts()
         $approved_artwork = Artworks::where('status', true)->get();
         return view('assistant.approvedPosts', compact('pendingPost', 'approvedPost','approved_artwork'));
     }
+
 }

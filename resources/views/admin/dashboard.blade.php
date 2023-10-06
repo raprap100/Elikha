@@ -48,7 +48,7 @@
                         <div class="row align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs text-primary text-uppercase mb-2" style="font-size:40px; font-weight: bold;">
-                                    
+                                    {{$sold}}
                                 </div>
                                 <div class="p font-weight-bold text-gray-800">Total Art Sold</div>
                             </div>
@@ -62,9 +62,9 @@
                         <div class="row align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs text-primary text-uppercase mb-1" style="font-size:40px; font-weight: bold;">
-                                    {{$users}}
+                                    {{$arts}}
                                 </div>
-                                <div class="p font-weight-bold text-gray-800">Total Users</div>
+                                <div class="p font-weight-bold text-gray-800">Total Available Art</div>
                             </div>
                         </div>
                     </div>
