@@ -13,7 +13,6 @@ use App\Models\Artworks;
 use App\Models\User;
 use App\Models\Ticket;
 use Carbon\Carbon; 
-use Illuminate\Support\Facades\Storage;
 
 
 
@@ -37,8 +36,14 @@ class UsersController extends Controller
     })
     ->orderBy('created_at', 'DESC')
     ->get();
+    $userId = Auth::user()->id;
+    
+    // Check if the user has a valid GCash verification request
+    $userVerification = Verify::where('users_id', $userId)
+        ->where('status', 'Approved')
+        ->exists();
 
-        return view('portfolio.profile', compact('user','artwork'));
+        return view('portfolio.profile', compact('user','artwork', 'userVerification'));
     }
     public function editprofile()
     {

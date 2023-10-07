@@ -14,13 +14,9 @@ use App\Http\Controllers\CartController;
 
 
 
+ 
+ 
 
- 
- 
-Route::get('/', function () {
-    return view('admin.login');
-});
- 
 Route::group(['middleware' => 'guest'], function () 
 {
     Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -114,7 +110,10 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/buyer', [UsersController::class, 'buyer']);
     Route::delete('/usermanagement/{id}', [UserManagement::class, 'destroy'])->name('destroy');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+    Route::get('/verifyartists', [HomeController::class, 'verifyartists'])->name('verifyartists');
+    Route::post('/approveartists/{id}', [HomeController::class, 'approveartists'])->name('approveartists');
+    Route::post('/rejectartists', [HomeController::class, 'rejectartists'])->name('rejectartists');
+
 });
 
 Route::middleware(['auth', 'role:Buyer'])->group(function()

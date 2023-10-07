@@ -9,7 +9,7 @@
         <input type="hidden" name="token" value="{{ $token }}">
           
         <img src="{{ asset('images/logo.png') }}" class="logo" alt="...">
-          <p class="message">Reset Password. </p>
+        <p class="message" style="text-align: center;">Reset Password</p>
             <label>
               <input required type="email" class="input" id="email" name="email">
               <span>Email</span>
