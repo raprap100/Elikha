@@ -24,10 +24,7 @@
                                 {{ Session::get('error') }}
                             </div>
                        @endif
-                        <img src="images/logo.png" class="logo" alt="...">
-                        <p class="message">Signup now and get full access to the website. </p>
-
-                                
+                        <img src="images/logo.png" class="logo" alt="...">   
                         <label>
                             <input type="email" name="email" id="email" required class="input">
                             <span>Email</span>

@@ -12,9 +12,6 @@ use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\EmailVerificationController;
 
 
- 
- 
-
 Route::group(['middleware' => 'guest'], function () 
 {
     Route::get('/', [AuthController::class, 'home'])->name('home');
@@ -101,7 +98,10 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/show/{id}', [UserManagement::class, 'show'])->name('show');;
     Route::delete('/usermanagement/{id}', [UserManagement::class, 'destroy'])->name('destroy');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+    Route::get('/verifyartists', [HomeController::class, 'verifyartists'])->name('verifyartists');
+    Route::post('/approveartists/{id}', [HomeController::class, 'approveartists'])->name('approveartists');
+    Route::post('/rejectartists', [HomeController::class, 'rejectartists'])->name('rejectartists');
+
 });
 
 Route::middleware(['auth', 'role:Buyer'])->group(function()

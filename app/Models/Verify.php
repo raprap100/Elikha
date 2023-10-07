@@ -30,5 +30,8 @@ class Verify extends Model
         'remarks',
     ];
     
-    // Define relationships and other methods here as needed.
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id'); // Replace 'User' with the actual related model name
+    }
 }
