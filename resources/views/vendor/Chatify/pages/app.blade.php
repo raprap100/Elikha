@@ -63,9 +63,16 @@
                 {{-- header buttons --}}
                 <nav class="m-header-right">
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                    <a href="{{route('artistHome')}}"><i class="fas fa-home"></i></a>
+                    @if(auth()->check())
+    @if(auth()->user()->role == 'Artist')
+        <a href="{{ route('artistHome') }}"><i class="fas fa-home"></i></a>
+    @elseif(auth()->user()->role == 'Buyer')
+        <a href="{{ route('buyerhome') }}"><i class="fas fa-home"></i></a>
+    @endif
+@endif
                     <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                 </nav>
+            </nav>
             </nav>
             {{-- Internet connection --}}
             <div class="internet-connection">

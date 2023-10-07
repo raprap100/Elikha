@@ -485,6 +485,7 @@ public function photorealism(Request $request)
 
         return view('buyer.Nav', compact('user'));
     }
+
     public function portfolio($id)
 {
     $user = Auth::user();
@@ -499,6 +500,7 @@ public function photorealism(Request $request)
 
     return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
 }
+
     public function buyerVerify()
     {
         return view('buyer.verify');

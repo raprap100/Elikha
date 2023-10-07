@@ -27,6 +27,8 @@
 </div>
 @endif
                     <button class="btn btn-outline-primary"><a href="{{route('artistVerify')}}">Verify Account</a></button>
+
+                    
                     <br>
                     <br>
                     
