@@ -15,6 +15,9 @@
             <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="#about-section">About</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link {{ Request::routeIs('chatify') ? 'active' : '' }}" href="{{ route('chatify') }}">Messages</a>
+        </li>  
+          <li class="nav-item">
             <a class="nav-link {{ Request::is('shop') ? 'active' : '' }}" href="/shopbuyer">Shop</a>
           </li>
           <li class="nav-item">
