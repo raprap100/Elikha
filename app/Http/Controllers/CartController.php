@@ -54,33 +54,38 @@ class CartController extends Controller
 
     // Method to show the cart
     public function showCart()
-{
-    $user = Auth::user();
-    $cartItems = Cart::with('artwork')->where('user_id', $user->id)->get();
+    {
+        $user = Auth::user();
+        $cartItems = Cart::with('artwork.bids')->where('user_id', $user->id)->get();
+    
+        $auctionItems = $cartItems->filter(function ($cartItem) {
+            return $cartItem->artwork->start_price !== null;
+        });
+    
+        $saleItems = $cartItems->filter(function ($cartItem) {
+            return $cartItem->artwork->start_price === null;
+        });
+    
+        // Calculate total price for both auctioned and for sale items
+        $totalPrice = 0;
+    
+        // Add prices of artworks for sale
+        $totalPrice += $saleItems->sum(function ($cartItem) {
+            return $cartItem->artwork->price;
+        });
+    
+        // Add leading bid amounts for auctioned artworks
+        foreach ($auctionItems as $cartItem) {
+            $leadingBid = $cartItem->artwork->bids->max('amount');
+            if ($leadingBid) {
+                $totalPrice += $leadingBid;
+            }
+        }
+    
+        return view('buyer.cart', compact('auctionItems', 'saleItems', 'totalPrice', 'user'));
+    }
+    
 
-    $auctionItems = $cartItems->filter(function ($cartItem) {
-        return $cartItem->artwork->start_price !== null;
-    });
-
-    $saleItems = $cartItems->filter(function ($cartItem) {
-        return $cartItem->artwork->start_price === null;
-    });
-
-    // Calculate total price for auctioned items
-    $totalAuctionPrice = $auctionItems->sum(function ($cartItem) {
-        return $cartItem->artwork->price;
-    });
-
-    // Calculate total price for for sale items
-    $totalSalePrice = $saleItems->sum(function ($cartItem) {
-        return $cartItem->artwork->price;
-    });
-
-    // Total price is the sum of auctioned and for sale items
-    $totalPrice = $totalAuctionPrice + $totalSalePrice;
-
-    return view('buyer.cart', compact('auctionItems', 'saleItems', 'totalPrice', 'user'));
-}
 
 
     // Method to remove an item from the cart
