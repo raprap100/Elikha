@@ -18,7 +18,6 @@ use App\Models\Verify;
 use Illuminate\Support\Facades\Storage;
 
 
-
 class HomeController extends Controller
 {
     public function __construct()

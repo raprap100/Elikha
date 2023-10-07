@@ -17,7 +17,6 @@ use App\Models\Verify;
 use Illuminate\Support\Facades\DB;
 
 
-
 class UsersController extends Controller
 {
     public function __construct()

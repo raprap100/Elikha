@@ -104,6 +104,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/highlights', [HomeController::class, 'highlights'])->name('highlights');
     Route::post('/highlights', [HomeController::class, 'highlightsstore'])->name('highlights');
 
+
 });
 
 Route::middleware(['auth', 'role:Buyer'])->group(function()
