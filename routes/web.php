@@ -10,15 +10,20 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\CartController;
 
+
+
+ 
+ 
 
 Route::group(['middleware' => 'guest'], function () 
 {
-    Route::get('/', [AuthController::class, 'home'])->name('home');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/userslogin', [AuthController::class, 'userslogin'])->name('userslogin');
     Route::post('/userslogin', [AuthController::class, 'usersloginPost'])->name('userslogin');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
@@ -72,6 +77,13 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
     Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
     Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
+    Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
+    Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
+    Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
+    Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
+    Route::get('/home', [HomeController::class, 'home']);
+    Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
+    
 
 
     
@@ -95,7 +107,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/create', [UserManagement::class, 'create']);
     Route::post('/usermanagement', [UserManagement::class, 'createPost'])->name('create');
     Route::get('/usermanagement/search', [UserManagement::class, 'search'])->name('search');
-    Route::get('/show/{id}', [UserManagement::class, 'show'])->name('show');;
+    Route::get('/buyer', [UsersController::class, 'buyer']);
     Route::delete('/usermanagement/{id}', [UserManagement::class, 'destroy'])->name('destroy');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/verifyartists', [HomeController::class, 'verifyartists'])->name('verifyartists');
@@ -104,6 +116,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/highlights', [HomeController::class, 'highlights'])->name('highlights');
     Route::post('/highlights', [HomeController::class, 'highlightsstore'])->name('highlights');
 
+
 });
 
 Route::middleware(['auth', 'role:Buyer'])->group(function()
@@ -111,6 +124,8 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
+    Route::post('/cart', [UsersController::class, 'cart'])->name('cart');
+
     Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
     Route::get('/popart', [UsersController::class, 'popart'])->name('popart');
     Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
@@ -119,12 +134,27 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/expressionism', [UsersController::class, 'expressionism'])->name('expressionism');
     Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
     Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
+
+
+    Route::post('/cart/add', [CartController::class, 'addItemToCart'])->name('cart.add'); // Handles POST request for adding items to the cart
+    Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting page
+    Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);
+    Route::post('/updateCart/{artworkId}', [CartController::class, 'updateCart']);
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
     Route::post('/artwork/{artworkId}/bid', [BidController::class, 'placeBid'])->name('place.bid');
-    Route::get('/api/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
-    Route::get('/artwork/{artworkId}/bidding-info', 'ArtworkController@getBiddingInfo');
-    Route::get('/artwork/{artworkId}/bidding-info', 'BidController@getBiddingInfo');
     Route::post('popup', [UsersController::class,'store'])->name('popup');
     Route::get('/portfolio/{id}', [UsersController::class, 'portfolio'])->name('portfolio');
     Route::get('/buyerVerify', [UsersController::class, 'buyerVerify'])->name('buyerVerify');
+    Route::post('/updateProfilePicture', [UsersController::class, 'updateProfilePicture'])->name('buyer.updateProfilePicture');
+    Route::post('/updatebuyerSetting', [UsersController::class, 'updatebuyerSetting'])->name('updatebuyerSetting');
+    Route::get('/buyer/settings', [UsersController::class, 'buyersetting'])->name('buyer.settings'); //For Profile Picture
+    Route::post('/buyer/update-settings', [UsersController::class, 'updatebuyerSetting'])->name('buyer.updateSettings');
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart/sort', 'CartController@sortCart')->name('cart.sort');
+    Route::post('/bids/place/{artworkId}', [BidController::class, 'placeBid']);
+    Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
+    Route::delete('/cart/remove/{artwork}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+
+
 });

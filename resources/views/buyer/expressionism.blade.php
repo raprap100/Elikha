@@ -2,13 +2,24 @@
 
 @section('Body')
 @include('buyer.Nav')
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
-<div class="container shop-container ">
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+<div class="container shop-container">
   <div class="row row0 d-flex justify-content-center align-items-center">
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
-          <h5 style="font-size: 40px; font-family:Helvetica Neue">Get the Latest Art Trends</h5> <br>
+          <h5 style="font-size: 40px; font-family: 'Helvetica Nue';">Get the Latest Art Trends</h5> <br>
         </div>
         
       <style>
@@ -200,7 +211,7 @@
       <div class="row d-flex">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div class="col-md-6">
-          <form class="d-flex" role="search" action="{{ route('expressionism') }}" method="GET">
+          <form class="d-flex" role="search" action="{{ route('shopbuyer') }}" method="GET">
               <input id="searchInput" class="form-control me-2" type="search" name="search" placeholder="Search artwork" aria-label="Search" value="{{ request('search') }}">
               <button id="searchButton" class="btn btn-outline-dark" type="submit">Search</button>
           </form>
@@ -212,8 +223,8 @@
                   Sort
               </button>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('expressionism', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
-                  <li><a class="dropdown-item" href="{{ route('expressionism', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
+                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_sale', 'search' => request('search')]) }}">For Sale</a></li>
+                  <li><a class="dropdown-item" href="{{ route('shopbuyer', ['sort_type' => 'for_auction', 'search' => request('search')]) }}">For Auction</a></li>
               </ul>
           </div>
         </div>
@@ -221,7 +232,7 @@
     </div>
     <div class="row-md-8 scrollable-row" style="padding-left: 20px">
         <!-- Content for the scrollable right column/ arts goes here -->
-        <div class="row mt-4">
+        <div class="row mt-4"> 
           <!-- Display the error message here -->
           @if(session('error'))
           <div class="alert alert-danger">
@@ -315,18 +326,22 @@
                           <div class="d-inline">
                               <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
                                 @csrf 
-                                <!-- Display the error message here -->
-                                
                                       
                                 <div class="form-group">
                                   <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
+
                                   <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
                               </div><br>
-                              
-                                                          <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
-                                                          <button type="submit" class="btn btn-dark">Place Bid</button>
+                              <button type="submit" class="btn btn-dark">Place Bid</button>
                           </form>
-                                
+                          <form action="{{ route('cart.add') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
+                            <input type="hidden" name="price" value="{{ $artworks->price }}">
+                            <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
+                        </form>
+                           
+                        
                               
                             
                           <!-- Modal for Bidding -->
@@ -377,9 +392,27 @@
                         <p>{{ $artworks->description }}</p>
                         <div class="row">
                             <div class="d-inline">
-                                <button type="button buttonaddtocart" class="btn btn-outline-dark">Add to Cart</button>
-                                <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
+                              <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
                             </div>
+                            <form action="{{ route('cart.add') }}" method="POST">
+                              @csrf
+                              <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
+                              <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
+                              @if(session('success'))
+                          <div class="alert alert-success">
+                              {{ session('success') }}
+                          </div>
+                      @endif
+                      
+                      @if(session('error'))
+                          <div class="alert alert-danger">
+                              {{ session('error') }}
+                          </div>
+                      @endif
+                          </form>
+                            
+                          
+                      
                         </div>
                     </div>
                 </div>
@@ -444,8 +477,9 @@
     background-color: transparent; 
     border: none; 
     padding: 0; 
+    
 }
-        
+    
 
     </style>
 
@@ -453,6 +487,8 @@
     </div>
 
   </div>
+</div>
+
 @endsection
 
 @section('Footer')
