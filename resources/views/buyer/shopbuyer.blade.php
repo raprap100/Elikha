@@ -19,7 +19,7 @@
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
-          <h5 style="font-size: 40px; font-family: 'Arial', sans-serif;">Get the Latest Art Trends</h5> <br>
+          <h5 style="font-size: 40px; font-family: 'Helvetica Nue';">Get the Latest Art Trends</h5> <br>
         </div>
         
       <style>
@@ -315,17 +315,6 @@
                           <div class="d-inline">
                               <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
                                 @csrf 
-                                <!-- Display the error message here -->
-                                @if(session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-                                @if(session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
                                       
                                 <div class="form-group">
                                   <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>

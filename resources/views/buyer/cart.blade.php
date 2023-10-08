@@ -3,7 +3,45 @@
         @section('Header')
             @include('buyer.nav')
          @endsection
+@if(session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
+@if(session()->has('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+<script>
+    $(document).ready(function(){
+    $('.alert').on('closed.bs.alert', function () {
+        adjustBodyMarginTop();
+    });
+    
+    adjustBodyMarginTop();
+});
+
+function adjustBodyMarginTop() {
+    var navbarHeight = $('.navbar').outerHeight() || 0;
+    var alertHeight = $('.alert').outerHeight() || 0;
+    var marginTopValue = navbarHeight + alertHeight + 20; //margin for success/error message
+
+    $('body').css('margin-top', marginTopValue + 'px');
+}
+</script>
+<style>
+    .alert {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+</style>
         @section('Body')
             <br><br><br>
             <div class="container mt-4">
@@ -138,50 +176,25 @@
                             </div>
                         @endforeach
                     </div>
-
-                    <!-- Order details card on the right (30% width) -->
-                    <div class="col-md-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="mt-4 text-center">Order Details</h4>
-                                <p>Total Price: ₱{{ number_format($totalPrice, 2) }}</p> <!-- Corrected line -->
-
+                  <!-- Order details card on the right (30% width) -->
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="mt-4 text-center">Order Details</h4>
+                                    @if($sortType === 'all')
+                                    <p>Total Price: ₱{{ number_format($totalPrice, 2) }}</p>
+                                @elseif($sortType === 'for_sale')
+                                    <p>Total Price (For Sale): ₱{{ number_format($totalForSalePrice, 2) }}</p>
+                                @elseif($sortType === 'auctioned')
+                                    <p>Total Price (Auctioned): ₱{{ number_format($totalAuctionedPrice, 2) }}</p>
+                                @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                    
                 </div>
             </div>
 
-        <script>
-            function placeBid(artworkId, bidAmount) {
-            // Perform an AJAX request to place the bid
-            $.ajax({
-                url: '/bids/place/' + artworkId,
-                type: 'POST',
-                data: {
-                    amount: bidAmount,
-                    _token: '{{ csrf_token() }}' // Add CSRF token for Laravel security
-                },
-                success: function (response) {
-                    // Handle success response (show success message, update UI, etc.)
-                    console.log(response);
-
-                    // Assuming the response contains information about the bid status
-                    if (response.success) {
-                        // Bid placed successfully
-                        // You can update the UI here, for example, display a success message
-                        alert('Bid placed successfully!');
-                    } else {
-                        // Bid not placed, show error message returned from the server
-                        alert(response.error);
-                    }
-                },
-                error: function (error) {
-                    // Handle error response (show error message, handle validation errors, etc.)
-                    console.error(error);
-                }
-            });
-        }
-
-            </script>
+        
         @endsection

@@ -221,7 +221,7 @@ public function updateBuyerSettings(Request $request)
 
     // Handle search query
     if ($request->has('search')) {
-        $searchQuery = $request->input('search');
+        $searchQuery = $request->input('search');   
         $query->where(function ($q) use ($searchQuery) {
             $q->where('title', 'like', '%' . $searchQuery . '%')
                 ->orWhereHas('user', function ($u) use ($searchQuery) {
@@ -547,9 +547,15 @@ public function updateCart(Request $request, $artworkId)
 
 public function removeFromCart($artworkId)
 {
-    // Remove the artwork from the user's cart
-    // Save the updated cart state to the database or session
-    // Redirect back to the cart page
+ // In removeFromCart method
+return redirect()->route('cart')->with('success', 'Artwork removed from the cart successfully');
+
+// In placeBid method
+return redirect()->back()->with('success', 'Bid placed successfully!');
+// or
+return redirect()->back()->with('error', 'Failed to place bid. Please try again.');
+
+    
 }
 
     public function portfolio($id)
