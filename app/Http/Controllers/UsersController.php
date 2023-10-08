@@ -651,18 +651,15 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
 
     public function updateProfilePicture(Request $request)
     {
-        // Validate the request
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:1024', // Max 1MB
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:1024', 
         ]);
     
-        // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
     
-            // Validate image file type and size
             $allowedFileTypes = ['jpg', 'jpeg', 'png'];
-            $maxFileSize = 1024 * 1024; // 1MB
+            $maxFileSize = 1024 * 1024; 
     
             $extension = $image->getClientOriginalExtension();
     

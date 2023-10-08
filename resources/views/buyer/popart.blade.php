@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<div class="container shop-container ">
+<div class="container shop-container">
   <div class="row row0 d-flex justify-content-center align-items-center">
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
@@ -232,7 +232,18 @@
     </div>
     <div class="row-md-8 scrollable-row" style="padding-left: 20px">
         <!-- Content for the scrollable right column/ arts goes here -->
-        <div class="row mt-4">
+        <div class="row mt-4"> 
+          <!-- Display the error message here -->
+          @if(session('error'))
+          <div class="alert alert-danger">
+              {{ session('error') }}
+          </div>
+      @endif
+      @if(session('success'))
+      <div class="alert alert-success">
+          {{ session('success') }}
+      </div>
+  @endif
           @foreach($artwork as $artworks)
     @php
         $currentDateTime = now(); // Get the current date and time

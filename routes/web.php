@@ -131,6 +131,11 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
     Route::get('/portrait', [UsersController::class, 'portrait'])->name('portrait');
     Route::get('/abstract', [UsersController::class, 'abstract'])->name('abstract');
+    Route::get('/expressionism', [UsersController::class, 'expressionism'])->name('expressionism');
+    Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
+    Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
+
+
     Route::post('/cart/add', [CartController::class, 'addItemToCart'])->name('cart.add'); // Handles POST request for adding items to the cart
     Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting page
     Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);
