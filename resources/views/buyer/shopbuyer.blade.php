@@ -326,12 +326,13 @@
                           <div class="d-inline">
                               <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
                                 @csrf 
-                                      
                                 <div class="form-group">
                                   <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
-
                                   <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
-                              </div><br>
+                              </div>
+                              <div class="row">
+                                <div class="text-end">
+                                  <br>
                               <button type="submit" class="btn btn-dark">Place Bid</button>
                           </form>
                           <form action="{{ route('cart.add') }}" method="POST">
@@ -339,6 +340,8 @@
                             <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
                             <input type="hidden" name="price" value="{{ $artworks->price }}">
                             <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
+                          </div>
+                      </div>
                         </form>
                            
                         
