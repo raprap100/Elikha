@@ -13,7 +13,7 @@ use App\Models\Artworks;
 use App\Models\User;
 use App\Models\Ticket;
 use Carbon\Carbon; 
-
+use App\Models\Verify;
 
 
 class UsersController extends Controller
@@ -204,6 +204,7 @@ public function updateBuyerSettings(Request $request)
     public function shopbuyer(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved');
 
     // Handle sorting by "For Sale" and "For Auction"
@@ -235,11 +236,12 @@ public function updateBuyerSettings(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.shopbuyer', compact('user', 'artwork'));
+    return view('buyer.shopbuyer', compact('user', 'artwork', 'highlightsData'));
 }
 public function popart(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 1);
 
@@ -272,11 +274,12 @@ public function popart(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.popart', compact('user', 'artwork'));
+    return view('buyer.popart', compact('user', 'artwork', 'highlightsData'));
 }
 public function realism(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 2);
 
@@ -309,11 +312,12 @@ public function realism(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.realism', compact('user', 'artwork'));
+    return view('buyer.realism', compact('user', 'artwork', 'highlightsData'));
 }
 public function portrait(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 3);
 
@@ -346,11 +350,12 @@ public function portrait(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.portrait', compact('user', 'artwork'));
+    return view('buyer.portrait', compact('user', 'artwork', 'highlightsData'));
 }
 public function abstract(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 4);
 
@@ -383,11 +388,12 @@ public function abstract(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.abstract', compact('user', 'artwork'));
+    return view('buyer.abstract', compact('user', 'artwork', 'highlightsData'));
 }
 public function expressionism(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 5);
     // Handle sorting by "For Sale" and "For Auction"
@@ -419,12 +425,13 @@ public function expressionism(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.expressionism', compact('user', 'artwork'));
+    return view('buyer.expressionism', compact('user', 'artwork', 'highlightsData'));
 }
 
 public function impressionism(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 6);
     // Handle sorting by "For Sale" and "For Auction"
@@ -456,12 +463,13 @@ public function impressionism(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.impressionism', compact('user', 'artwork'));
+    return view('buyer.impressionism', compact('user', 'artwork', 'highlightsData'));
 }
 
 public function photorealism(Request $request)
 {
     $user = Auth::user();
+    $highlightsData = DB::table('highlights')->first(); 
     $query = Artworks::where('status', 'Approved')
                     ->where('category_id', 7);
     // Handle sorting by "For Sale" and "For Auction"
@@ -493,7 +501,7 @@ public function photorealism(Request $request)
 
     $artwork = $query->get();
 
-    return view('buyer.photorealism', compact('user', 'artwork'));
+    return view('buyer.photorealism', compact('user', 'artwork', 'highlightsData'));
 }
 
     public function buyercart()
