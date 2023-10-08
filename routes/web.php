@@ -127,7 +127,7 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/portrait', [UsersController::class, 'portrait'])->name('portrait');
     Route::get('/abstract', [UsersController::class, 'abstract'])->name('abstract');
     Route::post('/cart/add', [CartController::class, 'addItemToCart'])->name('cart.add'); // Handles POST request for adding items to the cart
-    Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting in nav
+    Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting page
     Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);
     Route::post('/updateCart/{artworkId}', [CartController::class, 'updateCart']);
     Route::post('/removeFromCart/{artworkId}', [CartController::class, 'removeFromCart']);

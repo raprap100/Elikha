@@ -515,12 +515,18 @@ public function photorealism(Request $request)
         return view('buyer.setting', compact('user'));
     }
 
-    public function addToCart(Request $request, $artworkId)
+public function addToCart(Request $request, $artworkId)
 {
     // Retrieve artwork details based on $artworkId
-    // Add the artwork to the user's cart
-    // Save the cart state to the database or session
-    // Redirect back to the shop page or cart page
+    $artwork = Artworks::find($artworkId);
+
+    // Check if the artwork is "For Sale" or "Auctioned"
+    if ($artwork && in_array($artwork->status, ['For Sale', 'Auctioned'])) {
+        // Add the artwork to the user's cart (you need to implement this logic)
+        // Redirect back to the shop page or cart page
+    } else {
+        // Artwork is not available for purchase, handle accordingly (e.g., show error message)
+    }
 }
 
 public function updateCart(Request $request, $artworkId)
