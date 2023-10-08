@@ -127,7 +127,7 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/portrait', [UsersController::class, 'portrait'])->name('portrait');
     Route::get('/abstract', [UsersController::class, 'abstract'])->name('abstract');
     Route::post('/cart/add', [CartController::class, 'addItemToCart'])->name('cart.add'); // Handles POST request for adding items to the cart
-    
+    Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting in nav
     Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);
     Route::post('/updateCart/{artworkId}', [CartController::class, 'updateCart']);
     Route::post('/removeFromCart/{artworkId}', [CartController::class, 'removeFromCart']);
@@ -136,15 +136,15 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::post('popup', [UsersController::class,'store'])->name('popup');
     Route::get('/portfolio/{id}', [UsersController::class, 'portfolio'])->name('portfolio');
     Route::get('/buyerVerify', [UsersController::class, 'buyerVerify'])->name('buyerVerify');
-    
-    Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); 
     Route::post('/updateProfilePicture', [UsersController::class, 'updateProfilePicture'])->name('buyer.updateProfilePicture');
-    Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
-
+    Route::post('/updatebuyerSetting', [UsersController::class, 'updatebuyerSetting'])->name('updatebuyerSetting');
+    Route::get('/buyer/settings', [UsersController::class, 'buyersetting'])->name('buyer.settings'); //For Profile Picture
+    Route::post('/buyer/update-settings', [UsersController::class, 'updatebuyerSetting'])->name('buyer.updateSettings');
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/cart/sort', 'CartController@sortCart')->name('cart.sort');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');    
     Route::post('/bids/place/{artworkId}', [BidController::class, 'placeBid']);
+    Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
 
 
 
