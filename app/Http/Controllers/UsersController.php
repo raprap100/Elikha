@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Ticket;
 use Carbon\Carbon; 
 use App\Models\Verify;
+use Illuminate\Support\Facades\DB;
 
 
 class UsersController extends Controller
