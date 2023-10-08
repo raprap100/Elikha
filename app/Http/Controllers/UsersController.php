@@ -177,7 +177,7 @@ public function buyerhome()
     return view('buyer.buyerhome', compact('user', 'artwork'));
 }
 
-public function updatebuyerSetting(Request $request)
+public function updateBuyerSettings(Request $request)
 {
     
         # Validation
@@ -663,7 +663,7 @@ public function removeFromCart($artworkId)
             Auth::user()->update([
                 'image' => $filename, // Save only the filename without the path
             ]);
-    
+            
             return redirect()->route('buyer.settings')->with('success', 'Profile picture updated successfully!');
         }
     

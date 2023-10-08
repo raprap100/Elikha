@@ -57,6 +57,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $cartItems = Cart::with('artwork.bids')->where('user_id', $user->id)->get();
+        
     
         $auctionItems = $cartItems->filter(function ($cartItem) {
             return $cartItem->artwork->start_price !== null;
@@ -89,7 +90,7 @@ class CartController extends Controller
 
 
     // Method to remove an item from the cart
-    public function removeFromCart($artworkId)
+    public function removeFromCart(Request $request, $artworkId)
     {
         // Find the cart item by artwork ID and user ID
         $cartItem = Cart::where('artwork_id', $artworkId)
@@ -100,12 +101,12 @@ class CartController extends Controller
         if ($cartItem) {
             $cartItem->delete();
 
-            // You can return a response indicating success
-            return response()->json(['message' => 'Artwork removed from the cart successfully']);
+            // Redirect back to the cart page with a success message
+            return redirect()->route('cart.index')->with('success', 'Artwork removed from the cart successfully');
         }
 
-        // If the cart item does not exist, return an error response
-        return response()->json(['error' => 'Artwork not found in the cart'], 404);
+        // If the cart item does not exist, redirect back with an error message
+        return redirect()->route('cart.index')->with('error', 'Artwork not found in the cart');
     }
 
     // Method to view the cart page
@@ -122,6 +123,16 @@ class CartController extends Controller
     
         return view('buyer.cart', compact('cartItems', 'totalPrice'));
     }
-    
+    public function placeBid(Request $request, $artworkId)
+{
+    // Validate request data here if needed
+
+    // Your bid placement logic
+    // ...
+
+    // Redirect back with success message or any response you want
+    return redirect()->back()->with('success', 'Bid placed successfully!');
+}
+
     
 }

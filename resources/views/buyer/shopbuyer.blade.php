@@ -306,6 +306,11 @@
                               <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
                                 @csrf 
                                 <!-- Display the error message here -->
+                                @if(session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                                 @if(session('error'))
                                     <div class="alert alert-danger">
                                         {{ session('error') }}
@@ -324,19 +329,9 @@
                             <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
                             <input type="hidden" name="price" value="{{ $artworks->price }}">
                             <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
-                       
-                            @if(session('success'))
-                          <div class="alert alert-success">
-                              {{ session('success') }}
-                          </div>
-                      @endif
-                      
-                      @if(session('error'))
-                          <div class="alert alert-danger">
-                              {{ session('error') }}
-                          </div>
-                      @endif
                         </form>
+                           
+                        
                               
                             
                           <!-- Modal for Bidding -->

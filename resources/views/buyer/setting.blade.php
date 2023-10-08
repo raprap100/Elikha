@@ -67,7 +67,8 @@
                 {{-- Change Password Section --}}
                 <h4 class="mt-4">Change Password</h4>
 
-                    <form action="{{ route('buyer.updateSettings') }}" method="POST">
+                        <form method="POST" action="{{ route('buyer.updateBuyerSetting') }}">
+
 
                     @csrf
 
