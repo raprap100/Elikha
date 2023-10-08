@@ -304,19 +304,39 @@
                       <h5>{{ $artworks->user->name}}</h5>
                       <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                       <br>
-                      @php
-                    
-                    $endDate = \Carbon\Carbon::parse($artworks->end_date);
-    $currentDate = \Carbon\Carbon::now();
-    $duration = $currentDate->diffForHumans($endDate, [
-        'parts' => 3, 
-        'join' => true, 
-        // 'short' => true, // Use a shorter format (e.g., 1h 30m 15s)
-    ]);
-    $duration = str_replace(['before', 'ago'], '', $duration);
-@endphp
+<p class="list-group-item"><strong>Duration: </strong><span id="countdown">
+      <span id="days">0</span> days
+      <span id="hours">0</span> hours
+      <span id="minutes">0</span> minutes
+      <span id="seconds">0</span> seconds
+</span></p>
+<script>
+  // Replace this with the correct end_date value from your backend
+  const end_date = '{{$artworks->end_date}}';
 
-<p class="list-group-item"><strong>Duration: </strong>{{ $duration }} left</p>
+  const targetDate = new Date(end_date).getTime();
+  
+  const countdownInterval = setInterval(function() {
+      const now = new Date().getTime();
+      const timeRemaining = targetDate - now;
+
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+
+      // Stop the countdown when it reaches zero
+      if (timeRemaining < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById('countdown').innerHTML = "Expired";
+      }
+  }, 1000); // Update every 1 second (1000 milliseconds)
+</script>
                 <p><strong>Lead Bid: </strong> ₱{{ $artworks->bids->max('amount') }}</p>
                       <p><strong>Description:</strong></p>
                       <p>{{ $artworks->description }}</p>
