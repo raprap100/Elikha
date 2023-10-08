@@ -181,13 +181,27 @@ function adjustBodyMarginTop() {
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="mt-4 text-center">Order Details</h4>
-                                    @if($sortType === 'all')
-                                    <p>Total Price: ₱{{ number_format($totalPrice, 2) }}</p>
-                                @elseif($sortType === 'for_sale')
-                                    <p>Total Price (For Sale): ₱{{ number_format($totalForSalePrice, 2) }}</p>
-                                @elseif($sortType === 'auctioned')
-                                    <p>Total Price (Auctioned): ₱{{ number_format($totalAuctionedPrice, 2) }}</p>
-                                @endif
+                                    <h5>For Sale</h5>
+                                    @foreach($saleItems as $artwork)
+                                        ₱{{ number_format($artwork->artwork->price, 0, '.', ',') }}<br>
+                                    @endforeach
+
+                                    <h5 class="mt-3">Auctioned</h5>
+                                    @foreach($auctionItems as $artwork)
+                                        @php
+                                            $leadingBid = $artwork->artwork->bids->max('amount');
+                                        @endphp
+                                        ₱{{ number_format($leadingBid, 0, '.', ',') }}<br>
+                                    @endforeach
+
+                                    <h5 class="mt-3">Total Price</h5>
+                                    @if($sortType === 'for_sale')
+                                        ₱{{ number_format($totalForSalePrice, 0, '.', ',') }}
+                                    @elseif($sortType === 'auctioned')
+                                        ₱{{ number_format($totalAuctionedPrice, 0, '.', ',') }}
+                                    @else
+                                        ₱{{ number_format($totalPrice, 0, '.', ',') }}
+                                    @endif
                                 </div>
                             </div>
                         </div>

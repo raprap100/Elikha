@@ -54,54 +54,59 @@ class CartController extends Controller
 
     // Method to show the cart
     public function showCart(Request $request)
-{
-    $user = Auth::user();
-    $cartItems = Cart::with('artwork.bids')->where('user_id', $user->id)->get();
+    {
+        $user = Auth::user();
+        $cartItems = Cart::with('artwork.bids')->where('user_id', $user->id)->get();
 
-    // Filter auctioned and for_sale items
-    $auctionItems = $cartItems->filter(function ($cartItem) {
-        return $cartItem->artwork->start_price !== null;
-    });
-
-    $saleItems = $cartItems->filter(function ($cartItem) {
-        return $cartItem->artwork->start_price === null;
-    });
-
-    // Calculate total prices based on sort type
-    $sortType = $request->input('sortType', 'all');
-    $totalPrice = 0;
-    $totalForSalePrice = 0;
-    $totalAuctionedPrice = 0;
-
-    if ($sortType === 'for_sale') {
-        // Calculate total price for for_sale items
-        $totalForSalePrice += $saleItems->sum(function ($cartItem) {
-            return $cartItem->artwork->price;
-        });
-        $totalPrice = $totalForSalePrice;
-    } elseif ($sortType === 'auctioned') {
-        // Calculate total price for auctioned items
-        $totalAuctionedPrice += $auctionItems->sum(function ($cartItem) {
-            return $cartItem->artwork->bids->max('amount') ?? 0;
-        });
-        $totalPrice = $totalAuctionedPrice;
-    } else {
-        // Calculate total prices for both for_sale and auctioned items
-        $totalForSalePrice += $saleItems->sum(function ($cartItem) {
-            return $cartItem->artwork->price;
+        // Filter auctioned and for_sale items
+        $auctionItems = $cartItems->filter(function ($cartItem) {
+            return $cartItem->artwork->start_price !== null;
         });
 
-        $totalAuctionedPrice += $auctionItems->sum(function ($cartItem) {
-            return $cartItem->artwork->bids->max('amount') ?? 0;
+        $saleItems = $cartItems->filter(function ($cartItem) {
+            return $cartItem->artwork->start_price === null;
         });
 
-        // Calculate total price for all items (both for_sale and auctioned)
-        $totalPrice = $totalForSalePrice + $totalAuctionedPrice;
+        // Calculate total prices based on sort type
+        $sortType = $request->input('sortType', 'all');
+        $totalPrice = 0;
+        $totalForSalePrice = 0;
+        $totalAuctionedPrice = 0;
+
+        if ($sortType === 'for_sale') {
+            // Calculate total price for for_sale items
+            $totalForSalePrice += $saleItems->sum(function ($cartItem) {
+                return $cartItem->artwork->price;
+            });
+        } elseif ($sortType === 'auctioned') {
+            // Calculate total price for auctioned items
+            foreach ($auctionItems as $cartItem) {
+                $leadingBid = $cartItem->artwork->bids->max('amount');
+                if ($leadingBid) {
+                    $totalAuctionedPrice += $leadingBid;
+                }
+            }
+        } else {
+            // Calculate total prices for both for_sale and auctioned items
+            $totalForSalePrice += $saleItems->sum(function ($cartItem) {
+                return $cartItem->artwork->price;
+            });
+
+            foreach ($auctionItems as $cartItem) {
+                $leadingBid = $cartItem->artwork->bids->max('amount');
+                if ($leadingBid) {
+                    $totalAuctionedPrice += $leadingBid;
+                }
+            }
+
+            // Calculate total price for all items (both for_sale and auctioned)
+            $totalPrice = $totalForSalePrice + $totalAuctionedPrice;
+        }
+
+        return view('buyer.cart', compact('auctionItems', 'saleItems', 'totalPrice', 'totalForSalePrice', 'totalAuctionedPrice', 'user', 'sortType'));
     }
-
-    return view('buyer.cart', compact('auctionItems', 'saleItems', 'totalPrice', 'totalForSalePrice', 'totalAuctionedPrice', 'user', 'sortType'));
-}
-
+    
+    
 
     // Method to remove an item from the cart
     public function removeFromCart(Request $request, $artwork)
