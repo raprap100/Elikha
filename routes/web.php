@@ -124,6 +124,8 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
+    Route::post('/cart', [UsersController::class, 'cart'])->name('cart');
+
     Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
     Route::get('/popart', [UsersController::class, 'popart'])->name('popart');
     Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
@@ -133,7 +135,6 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting page
     Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);
     Route::post('/updateCart/{artworkId}', [CartController::class, 'updateCart']);
-    Route::post('/removeFromCart/{artworkId}', [CartController::class, 'removeFromCart']);
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
     Route::post('/artwork/{artworkId}/bid', [BidController::class, 'placeBid'])->name('place.bid');
     Route::post('popup', [UsersController::class,'store'])->name('popup');
@@ -145,9 +146,9 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::post('/buyer/update-settings', [UsersController::class, 'updatebuyerSetting'])->name('buyer.updateSettings');
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/cart/sort', 'CartController@sortCart')->name('cart.sort');
-    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');    
     Route::post('/bids/place/{artworkId}', [BidController::class, 'placeBid']);
     Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
+    Route::delete('/cart/remove/{artwork}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
 
 

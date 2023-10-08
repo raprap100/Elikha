@@ -2,8 +2,7 @@
 
         @section('Header')
             @include('buyer.nav')
-
-        @endsection
+         @endsection
 
         @section('Body')
             <br><br><br>
@@ -100,13 +99,12 @@
                 </div>
             </div>
         </div>
-        <form method="post" action="{{ route('cart.remove', $artwork->id) }}">
+        
+        <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
             @csrf
             @method('delete')
             <button type="submit" class="btn btn-danger mt-3">Delete</button>
-        </form>
-                                            
-                                            
+        </form>                     
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +127,7 @@
                                             <p class="card-subtitle mb-2 text-muted">{{ $artwork->artwork->user->name }}</p>
                                             <p class="card-text">{{ $artwork->artwork->description }}</p>
                                             <p class="card-text">Price: ₱{{ number_format($artwork->artwork->price, 2) }}</p>
-                                            <form method="post" action="{{ route('cart.remove', $artwork->id) }}">
+                                            <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-danger mt-3">Delete</button>

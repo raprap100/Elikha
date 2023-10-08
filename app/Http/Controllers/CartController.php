@@ -87,27 +87,27 @@ class CartController extends Controller
     }
     
 
-
-
     // Method to remove an item from the cart
-    public function removeFromCart(Request $request, $artworkId)
-    {
-        // Find the cart item by artwork ID and user ID
-        $cartItem = Cart::where('artwork_id', $artworkId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
+    public function removeFromCart(Request $request, $artwork)
+{
+    // Find the cart item by artwork ID and user ID
+    $cartItem = Cart::where('artwork_id', $artwork)
+        ->where('user_id', auth()->user()->id)
+        ->first();
 
-        // If the cart item exists, delete it
-        if ($cartItem) {
-            $cartItem->delete();
+    // If the cart item exists, delete it
+    if ($cartItem) {
+        $cartItem->delete();
 
-            // Redirect back to the cart page with a success message
-            return redirect()->route('cart.index')->with('success', 'Artwork removed from the cart successfully');
-        }
-
-        // If the cart item does not exist, redirect back with an error message
-        return redirect()->route('cart.index')->with('error', 'Artwork not found in the cart');
+        // Redirect back to the cart page with a success message
+        return redirect()->route('cart')->with('success', 'Artwork removed from the cart successfully');
     }
+
+    // If the cart item does not exist, redirect back with an error message
+    return redirect()->route('cart')->with('error', 'Artwork not found in the cart');
+}
+
+    
 
     // Method to view the cart page
     public function index(Request $request)
