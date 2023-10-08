@@ -306,8 +306,6 @@
                       <br>
                       @php
                     
-                    $leadBidAmount = $artworks->bids->max('amount');
-
                     $endDate = \Carbon\Carbon::parse($artworks->end_date);
     $currentDate = \Carbon\Carbon::now();
     $duration = $currentDate->diffForHumans($endDate, [

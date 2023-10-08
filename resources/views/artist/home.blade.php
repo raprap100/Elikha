@@ -25,16 +25,16 @@
                     <div class="row grid text-center">
                         <div class="col-sm-4 p-2 text-align: center">
                             <h2>---</h2>
-                            <p>Active Auctions</p>
+                            <p>Active Artworks</p>
                             
                         </div>
                         <div class="col-sm-4 p-2 text-align: center">
                             <h2>---</h2>
-                            <p>Pending Payments</p>
+                            <p>Pending Artworks</p>
                         </div>
                         <div class="col-sm-4 p-2 text-align: center">
                             <h2>---</h2>
-                            <p>Important Messages</p>
+                            <p>Unread Messages</p>
                         </div>
                         
                       </div>

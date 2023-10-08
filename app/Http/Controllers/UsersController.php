@@ -15,7 +15,7 @@ use App\Models\Ticket;
 use Carbon\Carbon; 
 use App\Models\Verify;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Bid;
 
 
 class UsersController extends Controller
@@ -107,14 +107,23 @@ class UsersController extends Controller
     {
             return view('artist.home');
     }
-    public function artistAuction()
+    public function artistAuction(Request $request)
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                       ->where('status', 'Approved')
-                        ->whereNotNull('start_price') 
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-        return view('artist.myauctions', compact('artwork'));
+        ->where('status', 'Approved')
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+    // Fetch bidders for each artwork
+    foreach ($artwork as $artworks) {
+        $artworks->bidders = DB::table('bids')
+            ->where('artwork_id', $artworks->id)
+            ->join('users', 'bids.user_id', '=', 'users.id')
+            ->select('users.name as bidder_name', 'bids.amount', 'bids.created_at')
+            ->get();
+    }
+
+    return view('artist.myauctions', compact('artwork'));
     }
     public function artistSettings()
     {
