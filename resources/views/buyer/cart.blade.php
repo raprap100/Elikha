@@ -116,8 +116,8 @@
                         <!-- Display For Sale Artworks in Cart -->
                         <h2>For Sale Items</h2>
                         @foreach($saleItems as $artwork)
-                        <div class="card mb-3" data-artwork-type="auctioned">
-                                <div class="row g-0">
+                        <div class="card mb-3" data-artwork-type="for_sale"> <!-- Update the data-artwork-type value to "for_sale" -->
+                            <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{ asset('artworks/'.$artwork->artwork->image) }}" alt="Artwork Image"
                                             class="img-fluid">
