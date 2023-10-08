@@ -27,7 +27,11 @@
                         <br>
                         <br>
                         <div class="row">
-                            
+                            @if(Session::has('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{Session::get('success')}}
+                        </div>
+                    @endif
                             @foreach($artwork as $artworks)
                             @if ($artworks->start_price)
                             <div class="col-sm-4 mb-4">
@@ -41,10 +45,6 @@
                                         <li class="list-group-item"><b>Total Bids:</b> {{ $artworks->bids->count() }}</li>
                                         <li class="list-group-item"><b>Highest Bid:</b> ₱{{ $artworks->bids->max('amount') }}</li>
                                         <li class="list-group-item"><b>Start Date:</b> {{ \Carbon\Carbon::parse($artworks->start_date)->format('Y-m-d') }}</li>
-                                        <li class="list-group-item"><b>Duration:</b> 
-                                            <span id="countdown">
-                                                <span id="days">0</span> days left</li>
-                                            </span>
                                     </ul>
                                     <div class="card-body">
                                         <div class="d-grid gap-2 col-6 mx-auto">
@@ -73,45 +73,18 @@
                                                         <div class="row">
                                                             <div class="col-md-4 text-center"><img style="width: 20px; height:20px;" src="images/person.png"><br>Bidders<br><span><b>{{ $artworks->bids->count() }}</b></span></div>
                                                             <div class="col-md-4 text-center">
-                                                                <img style="width: 20px; height:20px;" src="images/time.png"><br>
+                                                                <img style="width: 20px; height: 20px;" src="images/time.png"><br>
                                                                 Time Remaining<br>
-                                                                <span id="countdown">
+                                                                <span id="countdown_{{ $artworks->id }}">
                                                                     <b>
-                                                                        <span id="days">0</span> days
-                                                                        <span id="hours">0</span> hours
-                                                                        <span id="minutes">0</span> minutes
-                                                                        <span id="seconds">0</span> seconds
+                                                                        <span id="days_{{ $artworks->id }}">0</span> days
+                                                                        <span id="hours_{{ $artworks->id }}">0</span> hours
+                                                                        <span id="minutes_{{ $artworks->id }}">0</span> minutes
+                                                                        <span id="seconds_{{ $artworks->id }}">0</span> seconds
                                                                     </b>
                                                                 </span>
                                                             </div>
                                                             
-                                                            <script>
-                                                                // Replace this with the correct end_date value from your backend
-                                                                const end_date = '{{$artworks->end_date}}';
-                                                            
-                                                                const targetDate = new Date(end_date).getTime();
-                                                                
-                                                                const countdownInterval = setInterval(function() {
-                                                                    const now = new Date().getTime();
-                                                                    const timeRemaining = targetDate - now;
-                                                            
-                                                                    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                                                                    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                                                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                                                                    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                                                            
-                                                                    document.getElementById('days').textContent = days;
-                                                                    document.getElementById('hours').textContent = hours;
-                                                                    document.getElementById('minutes').textContent = minutes;
-                                                                    document.getElementById('seconds').textContent = seconds;
-                                                            
-                                                                    // Stop the countdown when it reaches zero
-                                                                    if (timeRemaining < 0) {
-                                                                        clearInterval(countdownInterval);
-                                                                        document.getElementById('countdown').innerHTML = "Expired";
-                                                                    }
-                                                                }, 1000); // Update every 1 second (1000 milliseconds)
-                                                            </script>
                                                             <div class="col-md-4 text-center"><img style="width: 20px; height:20px;" src="images/bidd.png"><br>Highest Bid<br><span><b>₱{{ $artworks->bids->max('amount') }}</b></span></div>  
                                                         </div>
                                                         <div class="row mt-4">
@@ -144,7 +117,14 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-dark" id="markAsSoldBtn" data-dismiss="modal">Mark As Sold</button>
+                                                        <form action="{{ route('sold', $artworks->id) }}" method="POST">
+                                                            @csrf
+                                                            @if (now() >= $artworks->end_date)
+                                                                <button class="btn btn-dark" type="submit">Mark as Sold</button>
+                                                            @else
+                                                                <button class="btn btn-outline-dark" type="button" disabled>Mark as Sold</button>
+                                                            @endif
+                                                        </form>
                                                       </div>
                                                   </div>
                                                   
@@ -166,11 +146,12 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item"><b>Price:</b> ₱{{ $artworks->price}}</li>
                   </ul>
-                  <div class="card-body">
-                      <div class="d-grid gap-2 col-6 mx-auto">
-                          <button class="btn btn-dark" type="button">Mark as Sold</button>
-                      </div>
-                  </div>
+                  <div class="card-body d-flex justify-content-center">
+                    <form action="{{ route('sold', $artworks->id) }}" method="POST">
+                        @csrf
+                    <button class="btn btn-dark" type="submit">Mark as Sold</button>
+                    </form>
+                </div>
               </div>
           </div>
           @endif 
@@ -180,14 +161,44 @@
                             @endif
                             
         
-
+                            <script>
+                                function startCountdown_{{ $artworks->id }}(endDate) {
+                                    const targetDate_{{ $artworks->id }} = new Date(endDate).getTime();
+                                    const countdownInterval_{{ $artworks->id }} = setInterval(function () {
+                                        const now_{{ $artworks->id }} = new Date().getTime();
+                                        const timeRemaining_{{ $artworks->id }} = targetDate_{{ $artworks->id }} - now_{{ $artworks->id }};
+                                        
+                                        const days_{{ $artworks->id }} = Math.floor(timeRemaining_{{ $artworks->id }} / (1000 * 60 * 60 * 24));
+                                        const hours_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                        const minutes_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60 * 60)) / (1000 * 60));
+                                        const seconds_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60)) / 1000);
+                                        
+                                        document.getElementById('days_{{ $artworks->id }}').textContent = days_{{ $artworks->id }};
+                                        document.getElementById('hours_{{ $artworks->id }}').textContent = hours_{{ $artworks->id }};
+                                        document.getElementById('minutes_{{ $artworks->id }}').textContent = minutes_{{ $artworks->id }};
+                                        document.getElementById('seconds_{{ $artworks->id }}').textContent = seconds_{{ $artworks->id }};
+                                        
+                                        if (timeRemaining_{{ $artworks->id }} < 0) {
+                                            clearInterval(countdownInterval_{{ $artworks->id }});
+                                            document.getElementById('countdown_{{ $artworks->id }}').innerHTML = "Expired";
+                                            setTimeout(function () {
+                                                document.getElementById('countdown_{{ $artworks->id }}').innerHTML = "<b><span id='days_{{ $artworks->id }}'>0</span> days <span id='hours_{{ $artworks->id }}'>0</span> hours <span id='minutes_{{ $artworks->id }}'>0</span> minutes <span id='seconds_{{ $artworks->id }}'>0</span> seconds</b>";
+                                                startCountdown_{{ $artworks->id }}(endDate); // Restart the countdown
+                                            }, 5000);
+                                        }
+                                    }, 1000);
+                                }
+                                
+                                const initialEndDate_{{ $artworks->id }} = '{{$artworks->end_date}}';
+                                startCountdown_{{ $artworks->id }}(initialEndDate_{{ $artworks->id }});
+                            </script>  
                             @endforeach
                         </div>
                     </div>
                 </span>
             </div>
         </div>
-                        
+           
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         @endsection

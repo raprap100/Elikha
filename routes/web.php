@@ -19,6 +19,7 @@ use App\Http\Controllers\CartController;
 
 Route::group(['middleware' => 'guest'], function () 
 {
+    Route::get('/', [AuthController::class, 'home'])->name('home');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
 {
     Route::get('/artistHome', [UsersController::class, 'artistHome'])->name('artistHome');
     Route::get('/artistAuction', [UsersController::class, 'artistAuction'])->name('artistAuction');
+    Route::post('/sold/{id}', [UsersController::class, 'sold'])->name('sold');
     Route::get('/artistMessage', [UsersController::class, 'artistMessage'])->name('artistMessage');
     Route::get('/artistSettings', [UsersController::class, 'artistSettings'])->name('artistSettings');
     Route::post('/artistSettings', [UsersController::class, 'updateartistSetting'])->name('updateartistSetting');
@@ -95,7 +97,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/subscribers', [HomeController::class, 'subscribers']);
     Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
     Route::get('/posts/search', [HomeController::class, 'search'])->name('search');
-    Route::post('//approve/{id}', [HomeController::class, 'approve'])->name('approve');
+    Route::post('/approve/{id}', [HomeController::class, 'approve'])->name('approve');
     Route::post('/reject', [HomeController::class, 'reject'])->name('reject');
     Route::get('/approvePosts', [HomeController::class, 'approvePosts'])->name('approvePosts');
     Route::get('/support', [HomeController::class, 'support']);
@@ -125,7 +127,6 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
     Route::post('/cart', [UsersController::class, 'cart'])->name('cart');
-
     Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
     Route::get('/popart', [UsersController::class, 'popart'])->name('popart');
     Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
@@ -134,8 +135,6 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/expressionism', [UsersController::class, 'expressionism'])->name('expressionism');
     Route::get('/impressionism', [UsersController::class, 'impressionism'])->name('impressionism');
     Route::get('/photorealism', [UsersController::class, 'photorealism'])->name('photorealism');
-
-
     Route::post('/cart/add', [CartController::class, 'addItemToCart'])->name('cart.add'); // Handles POST request for adding items to the cart
     Route::get('/buyersetting', [UsersController::class, 'buyersetting'])->name('buyer.setting'); //call setting page
     Route::post('/addToCart/{artworkId}', [CartController::class, 'addToCart']);

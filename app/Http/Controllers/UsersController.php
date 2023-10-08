@@ -124,6 +124,13 @@ class UsersController extends Controller
 
     return view('artist.myauctions', compact('artwork'));
     }
+    public function sold(Request $request, $id)
+{
+    $artwork = Artworks::findOrFail($id);
+    $artwork->status = 'Sold';
+    $artwork->save();
+    return back()->with("success", "Artwork marked as sold!");
+}
     public function artistSettings()
     {
         return view('artist.settings');
