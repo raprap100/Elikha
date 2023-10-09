@@ -433,4 +433,59 @@ class MessagesController extends Controller
     // Redirect with a success message
     return redirect()->back()->with('success', 'Your message has been sent.');
 }
+public function sendGCashImage(Request $request, $id)
+{
+    $verificationRequest = Verify::findOrFail($id);
+
+    if (!$verificationRequest) {
+        return redirect()->back()->with('error', 'Verification request not found.');
+    }
+
+    $gcashImage = $verificationRequest->gcash_image;
+    $gcashTitle = $verificationRequest->title;
+
+    $sender = auth()->user();
+
+    $artistId = $verificationRequest->user->id;
+
+// Create the Verify record after successful validation
+$verificationRequest = Verify::create([
+    'identification' => $uploadedImagePaths[0],
+    'selfie' => $uploadedImagePaths[1],
+    'gcash' => $uploadedImagePaths[2],
+    'firstname' => $request->input('firstname'),
+    'middlename' => $request->input('middlename'),
+    'lastname' => $request->input('lastname'),
+    'nationality' => $request->input('nationality'),
+    'birthday' => $request->input('birthday'),
+    'address' => $request->input('address'),
+    'age' => $request->input('age'),
+    'phonenumber' => $request->input('phonenumber'),
+    'users_id' => Auth::id(),
+    'gender_id' => $request->input('gender_id'),
+    'idtype_id' => $request->input('idtype_id'),
+    'status' => 'pending',
+    'remarks' => '',
+]);
+    $message = Chatify::newMessage([
+        'from_id' => $sender->id,
+        'to_id' => $artistId,
+        'body' => "Hello! Yes it's still available. You can send the payment in my GCash QR Code attached below:",
+        'attachment' => ($gcashImage) ? json_encode((object)[
+            'new_name' => $gcashImage,
+            'old_name' => htmlentities(trim($gcashImage), ENT_QUOTES, 'UTF-8'),
+        ]) : null,
+    ]);
+
+    $messageData = Chatify::parseMessage($message);
+
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify." . $request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true),
+        ]);
+    }
+    return view('sendForm')->with('verificationRequest', $verificationRequest);
+}
 }

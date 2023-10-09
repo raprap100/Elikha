@@ -13,6 +13,8 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\CartController;
 use Chatify\Http\Controllers\MessagesController;
 
+
+
 Route::group(['middleware' => 'guest'], function () 
 {
     Route::get('/', [AuthController::class, 'home'])->name('home');
@@ -81,7 +83,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
     Route::get('/home', [HomeController::class, 'home']);
     Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
-    
+    Route::post('/send-gcash-image/{id}', [MessagesController::class, 'sendGCashImage'])->name('sendGCashImage');
 
 
     
@@ -149,9 +151,9 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::post('/bids/place/{artworkId}', [BidController::class, 'placeBid']);
     Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
     Route::delete('/cart/remove/{artwork}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('send-message-to-artist/{id}', [UsersController::class, 'sendMessageToArtist'])
-    ->name('sendMessageToArtist');
-
+    Route::post('send-message-to-artist/{id}', [UsersController::class, 'sendMessageToArtist'])->name('sendMessageToArtist');
+    Route::post('/send-gcash-image/{id}', [MessagesController::class, 'sendGCashImage'])->name('sendGCashImage');
+    
 
 
 });

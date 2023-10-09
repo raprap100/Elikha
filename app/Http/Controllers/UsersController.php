@@ -734,7 +734,7 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
         $message = Chatify::newMessage([
             'from_id' => $sender->id,
             'to_id' => $artistId, // Use the artist's ID as the recipient
-            'body' => "I'm interested in your artwork: $artworkTitle",
+            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' Is it still available?",
             'attachment' => ($attachment) ? json_encode((object)[
                 'new_name' => $attachment,
                 'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
@@ -748,14 +748,50 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
             'message' => Chatify::messageCard($messageData, true)
         ]);
     }
-    // Redirect with a success message
-    return Response::json([
-        'status' => '200',
-        'message' => Chatify::messageCard(@$messageData),
-        'success' => 'Your message was successfully sent.', // Add your message here
+    // Construct the URL
+    $chatifyUrl = url('chatify/' . $artwork->user->id);
+
+    // Redirect the user to the URL immediately
+    return redirect()->to($chatifyUrl);
+}
+public function sendGCashImage(Request $request, $id)
+{
+    $verificationRequest = VerificationRequest::findOrFail($id);
+
+    if (!$verificationRequest) {
+        return redirect()->back()->with('error', 'Verification request not found.');
+    }
+
+    $gcashImage = $verificationRequest->gcash_image;
+    $gcashTitle = $verificationRequest->title;
+
+    $sender = auth()->user();
+
+    $artistId = $verificationRequest->user->id;
+
+    $message = Chatify::newMessage([
+        'from_id' => $sender->id,
+        'to_id' => $artistId,
+        'body' => "Hello! I've uploaded my GCash image for verification. Please review it.",
+        'attachment' => ($gcashImage) ? json_encode((object)[
+            'new_name' => $gcashImage,
+            'old_name' => htmlentities(trim($gcashImage), ENT_QUOTES, 'UTF-8'),
+        ]) : null,
     ]);
+
+    $messageData = Chatify::parseMessage($message);
+
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify." . $request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true),
+        ]);
+    }
 }
+
 }
+
 
 
     
