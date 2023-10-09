@@ -718,37 +718,28 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
     }
     public function sendMessageToArtist(Request $request, $id)
 {
-    // Validate the ID parameter and ensure it's a valid user ID
-    // $this->validate($request, [
-    //     'id' => 'required|exists:users,id',
-    // ]);
-
-    // // Find the artist by their ID
-    $artist = User::findOrFail($id);
     $artwork = Artworks::findOrFail($id);
 
-    // Check if the artist or artwork is not found
-    if (!$artist || !$artwork) {
-        return redirect()->back()->with('error', 'Artist or artwork not found.');
+    if (!$artwork) {
+        return redirect()->back()->with('error', 'Artwork not found.');
     }
 
-    // Retrieve the artwork's image URL and title
     $attachment = $artwork->image;
     $artworkTitle = $artwork->title;
 
-    // Determine the sender (current user) and recipient (artist)
-    $sender = auth()->user(); // Assuming the current user is authenticated
+    $sender = auth()->user(); 
 
-    // Send a chat message with the artwork's image and title
-    $message = Chatify::newMessage([
-        'from_id' => $sender->id,
-        'to_id' => $artist->id, // Use the artist's ID as the recipient
-        'body' => "I'm interested in your artwork: $artworkTitle",
-        'attachment' => ($attachment) ? json_encode((object)[
-            'new_name' => $attachment,
-            'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
-    ]) : null,
-    ]);
+    $artistId = $artwork->user->id;
+    
+        $message = Chatify::newMessage([
+            'from_id' => $sender->id,
+            'to_id' => $artistId, // Use the artist's ID as the recipient
+            'body' => "I'm interested in your artwork: $artworkTitle",
+            'attachment' => ($attachment) ? json_encode((object)[
+                'new_name' => $attachment,
+                'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
+            ]) : null,
+        ]);
     $messageData = Chatify::parseMessage($message);
     if (Auth::user()->id != $request['id']) {
         Chatify::push("private-chatify.".$request['id'], 'messaging', [
@@ -761,10 +752,13 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
     return Response::json([
         'status' => '200',
         'message' => Chatify::messageCard(@$messageData),
+        'success' => 'Your message was successfully sent.', // Add your message here
     ]);
 }
+}
 
-    }
+
+    
     // $message = Chatify::newMessage([
     //     'from_id' => Auth::user()->id,
     //     'to_id' => $request['id'],
@@ -776,5 +770,3 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
     // ]);
     
     
-
-
