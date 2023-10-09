@@ -244,7 +244,7 @@
         <div class="col-md-4">
             <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
                  data-toggle="modal" data-target="#Modal{{ $artworks->start_price ? 'Auction' : 'Sale' }}_{{ $artworks->id }}">
-                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <img src="{{ asset('storage/attachments/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
                 <div class="card-body">
                     <h5 class="card-title">{{ $artworks->title }}</h5>
                     <h6>{{ $artworks->user->name }}</h6>
@@ -261,7 +261,7 @@
         <div class="col-md-4">
             <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
                  data-toggle="modal" data-target="#ModalSale_{{ $artworks->id }}">
-                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <img src="{{ asset('storage/attachments/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
                 <div class="card-body">
                     <h5 class="card-title">{{ $artworks->title }}</h5>
                     <h6>{{ $artworks->user->name }}</h6>
@@ -286,7 +286,7 @@
               <div class="row">
                   <div class="col-6">
                       <div class="row image-container">
-                          <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                          <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
                       </div>
                   </div>
                   <div class="col-6">
@@ -402,7 +402,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="row image-container">
-                            <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                            <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-6">
@@ -424,7 +424,15 @@
         </div>
     </div>
     <div class="col">
-      <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
+      <form method="get" action="{{ url('chatify/' . $artworks->user->id) }}">
+                @csrf
+                <form method="post" action="{{ route('chatify.sendMessageToArtist', ['id' => $artworks->id]) }}">
+    @csrf
+    <button class="btn btn-dark" type="submit">
+        Buy
+    </button>
+</form>
+            </form>
     </div>
 </div>
                     </div>

@@ -11,11 +11,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\VerifyController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\CartController;
-
-
-
- 
- 
+use Chatify\Http\Controllers\MessagesController;
 
 Route::group(['middleware' => 'guest'], function () 
 {
@@ -153,6 +149,8 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::post('/bids/place/{artworkId}', [BidController::class, 'placeBid']);
     Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
     Route::delete('/cart/remove/{artwork}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('chatify/send-message-to-artist/{id}', [UsersController::class, 'sendMessageToArtist'])
+    ->name('chatify.sendMessageToArtist');
 
 
 

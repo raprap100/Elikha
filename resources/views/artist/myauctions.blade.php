@@ -36,7 +36,7 @@
                             @if ($artworks->start_price)
                             <div class="col-sm-4 mb-4">
                                 <div class="card" style="width: 18rem;">
-                                    <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="art">
+                                    <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="art">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $artworks->title }}</h5>
                                         <p class="card-text">{{ \Illuminate\Support\Str::limit($artworks->description, 30) }}</p>
@@ -64,7 +64,7 @@
                                                     <div class="row-6 text-center">
                                                       <div class="row image-container ">
                                                         <H1>{{ $artworks->title }}</H1>
-                                                      <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" style="max-width: 200px; max-height: 200px;"class="mx-auto d-block">
+                                                      <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" style="max-width: 200px; max-height: 200px;"class="mx-auto d-block">
                                                       </div>
                                                     
                                                       <p style="color: rgba(142, 146, 149, 0.491)">{{ $artworks->dimension }}</p>
@@ -138,7 +138,7 @@
                             @if(!$artworks->start_price)
                             <div class="col-sm-4 mb-4">
                                 <div class="card" style="width: 18rem;">
-                                    <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="art">
+                                    <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="art">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $artworks->title }}</h5>
                                         <p class="card-text">{{ \Illuminate\Support\Str::limit($artworks->description, 150) }}</p>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Models\User;
+use App\Models\Artworks;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
 use Chatify\Facades\ChatifyMessenger as Chatify;
@@ -480,4 +481,39 @@ class MessagesController extends Controller
             'status' => $status,
         ], 200);
     }
+    public function sendMessageToArtist(Request $request, $id)
+{
+    // Validate the ID parameter and ensure it's a valid user ID
+    // $this->validate($request, [
+    //     'id' => 'required|exists:users,id',
+    // ]);
+
+    // // Find the artist by their ID
+    $artist = User::findOrFail($id);
+    $artwork = Artworks::findOrFail($id);
+
+    // Check if the artist or artwork is not found
+    if (!$artist || !$artwork) {
+        return redirect()->back()->with('error', 'Artist or artwork not found.');
+    }
+
+    // Retrieve the artwork's image URL and title
+    $imageURL = $artwork->image;
+    $artworkTitle = $artwork->title;
+
+    // Determine the sender (current user) and recipient (artist)
+    $sender = auth()->user(); // Assuming the current user is authenticated
+
+    // Send a chat message with the artwork's image and title
+    Chatify::newMessage([
+        'from_id' => $sender->id,
+        'to_id' => $artist->id, // Use the artist's ID as the recipient
+        'body' => "I'm interested in your artwork: $artworkTitle",
+        'attachment' => $imageURL,
+        'attachment_type' => 'image',
+    ]);
+
+    // Redirect with a success message
+    return redirect()->back()->with('success', 'Your message has been sent.');
+}
 }

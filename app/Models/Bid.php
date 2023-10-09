@@ -10,7 +10,7 @@ class Bid extends Model
 
     public function artwork()
     {
-        return $this->belongsTo(Artwork::class, 'artwork_id');
+        return $this->belongsTo(Artworks::class, 'artwork_id');
         
     }
     
