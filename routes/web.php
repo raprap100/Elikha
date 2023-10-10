@@ -86,8 +86,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/home', [HomeController::class, 'home']);
     Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
     Route::post('/send-gcash-image/{id}', [MessagesController::class, 'sendGCashImage'])->name('sendGCashImage');
-    Route::get('/profiles/{profileId}', 'ProfileController@show')
-    ->middleware(['auth', 'track.profile.views']);
+    
 
     
 });
@@ -128,7 +127,7 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::get('/buyerhome', [UsersController::class, 'buyerhome'])->name('buyerhome');
     Route::get('/cart', [UsersController::class, 'cart'])->name('cart');
     Route::post('/cart', [UsersController::class, 'cart'])->name('cart');
-    Route::get('/shopbuyer', [UsersController::class, 'shopbuyer'])->name('shopbuyer');
+    Route::get('/shopbuyer', [UsersController::class, 'shopbuyer']) ->name('shopbuyer');
     Route::get('/popart', [UsersController::class, 'popart'])->name('popart');
     Route::get('/realism', [UsersController::class, 'realism'])->name('realism');
     Route::get('/portrait', [UsersController::class, 'portrait'])->name('portrait');
@@ -143,7 +142,9 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::delete('/buyerLogout', [AuthController::class, 'logouts'])->name('buyerLogout');
     Route::post('/artwork/{artworkId}/bid', [BidController::class, 'placeBid'])->name('place.bid');
     Route::post('popup', [UsersController::class,'store'])->name('popup');
-    Route::get('/portfolio/{id}', [UsersController::class, 'portfolio'])->name('portfolio');
+    Route::get('/portfolio/{id}', [UsersController::class, 'portfolio'])
+    ->name('portfolio')
+    ->middleware(['auth', 'track.profile.views']);
     Route::get('/buyerVerify', [UsersController::class, 'buyerVerify'])->name('buyerVerify');
     Route::post('/updateProfilePicture', [UsersController::class, 'updateProfilePicture'])->name('buyer.updateProfilePicture');
     Route::post('/updatebuyerSetting', [UsersController::class, 'updatebuyerSetting'])->name('updatebuyerSetting');
@@ -155,5 +156,5 @@ Route::middleware(['auth', 'role:Buyer'])->group(function()
     Route::post('/buyer/update-settings', [UsersController::class, 'updateBuyerSettings'])->name('buyer.updateBuyerSetting');
     Route::delete('/cart/remove/{artwork}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('send-message-to-artist/{id}', [UsersController::class, 'sendMessageToArtist'])->name('sendMessageToArtist');
-    
+   
 });

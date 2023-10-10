@@ -32,7 +32,7 @@
                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-.646-4.854.646.647.646-.647a.5.5 0 0 1 .708.708l-.647.646.647.646a.5.5 0 0 1-.708.708l-.646-.647-.646.647a.5.5 0 0 1-.708-.708l.647-.646-.647-.646a.5.5 0 0 1 .708-.708Z"/>
                       </svg>
                       <div class="m-1">
-                    <h3>Unverified</h3>
+                    <h3>Not Verified</h3>
                     <button class="btn btn-outline-primary"><a href="{{route('artistVerify')}}">Verify Account</a></button>
                 </div>
                 @endif

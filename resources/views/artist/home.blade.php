@@ -54,7 +54,7 @@
                         <div class="col-sm-4 p-2"><h4>Profile Views</h4> <br>
                             <img class="view" src="artistimg/icon metro-eye.png" alt="..." height="80" width="120">
                             <div class="m-1">
-                            <h3>---</h3>engagements
+                            <h3>{{$profileViewsCount}}</h3>
                             <p>have viewed your profile</p>
                         </div>
                         </div>
@@ -74,7 +74,8 @@
                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-.646-4.854.646.647.646-.647a.5.5 0 0 1 .708.708l-.647.646.647.646a.5.5 0 0 1-.708.708l-.646-.647-.646.647a.5.5 0 0 1-.708-.708l.647-.646-.647-.646a.5.5 0 0 1 .708-.708Z"/>
                               </svg>
                               <div class="m-1">
-                            <h3>Unverified</h3>
+                            <h3>Not Verified</h3>
+                            <p>Please verify your account now to enjoy <br> all the benefits and features of our platform</p>
                         </div>
                         @endif
 
