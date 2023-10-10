@@ -7,7 +7,7 @@
 @endsection
   
         @section('body')
-      
+      <body style="font-family:Helvetica Neue">
         <div class="row">
             <div class="col-4 col-lg-3">
                @include('artistinc.sidebar')
@@ -45,6 +45,7 @@
                     <br>
                     <div class="row grid text-center">
                         <div class="col-sm-4 p-2"><h4>Engagements</h4>  
+                            <br>
                         <img class="engage" src="artistimg/icon metro-chart-line.png" alt="..." height="105" width="105">
                         <div class="m-1">
                         <h3>---</h3>

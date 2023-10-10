@@ -729,6 +729,7 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
 
     $attachment = $artwork->image;
     $artworkTitle = $artwork->title;
+    $artworkPrice = $artwork->price;
 
     $sender = auth()->user(); 
 
@@ -737,7 +738,7 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
         $message = Chatify::newMessage([
             'from_id' => $sender->id,
             'to_id' => $artistId, // Use the artist's ID as the recipient
-            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' Is it still available?",
+            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' with a price of ₱$artworkPrice. Is it still available?",
             'attachment' => ($attachment) ? json_encode((object)[
                 'new_name' => $attachment,
                 'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),

@@ -54,7 +54,7 @@ z-index: 1000;
         <!-- Cart title and sorting options -->
         <div class="row mb-4">
             <div class="col-md-6">
-                <h4 style="font-size: 30px; font-family: 'Arial', sans-serif;">Cart</h4>
+                <h4 style="font-size: 30px; font-family:Helvetica Neue">Cart</h4>
             </div>
             <div class="col-md-6">
                 <div class="btn-group">
@@ -97,7 +97,7 @@ z-index: 1000;
         <div class="row">
             <div class="col-md-7">
                 <!-- Display Auctioned Artworks in Cart -->
-                <h2>Auction Items</h2>
+                <h2 style="font-family:Helvetica Neue">Auction Items</h2>
                 @foreach($auctionItems as $artwork)
                     @php
                         $leadingBid = $artwork->artwork->bids->max('amount');
@@ -156,7 +156,7 @@ z-index: 1000;
                 @endforeach
 
                 <!-- Display For Sale Artworks in Cart -->
-<h2>For Sale Items</h2>
+<h2 style="font-family:Helvetica Neue">For Sale Items</h2>
 @foreach($saleItems as $artwork)
 <div class="card mb-3" data-artwork-type="for_sale">
     <div class="row g-0">
@@ -193,7 +193,7 @@ z-index: 1000;
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="mt-4 text-center">Order Details</h4>
+                            <h4 class="mt-4 text-center" style="font-family:Helvetica Neue">Order Details</h4>
                             <h5>For Sale</h5>
                             @foreach($saleItems as $artwork)
                                 ₱{{ number_format($artwork->artwork->price, 0, '.', ',') }}<br>
@@ -201,7 +201,7 @@ z-index: 1000;
 
                             <h5 class="mt-3">Auctioned</h5>
                             @foreach($auctionItems as $artwork)
-                                @php
+                                @php 
                                     $leadingBid = $artwork->artwork->bids->max('amount');
                                 @endphp
                                 ₱{{ number_format($leadingBid, 0, '.', ',') }}<br>

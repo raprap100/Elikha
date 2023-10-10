@@ -6,7 +6,6 @@
 @endsection
 
 @section('Body')
-
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -15,6 +14,7 @@
         </button>
     </div>
 @endif
+<body style="font-family:Helvetica Neue">
 
 <div class="container mt-4">
     <!--pr0file-->
@@ -26,7 +26,7 @@
                     @if($user->image)
                         <img src="{{ asset('images/'.$user->image) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
                     @else
-                        <div class="default-profile-images">{{ $user->name[0] }}</div>
+                        <div class="default-profile-image">{{ $user->name[0] }}</div>
                     @endif
                 </div>
                 <h1 class="profile-user-name mt-4">{{ Auth::user()->name }}</h1>
@@ -51,7 +51,7 @@
                             <div class="image-container">
                                 <img src="images/plus.png" alt="" class="artwork-buyerview" style="object-fit: cover; border-radius: 10%;">
                                 <div class="overlay">
-                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#uploadModal">
+                                    <button type="button" class="btn btn-hover text-white" data-toggle="modal" data-target="#uploadModal">
                                         Upload Art
                                     </button>
                                 </div>
@@ -187,6 +187,24 @@
         font-size: 16px;
         margin-bottom: 10px;
     }
+
+					.default-profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a3a3a;
+    color: #ffffff;
+    font-size: 100px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 152px;
+    height: 152px;
+	
+}
+.profile-image {
+  max-width: 500px;
+  max-height: 500px;
+}
    </style>
    
 </div>
