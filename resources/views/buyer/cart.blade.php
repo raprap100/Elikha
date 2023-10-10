@@ -2,6 +2,12 @@
 
 @section('Header')
     @include('buyer.nav')
+    <style>
+        .no-underline {
+    text-decoration: none;
+}
+
+    </style>
  @endsection
 @if(session()->has('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -107,11 +113,11 @@ z-index: 1000;
                             <div class="card-body">
                                 <h4 class="card-title">{{ $artwork->artwork->title }}</h5>
                                 <p>Dimensions: {{ $artwork->artwork->dimension }} cm</p>
-                                <p class="card-subtitle mb-2 text-muted">{{ $artwork->artwork->user->name }}</p>
+                                <p class="card-subtitle mb-2 text-muted"><a class="no-underline" href="{{ route('portfolio', ['id' => $artwork->artwork->user->id]) }}">{{ $artwork->artwork->user->name }}</a></p>
                                 <p class="card-text">{{ $artwork->artwork->description }}</p>
                                 <p class="card-text">Leading Bid: ₱{{ $leadingBid ? number_format($leadingBid, 2) : 'N/A' }}</p>
                                     
-                                <button type="button" class="btn btn-primary bid-button" data-bs-toggle="modal" data-bs-target="#bidModal{{ $artwork->artwork->id }}">
+                                <button type="button" class="btn btn-dark bid-button" data-bs-toggle="modal" data-bs-target="#bidModal{{ $artwork->artwork->id }}">
                                     Bid
                                 </button>
                                 
@@ -141,7 +147,7 @@ z-index: 1000;
 <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
     @csrf
     @method('delete')
-    <button type="submit" class="btn btn-danger mt-3">Delete</button>
+    <button type="submit" class="btn btn-outline-dark mt-3">Delete</button>
 </form>                     
                                 </div>
                             </div>
@@ -162,18 +168,20 @@ z-index: 1000;
             <div class="card-body">
                 <h4 class="card-title">{{ $artwork->artwork->title }}</h5>
                 <p>Dimensions: {{ $artwork->artwork->dimension }} cm</p>
-                <p class="card-subtitle mb-2 text-muted">{{ $artwork->artwork->user->name }}</p>
+                <p class="card-subtitle mb-2 text-muted"><a class="no-underline" href="{{ route('portfolio', ['id' => $artwork->artwork->user->id]) }}">{{ $artwork->artwork->user->name }}</a></p>
                 <p class="card-text">{{ $artwork->artwork->description }}</p>
                 <p class="card-text">Price: ₱{{ number_format($artwork->artwork->price, 2) }}</p>
-               
-                    <button type="submit" class="btn btn-primary">Buy</button>
-                
+                <form method="post" action="{{ route('sendMessageToArtist', $artwork->artwork->id) }}">
+                    @csrf
+                    <button class="btn btn-dark" type="submit">
+                        Buy
+                    </button>
+                </form>
                 <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-danger mt-3">Delete</button>
+                    <button type="submit" class="btn btn-outline-dark mt-3">Delete</button>
                 </form>
-             
             </div>
         </div>
     </div>

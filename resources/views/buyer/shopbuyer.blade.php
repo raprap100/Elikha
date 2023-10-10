@@ -4,6 +4,7 @@
 @include('buyer.Nav')
 
 
+
 <div class="container shop-container">
   <div class="row row0 d-flex justify-content-center align-items-center">
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
@@ -26,7 +27,10 @@
           width:80rem ;
           height: 20rem; 
         }
-    
+        .no-underline {
+    text-decoration: none;
+}
+
 
       </style>
       </div>
@@ -291,7 +295,7 @@
                   </div>
                   <div class="col-6">
                       <h1>Title: {{ $artworks->title }}</h1>
-                      <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
+                      <h5><a class="no-underline" href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                       <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                       <br>
 <p class="list-group-item"><strong>Duration: </strong>
@@ -332,7 +336,8 @@
   const initialEndDate_{{ $artworks->id }} = '{{$artworks->end_date}}';
   startCountdown_{{ $artworks->id }}(initialEndDate_{{ $artworks->id }});
 </script>  
-                <p><strong>Lead Bid: </strong> ₱{{ $artworks->bids->max('amount') }}</p>
+<br>
+<p><strong>Highest Bid: </strong> ₱{{ number_format($artworks->bids->max('amount'), 2) }}</p>
                       <p><strong>Description:</strong></p>
                       <p>{{ $artworks->description }}</p>
                       <div class="row">
@@ -407,10 +412,10 @@
                     </div>
                     <div class="col-6">
                         <h1>Title: {{ $artworks->title }}</h1>
-                        <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
+                        <h5><a class="no-underline" href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                         <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                         <br>
-                        <p>Description:</p>
+                        <p><strong>Description:</strong></p>
                         <p>{{ $artworks->description }}</p>
                         <div class="row">
     <div class="col">
