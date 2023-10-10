@@ -2,6 +2,7 @@
 
 @section('Body')
 @include('buyer.Nav')
+@include('artistinc.popup')
 @if(session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}

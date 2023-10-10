@@ -7,7 +7,7 @@
 @endsection
   
         @section('body')
-      <body style="font-family:Helvetica Neue">
+      <body >
         <div class="row">
             <div class="col-4 col-lg-3">
                @include('artistinc.sidebar')
@@ -17,7 +17,7 @@
                 <span class="border">
                 <div class="p-3 pb-5 bg-white rounded">
                     
-                    <h3>IMPORTANT</h3>
+                    <h3 style="font-family:Helvetica Neue">IMPORTANT</h3>
                     <br>
                     
                     <br>
@@ -44,7 +44,7 @@
             
                     <br>
                     <div class="row grid text-center">
-                        <div class="col-sm-4 p-2"><h4>Engagements</h4>  
+                        <div class="col-sm-4 p-2"><h4 style="font-family:Helvetica Neue">Engagements</h4>  
                             <br>
                         <img class="engage" src="artistimg/icon metro-chart-line.png" alt="..." height="105" width="105">
                         <div class="m-1">
@@ -52,7 +52,7 @@
                         <p>have seen your posts</p>
                         </div>
                     </div>
-                        <div class="col-sm-4 p-2"><h4>Profile Views</h4> <br>
+                        <div class="col-sm-4 p-2"><h4 style="font-family:Helvetica Neue">Profile Views</h4> <br>
                             <img class="view" src="artistimg/icon metro-eye.png" alt="..." height="80" width="120">
                             <div class="m-1">
                             <h3>---</h3>engagements
@@ -60,7 +60,7 @@
                         </div>
                         </div>
                         
-                        <div class="col-sm-4 p-2"><h4>Status</h4>
+                        <div class="col-sm-4 p-2"><h4 style="font-family:Helvetica Neue">Status</h4>
                             @if($userVerification)
                             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>

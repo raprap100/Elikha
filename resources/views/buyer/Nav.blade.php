@@ -1,3 +1,5 @@
+@include('artistinc.popup')
+
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #ffffff" class="shadow-sm p-3 mb-5 bg-white rounded">
     <div class="container-fluid">
         <a class="navbar-brand">
@@ -12,19 +14,19 @@
             <a class="nav-link {{ Request::is('buyerhome') ? 'active' : '' }}" href="/buyerhome">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="#about-section">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{ Request::routeIs('chatify') ? 'active' : '' }}" href="{{ route('chatify') }}">Messages</a>
-        </li>  
-          <li class="nav-item">
             <a class="nav-link {{ Request::is('shopbuyer', 'popart', 'realism', 'abstract', 'expressionism', 'impressionism', 'photorealism', 'portrait') ? 'active' : '' }}" href="/shopbuyer">Shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ Request::is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="#about-section">About</a>
+          </li>
         </ul>
-        
+        <li class="nav-item" style="padding-right: 30px;">
+          <a class="nav-link {{ Request::routeIs('chatify') ? 'active' : '' }}" href="{{ route('chatify') }}">Messages</a>
+      </li>
+
         <li class="nav-item">
           <button class="btn profile-image-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
               <div class="profile-image-button">

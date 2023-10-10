@@ -17,7 +17,7 @@
                 </p>
             </div>
         </div>
-        <div class="col" style="padding-top: 90px">
+        <div class="col d-flex flex-column align-items-center justify-content-center vh-100">
             <div id="carouselExampleIndicators" class="carousel slide carousel-size " data-bs-ride="carousel" data-bs-interval="3000" >
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -340,7 +340,7 @@
   <div class="col justify-content-center align-items-center ">
     <div class="content text-md-center">
      
-      <h5 style="font-size: 40px; font-family:Helvetica Neue">Place you bid on Auctions</h5>  
+      <h5 style="font-size: 40px; font-family:Helvetica Neue">Place your bid on Auctions</h5>  
       <p class="narrow-paragraph">Place your bid on auctions to unlock exciting opportunities. Whether you're a collector searching for unique treasures or a seller looking to find the right buyer, auctions are the dynamic stage where values are defined. With each bid, you engage in a thrilling dance of competition, anticipation, and potential rewards. So, don't wait – place your bid and be part of the excitement today.
         </p>
     </div>

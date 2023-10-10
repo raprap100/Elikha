@@ -20,7 +20,7 @@
               </div>
               
               <div class="mx-auto text-center" style="width: 800px;">
-                <h2>ARTIST CENTRE<h2>
+                <h2 style="font-family:Helvetica Neue">ARTIST CENTRE<h2>
               </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">

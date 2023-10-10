@@ -41,7 +41,7 @@
                     <img src="{{ asset('images/tweet.png') }}" class="img-fluid" alt="Image 3">
                 </a>
 				<br><br>
-                <a href=""><button class="btn btn-outline-dark profile-edit-btn">Message</button></a>
+                <a href="{{ url('chatify/'. $artist->id) }}"><button class="btn btn-outline-dark profile-edit-btn">Message</button></a>
             </div>
             <div class="col-8" style="margin-left: 20px">
                 <!-- row for the artworks-->
