@@ -25,29 +25,22 @@
           </li>
         </ul>
         
-        <li class="nav-item ">
+        <li class="nav-item">
           <button class="btn profile-image-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            
-            <div class="profile-image-button">
-              @if($user->image)
-                  <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyers">
-              @else
-                  <div class="text-center">{{ $user->name[0] }}</div>
-              @endif
-          </div>
-        </button>
-        </li>
+              <div class="profile-image-button">
+                  @if($user->image)
+                      <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyers">
+                  @else
+                      <div class="text-center">{{ $user->name[0] }}</div>
+                  @endif
+              </div>
+          </button>
+      </li>
       </div>
     </div>
 </nav>
 <style>
-  .profile-image img {
-    border-radius: 50%;
-    max-width: 200px;
-    max-height: 200px;
-    margin: 50px;
-    
-  }
+  
   .default-profile-image {
   display: flex;
   justify-content: center;
@@ -62,19 +55,19 @@
   border-radius: 50%;
   }
   .profile-image-button {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #3a3a3a;
-      text-align: center; /* Center text horizontally */
-      color: #ffffff;
-      font-weight: bold;
-      font-size: 20px;
+    width: 40px; /* Maintain the fixed width */
+    height: 40px; /* Maintain the fixed height */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a3a3a;
+    text-align: center; /* Center text horizontally */
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+}
 
-  }
 
   .profile-image-buyers {
       max-width: 400%;
@@ -132,6 +125,13 @@ li::marker {
           object-fit: cover;
           border-radius: 50%;
       }
+      .profile-image img {
+    border-radius: 50%;
+    max-width: 150px;
+    max-height: 150px;
+    margin: 50px;
+    
+  }
   
 
   </style>

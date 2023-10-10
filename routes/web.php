@@ -37,6 +37,8 @@ Route::group(['middleware' => 'guest'], function ()
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.resend');
     Route::view('/emails/success', 'emails.success')->name('emails.success');
+    Route::post('send-message-to-artist/{id}', [UsersController::class, 'sendMessageToArtist'])->name('sendMessageToArtist');
+
 
 
 });

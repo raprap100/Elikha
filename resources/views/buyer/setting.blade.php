@@ -3,14 +3,8 @@
 @include('buyer.Nav') 
 @section('Header')
 <style>
-    .profile-image img {
-    border-radius: 50%;
-    max-width: 200px;
-    max-height: 200px;
-    margin: 50px;
     
-  }
-  .default-profile-image {
+  .default-imagesetting {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,17 +51,20 @@
                     @csrf
 
                     <div class="col" style="text-align: center ">
-                          <div class="profile-image">
-                              <img id="profile-image" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
+                          <div class="profile-imagesetting">
+                              <img id="profile-imagesetting" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-imagesetting">
                           </div>
                           
+                          <div class="col-md-4">
                           <h6>Edit Profile Picture</h6>
+                          <div class="mb-3">
                           <input class="form-control" type="file" name="image" id="image">
-                          
+                          </div>
+                          </div>
                           <script>
                             function displayImage() {
                               const fileInput = document.getElementById('image');
-                              const profileImage = document.getElementById('profile-image');
+                              const profileImage = document.getElementById('profile-imagesetting');
                               const file = fileInput.files[0];
                               const reader = new FileReader();
                           
@@ -94,7 +91,7 @@
 
 
                     @csrf
-
+                    <div class="col-md-4">
                     <div class="mb-3">
                         <label for="oldPasswordInput" class="form-label">Old Password</label>
                         <input name="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" id="oldPasswordInput" placeholder="Old Password">
@@ -115,7 +112,7 @@
                         <label for="confirmNewPasswordInput" class="form-label">Confirm New Password</label>
                         <input name="new_password_confirmation" type="password" class="form-control" id="confirmNewPasswordInput" placeholder="Confirm New Password">
                     </div>
-
+                    </div>
                     <button type="submit" class="btn btn-outline-primary">Update Password</button>
                 </form>
             </div>
