@@ -86,7 +86,8 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/home', [HomeController::class, 'home']);
     Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
     Route::post('/send-gcash-image/{id}', [MessagesController::class, 'sendGCashImage'])->name('sendGCashImage');
-
+    Route::get('/profiles/{profileId}', 'ProfileController@show')
+    ->middleware(['auth', 'track.profile.views']);
 
     
 });
