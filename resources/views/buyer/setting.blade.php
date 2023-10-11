@@ -53,7 +53,7 @@
 
                     <div class="col" style="text-align: center ">
                           <div class="profile-imagesetting">
-                              <img id="profile-imagesetting" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-imagesetting">
+                              <img id="profile-imagesetting" src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="{{ $user->name[0] }}" class="default-imagesetting">
                           </div>
                           
                           <div class="col-md-4">

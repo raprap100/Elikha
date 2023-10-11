@@ -23,11 +23,9 @@
         <div class="row " style="padding-left: 70px; padding-right:70px">
             <div class="col-3" style="padding-right: 40px">
                 <div class="container">
-                    @if($user->image)
-                        <img src="{{ asset('images/'.$user->image) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
-                    @else
-                        <div class="default-profile-image">{{ $user->name[0] }}</div>
-                    @endif
+                    
+                    <img id="profile-image" src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
+                    
                 </div>
                 <h1 class="profile-user-name mt-4">{{ Auth::user()->name }}</h1>
                 <a href="editprofile"><button class="btn btn-outline-secondary profile-edit-btn">Edit Profile</button></a>

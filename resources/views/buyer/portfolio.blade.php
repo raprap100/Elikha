@@ -23,11 +23,7 @@
         <div class="row " style="padding-left: 70px; padding-right:70px">
             <div class="col-3" style="padding-right: 40px">
                 <div class="container">
-                    @if($artist->image)
-                        <img src="{{ asset('images/'.$artist->image) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
-                    @else
-                        <div class="default-profile-image">{{ $artist->name[0] }}</div>
-                    @endif
+                        <img src="{{ asset('storage/users-avatar/'.$artist->avatar) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
                 </div>
                 <h1 class="profile-user-name mt-4">{{ $artist->name }}</h1>
                 <p>{{ $artist->bio }}</p>

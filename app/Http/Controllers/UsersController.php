@@ -89,8 +89,8 @@ class UsersController extends Controller
     
             // Upload and save image
             $filename = time() . '.' . $extension;
-            $image->move(public_path('images'), $filename);
-            $user->image = $filename;
+            $image->move(public_path('storage/users-avatar'), $filename);
+            $user->avatar = $filename;
         }
     
         // Update user details
@@ -713,38 +713,38 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
             'image' => 'required|image|mimes:jpg,jpeg,png|max:1024', 
         ]);
     
+        $user = Auth::user();
+        
+        // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
     
+            // Validate image file type
             $allowedFileTypes = ['jpg', 'jpeg', 'png'];
-            $maxFileSize = 1024 * 1024; 
-    
             $extension = $image->getClientOriginalExtension();
-    
             if (!in_array($extension, $allowedFileTypes)) {
                 return redirect()->back()->withErrors(['image' => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
             }
     
-            if ($image->getSize() > $maxFileSize) {
+            // Validate image file size
+            $maxFileSize = 1024 * 1024; // 1MB
+            $fileSize = $image->getSize();
+            if ($fileSize > $maxFileSize) {
                 return redirect()->back()->withErrors(['image' => 'The image file size must be less than 1MB.']);
             }
     
-            // Generate a unique filename for the image
+            // Upload and save image
             $filename = time() . '.' . $extension;
-    
-            // Store the image in the public storage directory
-            $image->move(public_path('images'), $filename);
-    
-            // Update the user's image URL in the database
-            Auth::user()->update([
-                'image' => $filename, // Save only the filename without the path
-            ]);
+            $image->move(public_path('storage/users-avatar'), $filename);
+            $user->avatar = $filename;
+            $user->save();
+        }
             
             return redirect()->route('buyer.settings')->with('success', 'Profile picture updated successfully!');
         }
     
-        return redirect()->back()->withErrors(['image' => 'Failed to update profile picture. Please try again.']);
-    }
+        
+    
     public function sendMessageToArtist(Request $request, $id)
 {
     $artwork = Artworks::findOrFail($id);
