@@ -30,7 +30,7 @@
         <li class="nav-item">
           <button class="btn profile-image-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
               <div class="profile-image-button">
-                      <img src="{{ asset('storage/users-avatar/'.$user->avatar) }}" class="profile-image-buyers">
+                      <img src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="{{ $user->name[0] }}" class="profile-image-buyers">
               </div>
           </button>
       </li>
@@ -91,13 +91,9 @@ li::marker {
   <div class="offcanvas-body text-center">
     <div class="row justify-content-center">
       <div class="profile-image">
-        @if($user->avatar)
-        <img src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
-        @else
-            <div class="profile-image-buyer rounded-circle">
-                <div class="text-center">{{ $user->name[0] }}</div>
-            </div>
-        @endif
+
+        <img src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="{{ $user->name[0] }}" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
+        
     </div>
       <h3 class="m-b-0">{{ Auth::user()->name }}</h3>
   </div>
@@ -130,7 +126,19 @@ li::marker {
     margin: 50px;
     
   }
-  
+  .default-profile-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a3a3a;
+    color: #ffffff;
+    font-size: 100px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 152px;
+    height: 152px;
+	
+}
 
   </style>
   

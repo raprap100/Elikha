@@ -23,7 +23,7 @@
         <div class="row " style="padding-left: 70px; padding-right:70px">
             <div class="col-3" style="padding-right: 40px">
                 <div class="container">
-                        <img src="{{ asset('storage/users-avatar/'.$artist->avatar) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
+                        <img src="{{ asset('storage/users-avatar/'.$artist->avatar) }}" alt="{{ $artist->name[0] }}" class="default-profile-image" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
                 </div>
                 <h1 class="profile-user-name mt-4">{{ $artist->name }}</h1>
                 <p>{{ $artist->bio }}</p>
@@ -145,7 +145,7 @@
         margin-bottom: 10px;
     }
 
-					.default-profile-image {
+    .default-profile-image {
     display: flex;
     justify-content: center;
     align-items: center;
