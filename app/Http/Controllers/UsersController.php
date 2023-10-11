@@ -15,7 +15,11 @@ use App\Models\Ticket;
 use Carbon\Carbon; 
 use App\Models\Verify;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Bid;
+use Chatify\Facades\ChatifyMessenger as Chatify;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Response;
+use App\Models\ProfileView;
 
 class UsersController extends Controller
 {
@@ -85,8 +89,8 @@ class UsersController extends Controller
     
             // Upload and save image
             $filename = time() . '.' . $extension;
-            $image->move(public_path('images'), $filename);
-            $user->image = $filename;
+            $image->move(public_path('storage/users-avatar'), $filename);
+            $user->avatar = $filename;
         }
     
         // Update user details
@@ -104,20 +108,55 @@ class UsersController extends Controller
 
     public function artistHome()
     {
-            return view('artist.home');
+        $activeArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->count();
+        $pendingArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Pending')
+        ->count();
+        $soldArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Sold')
+        ->count();
+        $userVerification = Verify::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->exists();
+        $user = auth()->user();
+         $profileViewsCount = ProfileView::where('profile_id', $user->id)->count();
+         return view('artist.home', array_merge(
+            compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount', 'userVerification'),
+            ['profileViewsCount' => $profileViewsCount]
+        ));
     }
-    public function artistAuction()
+    public function artistAuction(Request $request)
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                       ->where('status', 'Approved')
-                        ->whereNotNull('start_price') 
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-        return view('artist.myauctions', compact('artwork'));
+        ->where('status', 'Approved')
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+    // Fetch bidders for each artwork
+    foreach ($artwork as $artworks) {
+        $artworks->bidders = DB::table('bids')
+            ->where('artwork_id', $artworks->id)
+            ->join('users', 'bids.user_id', '=', 'users.id')
+            ->select('users.name as bidder_name', 'bids.amount', 'bids.created_at')
+            ->get();
     }
+
+    return view('artist.myauctions', compact('artwork'));
+    }
+    public function sold(Request $request, $id)
+{
+    $artwork = Artworks::findOrFail($id);
+    $artwork->status = 'Sold';
+    $artwork->save();
+    return back()->with("success", "Artwork marked as sold!");
+}
     public function artistSettings()
-    {
-        return view('artist.settings');
+    {$userVerification = Verify::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->exists();
+        return view('artist.settings', compact('userVerification'));
     }
     public function updateartistSetting(Request $request)
 {
@@ -161,6 +200,22 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
+public function stores(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+    ]);
+    $ticket = Ticket::create([
+        'title' => $validatedData['title'],
+        'description' => $validatedData['description'],
+        'users_id' => Auth::id(),
+        'status' => false,
+        
+    ]);
+
+    return back()->with('success', 'Ticket created successfully!');
+}
 //buyer
 public function buyerhome()
 {
@@ -178,6 +233,29 @@ public function buyerhome()
     return view('buyer.buyerhome', compact('user', 'artwork'));
 }
 
+public function updateBuyerSettings(Request $request)
+{
+    
+        # Validation
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return back()->with("error", "Old Password Doesn't match!");
+        }
+
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with("status", "Password changed successfully!");
+}
 
     public function shopbuyer(Request $request)
 {
@@ -198,7 +276,7 @@ public function buyerhome()
 
     // Handle search query
     if ($request->has('search')) {
-        $searchQuery = $request->input('search');
+        $searchQuery = $request->input('search');   
         $query->where(function ($q) use ($searchQuery) {
             $q->where('title', 'like', '%' . $searchQuery . '%')
                 ->orWhereHas('user', function ($u) use ($searchQuery) {
@@ -482,7 +560,7 @@ public function photorealism(Request $request)
     return view('buyer.photorealism', compact('user', 'artwork', 'highlightsData'));
 }
 
-    public function cart()
+    public function buyercart()
     {
         $user = Auth::user();
 
@@ -494,6 +572,46 @@ public function photorealism(Request $request)
 
         return view('buyer.Nav', compact('user'));
     }
+    public function buyersetting()
+    {
+        $user = Auth::user();
+
+        return view('buyer.setting', compact('user'));
+    }
+
+public function addToCart(Request $request, $artworkId)
+{
+    // Retrieve artwork details based on $artworkId
+    $artwork = Artworks::find($artworkId);
+
+    // Check if the artwork is "For Sale" or "Auctioned"
+    if ($artwork && in_array($artwork->status, ['For Sale', 'Auctioned'])) {
+        // Add the artwork to the user's cart (you need to implement this logic)
+        // Redirect back to the shop page or cart page
+    } else {
+        // Artwork is not available for purchase, handle accordingly (e.g., show error message)
+    }
+}
+
+public function updateCart(Request $request, $artworkId)
+{
+    // Update the quantity or other details of the artwork in the cart
+    // Save the updated cart state to the database or session
+    // Redirect back to the cart page
+}
+
+public function removeFromCart($artworkId)
+{
+ // In removeFromCart method
+return redirect()->route('cart')->with('success', 'Artwork removed from the cart successfully');
+
+// In placeBid method
+return redirect()->back()->with('success', 'Bid placed successfully!');
+// or
+return redirect()->back()->with('error', 'Failed to place bid. Please try again.');
+
+    
+}
 
     public function portfolio($id)
 {
@@ -506,9 +624,13 @@ public function photorealism(Request $request)
         })
         ->orderBy('created_at', 'DESC')
         ->get();
+        $user = auth()->user();
+        $profileViewsCount = ProfileView::where('profile_id', $user->id)->count();
 
-    return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
+    return view('buyer.portfolio', array_merge(compact('artist', 'artwork', 'user'),['profileViewsCount' => $profileViewsCount]
+));
 }
+    
 
     public function buyerVerify()
     {
@@ -569,14 +691,150 @@ public function photorealism(Request $request)
                 // Optionally, you can store the file paths in an array.
                 $uploadedFilePaths[] = 'images/' . $filename;
             }
-        }
+         }
     
         // Optionally, you can save the file paths to a database or perform other actions.
     
          // Redirect or return a response as needed.
+     return redirect()->to('profile')->with('success', 'Profile updated successfully!');
+    }
 
+
+    public function editProfilePicture()
+    {
+        $user = Auth::user();
+        return view('buyer.editprofilepicture', compact('user'));
+    }
     
 
-    return redirect()->to('profile')->with('success', 'Profile updated successfully!');
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:1024', 
+        ]);
+    
+        $user = Auth::user();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Validate image file type
+            $allowedFileTypes = ['jpg', 'jpeg', 'png'];
+            $extension = $image->getClientOriginalExtension();
+            if (!in_array($extension, $allowedFileTypes)) {
+                return redirect()->back()->withErrors(['image' => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+            }
+    
+            // Validate image file size
+            $maxFileSize = 1024 * 1024; // 1MB
+            $fileSize = $image->getSize();
+            if ($fileSize > $maxFileSize) {
+                return redirect()->back()->withErrors(['image' => 'The image file size must be less than 1MB.']);
+            }
+    
+            // Upload and save image
+            $filename = time() . '.' . $extension;
+            $image->move(public_path('storage/users-avatar'), $filename);
+            $user->avatar = $filename;
+            $user->save();
+        }
+            
+            return redirect()->route('buyer.settings')->with('success', 'Profile picture updated successfully!');
+        }
+    
+        
+    
+    public function sendMessageToArtist(Request $request, $id)
+{
+    $artwork = Artworks::findOrFail($id);
+
+    if (!$artwork) {
+        return redirect()->back()->with('error', 'Artwork not found.');
     }
+
+    $attachment = $artwork->image;
+    $artworkTitle = $artwork->title;
+    $artworkPrice = $artwork->price;
+
+    $sender = auth()->user(); 
+
+    $artistId = $artwork->user->id;
+    
+        $message = Chatify::newMessage([
+            'from_id' => $sender->id,
+            'to_id' => $artistId, // Use the artist's ID as the recipient
+            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' with a price of ₱$artworkPrice. Is it still available?",
+            'attachment' => ($attachment) ? json_encode((object)[
+                'new_name' => $attachment,
+                'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
+            ]) : null,
+        ]);
+    $messageData = Chatify::parseMessage($message);
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify.".$request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true)
+        ]);
+    }
+    // Construct the URL
+    $chatifyUrl = url('chatify/' . $artwork->user->id);
+
+    // Redirect the user to the URL immediately
+    return redirect()->to($chatifyUrl);
 }
+public function sendGCashImage(Request $request, $id)
+{
+    $verificationRequest = Verify::findOrFail($id);
+
+    if (!$verificationRequest) {
+        return redirect()->back()->with('error', 'Verification request not found.');
+    }
+
+    $attachment = $verificationRequest->gcash_image;
+    $gcashTitle = $verificationRequest->title;
+
+    $sender = auth()->user();
+
+    $artistId = $verificationRequest->user->id;
+
+    $message = Chatify::newMessage([
+        'from_id' => $sender->id,
+        'to_id' => $artistId,
+        'body' => "Hello! I've uploaded my GCash image for verification. Please review it.",
+        'attachment' => ($attachment) ? json_encode((object)[
+            'new_name' => $attachment,
+            'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
+        ]) : null,
+    ]);
+
+    $messageData = Chatify::parseMessage($message);
+
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify." . $request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true),
+        ]);
+    }
+    return back();
+}
+
+
+}
+
+
+
+    
+    // $message = Chatify::newMessage([
+    //     'from_id' => Auth::user()->id,
+    //     'to_id' => $request['id'],
+    //     'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+    //     'attachment' => ($attachment) ? json_encode((object)[
+    //         'new_name' => $attachment,
+    //         'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+    //     ]) : null,
+    // ]);
+    
+    

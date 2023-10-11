@@ -60,7 +60,7 @@ border-radius: 50%;
     @csrf
     @method('Post')
     <div class="profile-image">
-        <img id="profile-image" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
+        <img id="profile-image" src="{{ asset('storage/users-avatar/'.$user->avatar) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
     </div>
     
     <h6>Edit Profile Picture</h6>

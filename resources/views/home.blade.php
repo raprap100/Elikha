@@ -38,7 +38,7 @@
             <div class="content text-md-center">
                 <h3 style="font-size: 80px; font-family:Helvetica Neue">Let your Imagination<br> take over</h3>
                 <p class="narrow-paragraph">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium ullam atque, quidem perferendis saepe deleniti ea sapiente modi quisquam praesentium? Illum autem porro adipisci eaque aut error iure doloremque eveniet.
+                  Welcome to E-likha, the ultimate online art group gallery where your imagination can truly take over. Immerse yourself in a world of creativity and inspiration as you explore a vast collection of exceptional artworks from talented artists around the globe. Let your imagination run wild as you browse through an eclectic range of paintings, each telling a captivating story. Whether you are an art enthusiast, a collector, or simply seeking that perfect piece to adorn your space, E-likha invites you to unleash your imagination and discover art that resonates with your soul. Join us today and embark on an artistic journey like no other.
                 </p>
                 <a href="/signup" class="link-btn">Be an Artist or Collector</a>
             </div>
@@ -184,7 +184,7 @@
             <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[0]->description, 200) }}</p>
         </div>
         <img
-            src="{{ asset('artworks/'.$artwork[0]->image) }}"
+            src="{{ asset('storage/attachments/'.$artwork[0]->image) }}"
             class="mb-4 upcomingauction1"
             alt=""
         />
@@ -201,7 +201,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[1]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[1]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[1]->image) }}"
             class="mb-4 upcomingauction2"
             alt=""
           />
@@ -222,7 +222,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[2]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[2]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[2]->image) }}"
             class="mb-4 upcomingauction2"
             alt=""
           />
@@ -239,7 +239,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[3]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[3]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[3]->image) }}"
             class="mb-4 upcomingauction1"
             alt=""
           />
@@ -258,7 +258,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[4]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[4]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[4]->image) }}"
             class="shadow-1-strong rounded mb-4 upcomingauction1"
             alt=""
           />
@@ -275,7 +275,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[5]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[5]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[5]->image) }}"
             class="shadow-1-strong rounded mb-4 upcomingauction2"
             alt=""
           />
@@ -359,15 +359,15 @@
       <div class="content text-md-center">
         <h5 style="font-size: 40px; font-family:Helvetica Neue">Get the Latest Art Trends</h5>
               
-        <p class="narrow-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa cupiditate at ab deleniti deserunt aut, quo voluptatum autem amet repudiandae excepturi corporis dolorum dolore aspernatur ducimus nihil vitae? Temporibus?
+        <p class="narrow-paragraph">Stay in the artistic loop with the latest art trends. Explore emerging styles, innovative mediums, and contemporary masterpieces. Don't miss out on the evolving world of creativity. Get the latest art trends now.
           </p>
       </div>
   </div>
   <div class="col justify-content-center align-items-center ">
     <div class="content text-md-center">
      
-      <h5 style="font-size: 40px; font-family:Helvetica Neue">Place you bid on Auctions</h5>  
-      <p class="narrow-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa cupiditate at ab deleniti deserunt aut, quo voluptatum autem amet repudiandae excepturi corporis dolorum dolore aspernatur ducimus nihil vitae? Temporibus?
+      <h5 style="font-size: 40px; font-family:Helvetica Neue">Place your bid on Auctions</h5>  
+      <p class="narrow-paragraph">Place your bid on auctions to unlock exciting opportunities. Whether you're a collector searching for unique treasures or a seller looking to find the right buyer, auctions are the dynamic stage where values are defined. With each bid, you engage in a thrilling dance of competition, anticipation, and potential rewards. So, don't wait – place your bid and be part of the excitement today.
         </p>
     </div>
 </div>

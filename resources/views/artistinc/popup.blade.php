@@ -61,7 +61,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('popup') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('popups') }}" method="POST" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body">
 
@@ -76,7 +76,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-outline-primary">Submit</button>
+                <button type="submit" class="btn btn-dark">Submit</button>
             </form>
             </div>
         </div>

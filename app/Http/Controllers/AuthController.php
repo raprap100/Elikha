@@ -127,7 +127,7 @@ class AuthController extends Controller
     {
         Auth::logout();
  
-        return redirect()->intended('/');
+        return redirect()->intended('/login');
     }
 
     public function logouts()
