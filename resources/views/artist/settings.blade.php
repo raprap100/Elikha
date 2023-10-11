@@ -18,6 +18,14 @@
                     <h2>Settings</h2>
                     <br>
                     <h4>Verification Status</h4>
+                    @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+         {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
                     @if($userVerification)
                     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>

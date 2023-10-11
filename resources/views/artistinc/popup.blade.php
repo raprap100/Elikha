@@ -61,7 +61,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('popup') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('popups') }}" method="POST" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body">
 

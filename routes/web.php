@@ -74,7 +74,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/postitem', [ArtworkController::class, 'postitem']);
     Route::post('/postitem', [ArtworkController::class, 'store'])->name('postitem');
     Route::get('/profile', [UsersController::class, 'profile']);
-    Route::post('popup', [UsersController::class,'store'])->name('popup');
+    Route::post('popups', [UsersController::class,'stores'])->name('popups');
     Route::delete('/artistLogout', [AuthController::class, 'logouts'])->name('artistLogout');
     Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
     Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');

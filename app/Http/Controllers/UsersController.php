@@ -200,6 +200,22 @@ class UsersController extends Controller
 
     return back()->with('success', 'Ticket created successfully!');
 }
+public function stores(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+    ]);
+    $ticket = Ticket::create([
+        'title' => $validatedData['title'],
+        'description' => $validatedData['description'],
+        'users_id' => Auth::id(),
+        'status' => false,
+        
+    ]);
+
+    return back()->with('success', 'Ticket created successfully!');
+}
 //buyer
 public function buyerhome()
 {
