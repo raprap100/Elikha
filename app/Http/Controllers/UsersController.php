@@ -19,7 +19,7 @@ use App\Models\Bid;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
-
+use App\Models\ProfileView;
 
 class UsersController extends Controller
 {
@@ -120,7 +120,12 @@ class UsersController extends Controller
         $userVerification = Verify::where('users_id', Auth::id())
         ->where('status', 'Approved')
         ->exists();
-            return view('artist.home', compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount', 'userVerification'));
+        $user = auth()->user();
+         $profileViewsCount = ProfileView::where('profile_id', $user->id)->count();
+         return view('artist.home', array_merge(
+            compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount', 'userVerification'),
+            ['profileViewsCount' => $profileViewsCount]
+        ));
     }
     public function artistAuction(Request $request)
     {
@@ -148,8 +153,10 @@ class UsersController extends Controller
     return back()->with("success", "Artwork marked as sold!");
 }
     public function artistSettings()
-    {
-        return view('artist.settings');
+    {$userVerification = Verify::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->exists();
+        return view('artist.settings', compact('userVerification'));
     }
     public function updateartistSetting(Request $request)
 {
@@ -601,8 +608,11 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
         })
         ->orderBy('created_at', 'DESC')
         ->get();
+        $user = auth()->user();
+        $profileViewsCount = ProfileView::where('profile_id', $user->id)->count();
 
-    return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
+    return view('buyer.portfolio', array_merge(compact('artist', 'artwork', 'user'),['profileViewsCount' => $profileViewsCount]
+));
 }
     
 
