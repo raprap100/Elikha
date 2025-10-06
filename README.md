@@ -1,5 +1,6 @@
-##Note:
-- This was a group capstone project with these members:
+Note:
+- This was a group capstone project for our thesis.
+Members:
 - Raphael Ureta 
 - Miguel Sierte
 - Cedrick Tripoli
