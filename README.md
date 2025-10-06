@@ -1,3 +1,11 @@
+##Note:
+- This was a group capstone project with these members:
+- Raphael Ureta 
+- Miguel Sierte
+- Cedrick Tripoli
+- William Kade Dizon
+
+
 ## INSTALLATION
 
 - Install all the dependencies using Composer
